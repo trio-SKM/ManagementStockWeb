@@ -17,8 +17,8 @@ class CreateProduitsTable extends Migration
             $table->id();
             $table->string('ref')->unique();
             $table->string('libelle');
-            $table->bigInteger('qte');
-            $table->Integer('price');
+            $table->float('price');
+            $table->foreignId('bon_commande_id')->nullable()->constrained('bon_commandes')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

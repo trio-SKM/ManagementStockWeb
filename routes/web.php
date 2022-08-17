@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\BonCommandeController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DevieController;
+use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProduitController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,3 +24,13 @@ Route::get('/', function () {
 });
 Route::view('/login', 'auth.login')->name('login-view');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login');
+Route::get('/produit/byBonCommande/{bon_commande_id}', [ProduitController::class, 'getByBonCommandeId']);
+Route::resources(
+    [
+        'client' => ClientController::class,
+        'fournisseur' => FournisseurController::class,
+        'bon_commande' => BonCommandeController::class,
+        'devie' => DevieController::class,
+        'produit' => ProduitController::class,
+    ]
+);

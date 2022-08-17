@@ -15,8 +15,7 @@ class CreateBonCommandesTable extends Migration
     {
         Schema::create('bon_commandes', function (Blueprint $table) {
             $table->id();
-            $table->string('id_bc');
-            $table->date('date_bc');
+            $table->string('num')->unique();
             $table->foreignId('fournisseur_id')->constrained('fournisseurs')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
