@@ -14,7 +14,8 @@ class FournisseurController extends Controller
      */
     public function index()
     {
-        //
+        $fournisseurs = Fournisseur::all();
+        return view('fournisseur.list-fournisseurs', compact('fournisseurs'));
     }
 
     /**
@@ -24,7 +25,7 @@ class FournisseurController extends Controller
      */
     public function create()
     {
-        //
+        return view('fournisseur.add-fournisseur');
     }
 
     /**
@@ -35,7 +36,29 @@ class FournisseurController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'fournisseur_name' => 'required|max:255',
+            'fournisseur_rc' => 'required|unique:fournisseurs,rc',
+            'fournisseur_nom_societe' => 'required|max:255',
+            'fournisseur_ice' => 'required|unique:fournisseurs,ice',
+        ]);
+
+        $fournisseur = Fournisseur::create([
+            'nom_complet' => $request->fournisseur_name,
+            'telephone' => $request->fournisseur_tele,
+            'rc' => $request->fournisseur_rc,
+            'nom_societe' => $request->fournisseur_nom_societe,
+            'ice' => $request->fournisseur_ice,
+        ]);
+
+        if ($fournisseur) {
+            $status = 'Le fournisseur était bien ajouté.';
+        } else {
+            $status = 'Insertion échoue.';
+        }
+        $request->session()->flash('status', $status);
+
+        return back();
     }
 
     /**
@@ -46,7 +69,7 @@ class FournisseurController extends Controller
      */
     public function show(Fournisseur $fournisseur)
     {
-        //
+        return view('fournisseur.list-fournisseur', compact('fournisseur'));
     }
 
     /**
@@ -57,7 +80,7 @@ class FournisseurController extends Controller
      */
     public function edit(Fournisseur $fournisseur)
     {
-        //
+        return view('fournisseur.edit-fournisseur', compact('fournisseur'));
     }
 
     /**
@@ -69,7 +92,26 @@ class FournisseurController extends Controller
      */
     public function update(Request $request, Fournisseur $fournisseur)
     {
-        //
+        $validated = $request->validate([
+            'fournisseur_name' => 'required|max:255',
+            'fournisseur_rc' => ($request->fournisseur_rc != $fournisseur->rc) ? 'required|unique:fournisseurs,rc' : 'required',
+            'fournisseur_nom_societe' => 'required|max:255',
+            'fournisseur_ice' => ($request->fournisseur_rc != $fournisseur->rc) ? 'required|unique:fournisseurs,ice' : 'required',
+        ]);
+        $fournisseur->nom_complet = $request->fournisseur_name;
+        $fournisseur->telephone = $request->fournisseur_tele;
+        $fournisseur->rc = $request->fournisseur_rc;
+        $fournisseur->nom_societe = $request->fournisseur_nom_societe;
+        $fournisseur->ice = $request->fournisseur_ice;
+
+        if ($fournisseur->update()) {
+            $status = 'Le fournisseur était bien modifié.';
+        } else {
+            $status = 'Modification échoue.';
+        }
+        $request->session()->flash('status', $status);
+
+        return back();
     }
 
     /**
@@ -80,6 +122,12 @@ class FournisseurController extends Controller
      */
     public function destroy(Fournisseur $fournisseur)
     {
-        //
+        if ($fournisseur->delete())
+            $status = "Le fournisseur était bien supprimé.";
+        else
+            $status = "Supprission échoue.";
+        session()->flash('status', $status);
+
+        return redirect(route('fournisseur.index'));
     }
 }

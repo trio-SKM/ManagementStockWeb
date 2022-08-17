@@ -15,6 +15,7 @@ class CreateDeviesTable extends Migration
     {
         Schema::create('devies', function (Blueprint $table) {
             $table->id();
+            $table->string('num')->unique();
             $table->foreignId('client_id')->constrained('clients')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });

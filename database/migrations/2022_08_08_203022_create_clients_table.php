@@ -20,7 +20,7 @@ class CreateClientsTable extends Migration
             $table->string('rc')->unique();
             $table->string('nom_societe');
             $table->string('ice')->unique();
-            $table->string('credit');
+            $table->float('credit')->default(0);
             $table->timestamps();
         });
     }

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bon_commande;
+use App\Models\Fournisseur;
+use App\Models\Produit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class BonCommandeController extends Controller
 {
@@ -14,7 +17,8 @@ class BonCommandeController extends Controller
      */
     public function index()
     {
-        //
+        $bons = Bon_commande::all();
+        return view('bon.list-bons', compact('bons'));
     }
 
     /**
@@ -24,7 +28,8 @@ class BonCommandeController extends Controller
      */
     public function create()
     {
-        //
+        $fournisseurs = Fournisseur::all();
+        return view('bon.add-bon', compact('fournisseurs'));
     }
 
     /**
@@ -35,7 +40,45 @@ class BonCommandeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'bon_commande_num' => 'required|max:255|unique:bon_commandes,num',
+            'produits' => [
+                'required',
+                // this will be used to customize validation:
+                function($attribute, $value, $fail){
+                    $produits_ids = Str::of($value)->explode(',');
+                    foreach ($produits_ids as $id) {
+                        if (!is_numeric($id)) {
+                            $fail('there is some problems with params.');
+                        }
+                    }
+                }
+            ],
+        ]);
+
+        $bon_commande = new Bon_commande(['num' =>$request->bon_commande_num]);
+        $fournisseur = Fournisseur::find($request->fournisseur);
+
+        if ($fournisseur) {
+            $fournisseur->bon_commandes()->save($bon_commande); // associate the supplier with his order form.
+
+            // to associate an order form with its products:
+            $produits_ids = Str::of($request->produits)->explode(',');
+            foreach ($produits_ids as $id) {
+                $produit = Produit::find($id);
+                $produit->bon_commande()->associate($bon_commande);
+                $produit->save();
+            }
+
+            $status = 'Le bon de commande était bien ajouté.';
+        }
+        else {
+            $status = 'Insertion échoue.';
+        }
+
+        $request->session()->flash('status', $status);
+
+        return back();
     }
 
     /**
@@ -46,7 +89,7 @@ class BonCommandeController extends Controller
      */
     public function show(Bon_commande $bon_commande)
     {
-        //
+        return view('bon.list-bon', compact('bon_commande'));
     }
 
     /**
@@ -57,7 +100,8 @@ class BonCommandeController extends Controller
      */
     public function edit(Bon_commande $bon_commande)
     {
-        //
+        $fournisseurs = Fournisseur::all();
+        return view('bon.edit-bon', compact('bon_commande', 'fournisseurs'));
     }
 
     /**
@@ -69,7 +113,19 @@ class BonCommandeController extends Controller
      */
     public function update(Request $request, Bon_commande $bon_commande)
     {
-        //
+        $validated = $request->validate([
+            'bon_commande_num' => 'required|max:255|unique:bon_commandes,num',
+        ]);
+        $bon_commande->num = $request->bon_commande_num;
+
+        if ($bon_commande->update()) {
+            $status = 'Le bon de commande était bien modifié.';
+        } else {
+            $status = 'Modification échoue.';
+        }
+        $request->session()->flash('status', $status);
+
+        return back();
     }
 
     /**
@@ -80,6 +136,12 @@ class BonCommandeController extends Controller
      */
     public function destroy(Bon_commande $bon_commande)
     {
-        //
+        if ($bon_commande->delete())
+            $status = "Le bon de commande était bien supprimé.";
+        else
+            $status = "Supprission échoue.";
+        session()->flash('status', $status);
+
+        return redirect(route('bon.index'));
     }
 }
