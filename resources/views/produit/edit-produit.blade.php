@@ -16,26 +16,27 @@
         <input type="text" id="produit_ref" name="produit_ref" value="{{ $produit->ref }}"><br>
         <label for="produit_libelle">Libelle</label>
         <input type="text" id="produit_libelle" name="produit_libelle" value="{{ $produit->libelle }}"><br>
-        <label for="produit_qte">Quantité</label>
-        <input type="text" id="produit_qte" name="produit_qte" value="{{ $produit->qte }}"><br>
+        {{-- <label for="produit_qte">Quantité</label>
+        <input type="text" id="produit_qte" name="produit_qte" value="{{ $produit->qte }}"><br> --}}
         <label for="produit_price">Prix</label>
         <input type="text" id="produit_price" name="produit_price" value="{{ $produit->price }}"><br>
         <label for="bon_commande">Bon de commande - Fournisseur</label> <!--todo-->
         <select name="bon_commande" id="bon_commande">
+            <option value="">- - -</option>
             @foreach ($bon_commandes as $bon_commande)
-                <option value="{{$bon_commande->id}}">{{$bon_commande->id_bc}} - {{$bon_commande->fournisseur}}</option>
+                <option value="{{$bon_commande->id}}" @php echo (($produit->bon_commande != null && $produit->bon_commande->num == $bon_commande->id)?'selected' : ''); @endphp>{{$bon_commande->num}} - {{$bon_commande->fournisseur->nom_complet}}</option>
             @endforeach
-        </select>
-        <input type="submit" name="" id="" value="modifier">
+        </select><br>
+        <input type="submit" value="Modifier">
     </form>
     <br><br><br>
     <div>
         <form action="{{ route('produit.destroy', ['produit' => $produit->id]) }}" method="post">
             @csrf
             @method('DELETE')
-            <input type="submit" name="" id="" value="supprimer">
+            <input type="submit" value="Supprimer">
         </form>
-        <a href="{{ route('produit.index') }}">afficher les produits</a>
+        <a href="{{ route('produit.index') }}">Afficher les produits</a>
     </div>
     @if ($errors->any())
         <div class="alert alert-danger">

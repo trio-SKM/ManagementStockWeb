@@ -9,26 +9,25 @@
 </head>
 
 <body>
-    <label for="produit_ref">REF</label>
-    <input type="text" id="produit_ref" name="produit_ref" value="{{ $produit->ref }}"><br>
-    <label for="produit_libelle">Libelle</label>
-    <input type="text" id="produit_libelle" name="produit_libelle" value="{{ $produit->libelle }}"><br>
-    <label for="produit_qte">Quantité</label>
-    <input type="text" id="produit_qte" name="produit_qte" value="{{ $produit->qte }}"><br>
-    <label for="produit_price">Prix</label>
-    <input type="text" id="produit_price" name="produit_price" value="{{ $produit->price }}"><br>
+    <label>REF</label>
+    <input type="text" readonly value="{{ $produit->ref }}"><br>
+    <label>Libelle</label>
+    <input type="text" readonly value="{{ $produit->libelle }}"><br>
+    {{-- <label for="produit_qte">Quantité</label>
+    <input type="text" value="{{ $produit->qte }}"><br> --}}
+    <label>Prix</label>
+    <input type="text" readonly value="{{ $produit->price }}"><br>
+    <label>Bon de commande - Fournisseur</label>
+    <input type="text" readonly value="@php echo (($produit->bon_commande != null)?$produit->bon_commande->num . ' - ' . $produit->bon_commande->fournisseur->nom_complet : '- - -'); @endphp"><br>
     <div>
-        <form action="{{ route('produit.edit', ['produit' => $produit->id]) }}" method="get">
-            @csrf
-            <input type="submit" name="" id="" value="modifier">
-        </form>
+        <a href="{{ route('produit.edit', ['produit' => $produit->id]) }}">Modifier</a>
         <form action="{{ route('produit.destroy', ['produit' => $produit->id]) }}" method="post">
             @csrf
             @method('DELETE')
-            <input type="submit" name="" id="" value="supprimer">
+            <input type="submit" value="supprimer">
         </form>
-        <a href="{{ route('produit.index') }}">afficher les produits</a>
     </div>
+    <a href="{{ route('produit.index') }}">Afficher les produits</a><br>
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
