@@ -168,6 +168,6 @@ class BonCommandeController extends Controller
             $status = "Supprission échoue.";
         session()->flash('status', $status);
 
-        return redirect(route('bon.index'));
+        return redirect(route('bon_commande.index'));
     }
 }

@@ -10,52 +10,43 @@
 
 <body>
     <label for="bon_commande_num">Num bon de commande</label>
-    <input type="text" id="bon_commande_num" name="bon_commande_num" value="{{ old('bon_commande_num') }}"><br>
-    <label for="fournisseur">fournisseur</label>
-    <input type="text" id="fournisseur" name="fournisseur" value="{{ old('fournisseur') }}"><br>
+    <input type="text" id="bon_commande_num" readonly value="{{$bon_commande->num}}"><br>
+    <label for="fournisseur_nom_complet">Nom complet du fournisseur</label>
+    <input type="text" id="fournisseur_nom_complet" readonly value="{{$bon_commande->fournisseur->nom_complet}}"><br>
+    <label for="fournisseur_tel">Téléphone de fournisseur</label>
+    <input type="text" id="fournisseur_tel" readonly value="{{$bon_commande->fournisseur->telephone}}"><br>
     <div>
-        <form action="{{ route('bon_commande.edit', ['bon' => $bon_commande->id]) }}" method="get">
-            @csrf
-            <input type="submit" name="" id="" value="modifier">
-        </form>
-        <form action="{{ route('bon_commande.destroy', ['bon' => $bon_commande->id]) }}" method="post">
+        <form action="{{ route('bon_commande.destroy', ['bon_commande' => $bon_commande->id]) }}" method="post">
             @csrf
             @method('DELETE')
             <input type="submit" name="" id="" value="supprimer">
         </form>
-        <a href="{{ route('bon_commande.index') }}">afficher les bons</a>
+        <a href="{{ route('bon_commande.edit', ['bon_commande' => $bon_commande->id]) }}">Modifier ce bon de commande</a>
+        <a href="{{ route('bon_commande.index') }}">Afficher les bons</a>
     </div>
-    <!-- Do this part with AJAX request: begin-->
     <table>
         <thead>
             <th>REf</th>
             <th>Libelle</th>
-            <th>Quantité</th>
+            {{-- <th>Quantité</th> --}}
             <th>Prix Unitaire</th>
-            <th colspan="3">actions</th>
         </thead>
         <tbody>
-            @if (count($produits) > 0)
-                @foreach ($produits as $produit)
+            @if (count($bon_commande->produits) > 0)
+                @foreach ($bon_commande->produits as $produit)
                     <tr>
-                        <td>{{ $produit->REf }}</td>
+                        <td>{{ $produit->ref }}</td>
                         <td>{{ $produit->libelle }}</td>
-                        <td>{{ $produit->qte }}</td>
                         <td>{{ $produit->price }}</td>
-                        <td><a href="{{ route('produit.edit', ['produit' => $produit->id]) }}">modifier</a></td>
-                        <td><a href="{{ route('produit.destroy', ['produit' => $produit->id]) }}">supprimer</a>
-                        </td>
-                        <td><a href="{{ route('produit.show', ['produit' => $produit->id]) }}">détails</a></td>
                     </tr>
                 @endforeach
             @else
-                <div>
-                    <p>Il y a aucun produit pour ce bon de commande.</p>
-                </div>
+                <tr>
+                    <td colspan="3">Il y a aucun produit pour ce bon de commande.</td>
+                </tr>
             @endif
         </tbody>
     </table>
-    <!-- Do this part with AJAX request: begin-->
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>

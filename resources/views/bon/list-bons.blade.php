@@ -22,35 +22,38 @@
             <thead>
                 <th>Num bon de commande</th>
                 <th>Nom de fournisseur</th>
-                <th colspan="4">actions</th>
+                <th colspan="3">actions</th>
             </thead>
             <tbody>
                 @foreach ($bons as $bon)
                     <tr>
                         <td>{{ $bon->num }}</td>
                         <td>{{($bon->fournisseur != null)?$bon->fournisseur->nom_complet: "- - -"}}</td>
-                        <td><a href="{{ route('bon_commande.edit', ['bon_commande' => $bon->id]) }}">modifier</a></td>
-                        <td><a href="{{ route('bon_commande.destroy', ['bon_commande' => $bon->id]) }}">supprimer</a></td>
                         <td><a href="{{ route('bon_commande.show', ['bon_commande' => $bon->id]) }}">détails</a></td>
-                        <td><button class="btn_show_produits" data-bon_commande_id="{{$bon->id}}">Afficher leurs produits</button></td>
+                        <td><a href="{{ route('bon_commande.edit', ['bon_commande' => $bon->id]) }}">modifier</a></td>
+                        <td>
+                            <form action="{{ route('bon_commande.destroy', ['bon_commande' => $bon->id]) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <input type="submit" value="supprimer">
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-        <!-- Do this part with AJAX request: begin-->
-        <table>
+        <table border="1">
             <thead>
                 <th>REf</th>
                 <th>Libelle</th>
                 {{-- <th>Quantité</th> --}}
                 <th>Prix Unitaire</th>
-                {{-- <th colspan="3">actions</th> --}}
+                {{-- <th colspan="3">actions</th> TODO in the next version --}}
             </thead>
             <tbody id="tbl_tbody_produits">
 
             </tbody>
         </table>
-        <!-- Do this part with AJAX request: begin-->
     @else
         <div>
             <p>Il y a aucun bon ce moment.</p>
