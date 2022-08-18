@@ -7,6 +7,7 @@ use App\Models\Produit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ProduitController extends Controller
 {
@@ -70,7 +71,7 @@ class ProduitController extends Controller
         $produit = Produit::create([
             'ref' => $request->produit_ref,
             'libelle' => $request->produit_libelle,
-            'qte' => $request->produit_qte,
+            // 'qte' => $request->produit_qte,
             'price' => $request->produit_price,
         ]);
 
@@ -106,7 +107,8 @@ class ProduitController extends Controller
      */
     public function edit(Produit $produit)
     {
-        return view('produit.edit-produit', compact('produit'));
+        $bon_commandes = Bon_commande::all();
+        return view('produit.edit-produit', compact('produit', 'bon_commandes'));
     }
 
     /**
@@ -124,12 +126,21 @@ class ProduitController extends Controller
                 'produit_ref' => ($request->produit_ref != $produit->ref) ? 'required|unique:produits,ref' : 'required',
                 'produit_libelle' => 'required|max:255',
                 'produit_price' => 'required|numeric',
+                'bon_commande' => [
+                    function ($attribute, $value, $fail)
+                    {
+                        // check if the $value == "number" or == "".
+                        if (!is_numeric($value) && Str::of($value)->isNotEmpty()){
+                            $fail('there is some problems with params.');
+                        }
+                    }
+                ]
             ],
             [
                 'required' => 'Le champs :attribute est obligatoire.',
                 'unique' => 'Le champs :attribute doit être unique.',
                 'numeric' => 'Le champs :attribute doit être numerique',
-                'max'
+                'max' => 'Le champs :attribute ne doit pas dépasser 255 caractère.',
             ],
             [
                 'produit_ref' => 'REF',
@@ -145,7 +156,12 @@ class ProduitController extends Controller
         $produit->ref = $request->produit_ref;
         $produit->libelle = $request->produit_libelle;
         $produit->price = $request->produit_price;
-
+        if (is_numeric($request->bon_commande)) {
+            $bon_commande = Bon_commande::find($request->bon_commande);
+            $produit->bon_commande()->associate($bon_commande);
+        }else {
+            $produit->bon_commande()->disassociate();
+        }
         if ($produit->update()) {
             if ($request->ajax()) {
                 return $produit;
