@@ -45,7 +45,7 @@ class BonCommandeController extends Controller
             'produits' => [
                 'required',
                 // this will be used to customize validation:
-                function($attribute, $value, $fail){
+                function ($attribute, $value, $fail) {
                     $produits_ids = Str::of($value)->explode(',');
                     foreach ($produits_ids as $id) {
                         if (!is_numeric($id)) {
@@ -56,7 +56,7 @@ class BonCommandeController extends Controller
             ],
         ]);
 
-        $bon_commande = new Bon_commande(['num' =>$request->bon_commande_num]);
+        $bon_commande = new Bon_commande(['num' => $request->bon_commande_num]);
         $fournisseur = Fournisseur::find($request->fournisseur);
 
         if ($fournisseur) {
@@ -71,8 +71,7 @@ class BonCommandeController extends Controller
             }
 
             $status = 'Le bon de commande était bien ajouté.';
-        }
-        else {
+        } else {
             $status = 'Insertion échoue.';
         }
 
@@ -114,14 +113,41 @@ class BonCommandeController extends Controller
     public function update(Request $request, Bon_commande $bon_commande)
     {
         $validated = $request->validate([
-            'bon_commande_num' => 'required|max:255|unique:bon_commandes,num',
+            'bon_commande_num' => ($request->bon_commande_num != $bon_commande->num) ? 'required|max:255|unique:bon_commandes,num' : 'required',
+            'produits' => [
+                'required',
+                // this will be used to customize validation:
+                function ($attribute, $value, $fail) {
+                    $produits_ids = Str::of($value)->explode(',');
+                    foreach ($produits_ids as $id) {
+                        if (!is_numeric($id)) {
+                            $fail('there is some problems with params.');
+                        }
+                    }
+                }
+            ],
         ]);
-        $bon_commande->num = $request->bon_commande_num;
 
-        if ($bon_commande->update()) {
-            $status = 'Le bon de commande était bien modifié.';
+        $fournisseur = Fournisseur::find($request->fournisseur_id);
+        if ($fournisseur) {
+            $bon_commande->fournisseur()->associate($fournisseur);
+            $bon_commande->num = $request->bon_commande_num;
+
+            // to associate an order form with its products:
+            $produits_ids = Str::of($request->produits)->explode(',');
+            foreach ($produits_ids as $id) {
+                $produit = Produit::find($id);
+                $produit->bon_commande()->associate($bon_commande);
+                $produit->save();
+            }
+
+            if ($bon_commande->update()) {
+                $status = 'Le bon de commande était bien modifié.';
+            } else {
+                $status = 'Modification échoue.';
+            }
         } else {
-            $status = 'Modification échoue.';
+            $status = 'Le fournisseur ne se trouve pas. Veuillez vérifier!';
         }
         $request->session()->flash('status', $status);
 

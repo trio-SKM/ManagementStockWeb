@@ -68,7 +68,7 @@ $("#btn_update_produit").click(function (e) {
             let produit_index = $.inArray(produitToModify, produits);
             Object.assign(produits[produit_index], produit); // update the product in the array with the new values.
             addProduitToTable(produit, 'update'); // to change infos of the modified product.
-            bckToInit();
+            backToInit();
         },
         error: function (errorResp) {
             let errors = JSON.parse(errorResp.responseText).errors; // get the errors validation.
@@ -185,7 +185,7 @@ function addProduitToTable(produit, action) {
 /**
  * This will render an adding form
  */
-function bckToInit() {
+function backToInit() {
     jQuery("#btn_update_produit").css('visibility', 'collapse');
     jQuery("#btn_add_produit").css('visibility', 'visible');
 
