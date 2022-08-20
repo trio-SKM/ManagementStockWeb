@@ -14,22 +14,36 @@
         <a href="{{ route('fournisseur.create') }}">Ajouter un fournisseur</a>
     </div>
     @if (count($fournisseurs) > 0)
-    <table>
+    <table border="1">
         <thead>
-            <th>id</th>
-            <th>nom complet</th>
-            <th>telephone</th>
-            <th colspan="2">actions</th>
+            <th>N°</th>
+            <th>Nom complet</th>
+            <th>Telephone</th>
+            <th>Nom du societé</th>
+            <th>RC</th>
+            <th>ICE</th>
+            <th>Dette</th>
+            <th colspan="3">actions</th>
         </thead>
         <tbody>
             @foreach ($fournisseurs as $fournisseur)
                 <tr>
-                    <td>{{$fournisseur->id}}</td>
+                    <td>{{$loop->iteration}}</td>
                     <td>{{$fournisseur->nom_complet}}</td>
                     <td>{{$fournisseur->telephone}}</td>
-                    <td><a href="{{route('fournisseur.edit', ['fournisseur'=>$fournisseur->id]) }}">modifier</a></td>
-                    <td><a href="{{ route('fournisseur.destroy', ['fournisseur'=>$fournisseur->id]) }}">supprimer</a></td>
+                    <td>{{$fournisseur->nom_societe}}</td>
+                    <td>{{$fournisseur->rc}}</td>
+                    <td>{{$fournisseur->ice}}</td>
+                    <td>{{$fournisseur->dette}} Dhs</td>
                     <td><a href="{{ route('fournisseur.show', ['fournisseur'=>$fournisseur->id]) }}">détails</a></td>
+                    <td><a href="{{route('fournisseur.edit', ['fournisseur'=>$fournisseur->id]) }}">modifier</a></td>
+                    <td>
+                        <form action="{{ route('fournisseur.destroy', ['fournisseur'=>$fournisseur->id]) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <input type="submit" value="supprimer">
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

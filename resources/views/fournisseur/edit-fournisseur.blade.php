@@ -22,6 +22,8 @@
         <input type="text" id="nom_societe" name="fournisseur_nom_societe" value="{{ $fournisseur->nom_societe }}"><br>
         <label for="ice">ICE</label>
         <input type="text" id="ice" name="fournisseur_ice" value="{{ $fournisseur->ice }}"><br>
+        <label for="dette">Dette</label>
+        <input type="text" id="dette" name="fournisseur_dette" value="{{ $fournisseur->dette }}"><br>
         <input type="submit" name="" id="" value="modifier">
     </form>
     <br><br><br>

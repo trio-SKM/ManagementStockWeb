@@ -44,6 +44,7 @@
         </table>
         <table border="1">
             <thead>
+                <th>N°</th>
                 <th>REf</th>
                 <th>Libelle</th>
                 {{-- <th>Quantité</th> --}}
