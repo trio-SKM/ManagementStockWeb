@@ -1,4 +1,4 @@
-console.log("hello from list bons");
+console.log("hello from fornisseur");
 var nbProduit = 0;
 
 // to get all products that are associated with the selected order form (bon de commande):

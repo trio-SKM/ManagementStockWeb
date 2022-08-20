@@ -96,13 +96,15 @@ class FournisseurController extends Controller
             'fournisseur_name' => 'required|max:255',
             'fournisseur_rc' => ($request->fournisseur_rc != $fournisseur->rc) ? 'required|unique:fournisseurs,rc' : 'required',
             'fournisseur_nom_societe' => 'required|max:255',
-            'fournisseur_ice' => ($request->fournisseur_rc != $fournisseur->rc) ? 'required|unique:fournisseurs,ice' : 'required',
+            'fournisseur_ice' => ($request->fournisseur_ice != $fournisseur->ice) ? 'required|unique:fournisseurs,ice' : 'required',
+            'fournisseur_dette' => 'numeric|required',
         ]);
         $fournisseur->nom_complet = $request->fournisseur_name;
         $fournisseur->telephone = $request->fournisseur_tele;
         $fournisseur->rc = $request->fournisseur_rc;
         $fournisseur->nom_societe = $request->fournisseur_nom_societe;
         $fournisseur->ice = $request->fournisseur_ice;
+        $fournisseur->dette = $request->fournisseur_dette;
 
         if ($fournisseur->update()) {
             $status = 'Le fournisseur était bien modifié.';

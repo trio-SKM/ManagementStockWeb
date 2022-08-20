@@ -160,14 +160,17 @@ class BonCommandeController extends Controller
      * @param  \App\Models\Bon_commande  $bon_commande
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bon_commande $bon_commande)
+    public function destroy(Request $request, Bon_commande $bon_commande)
     {
         if ($bon_commande->delete())
             $status = "Le bon de commande était bien supprimé.";
         else
             $status = "Supprission échoue.";
         session()->flash('status', $status);
-
+        // it the current request incomes from list-fournisseur page:
+        if ($request->query('page') == 'list-fournisseur') {
+            return back();
+        }
         return redirect(route('bon_commande.index'));
     }
 }
