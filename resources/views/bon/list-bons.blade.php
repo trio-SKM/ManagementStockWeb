@@ -22,7 +22,7 @@
             <thead>
                 <th>Num bon de commande</th>
                 <th>Nom de fournisseur</th>
-                <th colspan="3">actions</th>
+                <th colspan="4">actions</th>
             </thead>
             <tbody>
                 @foreach ($bons as $bon)
@@ -37,6 +37,9 @@
                                 @method('DELETE')
                                 <input type="submit" value="supprimer">
                             </form>
+                        </td>
+                        <td>
+                            <button class="btn_show_produits" data-bon_commande_id="{{ $bon->id }}">Afficher ses produits</button>
                         </td>
                     </tr>
                 @endforeach

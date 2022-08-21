@@ -58,7 +58,7 @@ $(".btn_show_produits").click(function (e) {
  */
 function removeProductsFromTable() {
     jQuery("table:nth-of-type(2) tbody tr").remove();
-    var nbProduit = 0;
+    nbProduit = 0;
 }
 /**
  * Insert new tr element that represent a product
