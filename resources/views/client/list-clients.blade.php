@@ -28,7 +28,13 @@
                     <td>{{$client->nom_complet}}</td>
                     <td>{{$client->telephone}}</td>
                     <td><a href="{{route('client.edit', ['client'=>$client->id]) }}">modifier</a></td>
-                    <td><a href="{{ route('client.destroy', ['client'=>$client->id]) }}">supprimer</a></td>
+                    <td>
+                        <form action="{{ route('client.destroy', ['client'=>$client->id]) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <input type="submit" value="supprimer">
+                        </form>
+                    </td>
                     <td><a href="{{ route('client.show', ['client'=>$client->id]) }}">détails</a></td>
                 </tr>
             @endforeach
