@@ -47,6 +47,7 @@ class ProduitController extends Controller
                 'produit_ref' => 'required|max:255|unique:produits,ref',
                 'produit_libelle' => 'required|max:255',
                 'produit_price' => 'required|numeric',
+                'produit_qte' => 'required|numeric',
             ],
             [
                 'required' => 'Le champs :attribute est obligatoire.',
@@ -58,6 +59,7 @@ class ProduitController extends Controller
                 'produit_ref' => 'REF',
                 'produit_libelle' => 'Libellé',
                 'produit_price' => 'Prix',
+                'produit_qte' => 'Quantité',
             ]
         )->validate();
 
@@ -71,7 +73,7 @@ class ProduitController extends Controller
         $produit = Produit::create([
             'ref' => $request->produit_ref,
             'libelle' => $request->produit_libelle,
-            // 'qte' => $request->produit_qte,
+            'qte' => $request->produit_qte,
             'price' => $request->produit_price,
         ]);
 
@@ -126,6 +128,7 @@ class ProduitController extends Controller
                 'produit_ref' => ($request->produit_ref != $produit->ref) ? 'required|unique:produits,ref' : 'required',
                 'produit_libelle' => 'required|max:255',
                 'produit_price' => 'required|numeric',
+                'produit_qte' => 'required|numeric',
                 'bon_commande' => [
                     function ($attribute, $value, $fail)
                     {
@@ -146,6 +149,7 @@ class ProduitController extends Controller
                 'produit_ref' => 'REF',
                 'produit_libelle' => 'Libellé',
                 'produit_price' => 'Prix',
+                'produit_qte' => 'Quantité',
             ]
         )->validate();
         // $validated = $request->validate([
@@ -156,6 +160,7 @@ class ProduitController extends Controller
         $produit->ref = $request->produit_ref;
         $produit->libelle = $request->produit_libelle;
         $produit->price = $request->produit_price;
+        $produit->qte = $request->produit_qte;
         if (is_numeric($request->bon_commande)) {
             $bon_commande = Bon_commande::find($request->bon_commande);
             $produit->bon_commande()->associate($bon_commande);

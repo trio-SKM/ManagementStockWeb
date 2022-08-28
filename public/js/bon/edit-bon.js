@@ -19,6 +19,7 @@ $(document).ready(function () {
             produit_libelle: jQuery('#produit_libelle').val(),
             produit_ref: jQuery('#produit_ref').val(),
             produit_price: jQuery('#produit_price').val(),
+            produit_qte: jQuery('#produit_qte').val(),
         };
         var type = "POST";
         var ajax_url = '/produit';
@@ -61,6 +62,7 @@ $(document).ready(function () {
             produit_libelle: jQuery('#produit_libelle').val(),
             produit_ref: jQuery('#produit_ref').val(),
             produit_price: jQuery('#produit_price').val(),
+            produit_qte: jQuery('#produit_qte').val(),
         };
         var type = "PUT";
         var ajax_url = '/produit/' + produit_id;
@@ -113,6 +115,7 @@ function prepareProduitToModify(e, sender) {
     jQuery('#produit_libelle').val(produitToModify.libelle);
     jQuery('#produit_ref').val(produitToModify.ref);
     jQuery('#produit_price').val(produitToModify.price);
+    jQuery('#produit_qte').val(produitToModify.qte);
 
     jQuery('#produit_libelle').focus(); // make focus on the libelle input.
 
@@ -143,6 +146,7 @@ function backToInit() {
     jQuery('#produit_libelle').val("");
     jQuery('#produit_ref').val("");
     jQuery('#produit_price').val("");
+    jQuery('#produit_qte').val("");
 
     jQuery("#frm_produit").attr('action', '/produit');
 
@@ -160,6 +164,7 @@ function addProduitToTable(produit, action) {
     let tdRefProduit = document.createElement('td');
     let tdLibelleProduit = document.createElement('td');
     let tdPrixProduit = document.createElement('td');
+    let tdQteProduit = document.createElement('td');
     let tdEditProduit = document.createElement('td');
     let tdDeleteProduit = document.createElement('td');
 
@@ -174,6 +179,9 @@ function addProduitToTable(produit, action) {
 
     let price = document.createTextNode(produit.price);
     tdPrixProduit.appendChild(price);
+
+    let qte = document.createTextNode(produit.qte);
+    tdQteProduit.appendChild(qte);
 
     let buttonEditproduit = document.createElement('button');
     buttonEditproduit.classList.add('btn_edit_produit');
@@ -199,6 +207,7 @@ function addProduitToTable(produit, action) {
     tr.appendChild(tdRefProduit);
     tr.appendChild(tdLibelleProduit);
     tr.appendChild(tdPrixProduit);
+    tr.appendChild(tdQteProduit);
     tr.appendChild(tdEditProduit);
     tr.appendChild(tdDeleteProduit);
     if (action == 'add') {
@@ -211,8 +220,12 @@ function addProduitToTable(produit, action) {
 
         alert('produit bien ajouté');
     } else if (action == 'update') {
-        selectedTr.prev().after(tr); // insert tr with updated product's data in the same place.
-        selectedTr.remove(); // remove the old tr.
+        let nbTr = Number(jQuery("table tbody tr").length);
+        if (nbTr != 1) { // if there's one row
+            prevTr.after(tr); // insert tr with updated product's data in the same place.
+        } else {
+            jQuery('#tbl_tbody_produits').append(tr);
+        }        selectedTr.remove(); // remove the old tr.
 
         alert('produit bien modifié');
     }

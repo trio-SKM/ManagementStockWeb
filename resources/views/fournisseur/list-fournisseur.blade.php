@@ -75,8 +75,8 @@
             <th>N°</th>
             <th>REf</th>
             <th>Libelle</th>
-            {{-- <th>Quantité</th> --}}
             <th>Prix Unitaire</th>
+            <th>Quantité</th>
             {{-- <th colspan="3">actions</th> TODO in the next version --}}
         </thead>
         <tbody id="tbl_tbody_produits">

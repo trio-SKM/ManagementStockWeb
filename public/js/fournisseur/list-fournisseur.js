@@ -72,6 +72,7 @@ function addProduitToTable(produit) {
     let tdRefProduit = document.createElement('td');
     let tdLibelleProduit = document.createElement('td');
     let tdPrixProduit = document.createElement('td');
+    let tdQteProduit = document.createElement('td');
 
     let nb = document.createTextNode(++nbProduit);
     tdNbProduit.appendChild(nb);
@@ -85,10 +86,14 @@ function addProduitToTable(produit) {
     let price = document.createTextNode(produit.price);
     tdPrixProduit.appendChild(price);
 
+    let qte = document.createTextNode(produit.qte);
+    tdQteProduit.appendChild(qte);
+
     tr.appendChild(tdNbProduit);
     tr.appendChild(tdRefProduit);
     tr.appendChild(tdLibelleProduit);
     tr.appendChild(tdPrixProduit);
+    tr.appendChild(tdQteProduit);
 
     jQuery('#tbl_tbody_produits').append(tr);
 }

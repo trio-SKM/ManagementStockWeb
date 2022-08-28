@@ -34,3 +34,14 @@ Route::resources(
         'produit' => ProduitController::class,
     ]
 );
+Route::get('test',function(){
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $toDelete = $collection->diff([2, 4, 6, 8]);
+    // to add
+    $collection = collect([2, 4, 6, 8]);
+
+    $toAdd = $collection->diff([1, 2, 3, 4, 5]);
+
+    return [$toDelete->all(), $toAdd];
+});

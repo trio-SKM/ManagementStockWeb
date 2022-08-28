@@ -1,10 +1,11 @@
-console.log('here we go');
+console.log("hello from edit devie");
 console.log(bons);
 var nbProduit = 0;
 var produitToOperate = null;
 var selectedTr = null;
 
 $(document).ready(function () {
+    nbProduit = jQuery("table:nth-of-type(1) tbody tr").length; // get number of products.
     // display all info for the first product when the page has been successfully loading:
     if (bons.length != 0) {
         $("#list_produits").trigger('change');
@@ -61,6 +62,23 @@ $("#btn_update_produit").click(function (e) {
     addProduitToTable(produitToOperate, 'update'); // to change infos of the modified product.
     backToInit();
 });
+// to fill the product form with data:
+$(".btn_edit_produit").click(function (e) {
+    prepareProduitToModify(e, jQuery(this));
+});
+$(".btn_Delete_produit").click(function (e) {
+    e.preventDefault();
+    debugger;
+
+    selectedTr = jQuery(this).parents("tr");
+
+    deleteProduit(jQuery(this));
+
+    jQuery('#prix_total_devie_HT').text(calculatePriceGlobal(jQuery('table tbody tr td:nth-child(7)')));
+    jQuery('#prix_total_devie_TT').text((20 * Number(jQuery('#prix_total_devie_HT').text())) / 100 + Number(jQuery('#prix_total_devie_HT').text()));
+
+});
+
 /**
  * Insert new tr element that represent a product
  * @param produit object of type Produit
@@ -101,34 +119,17 @@ function addProduitToTable(produit, action) {
     tdPrice_tProduit.appendChild(price_t);
 
     let buttonEditproduit = document.createElement('button');
-    buttonEditproduit.id = 'btn_edit_produit';
+    buttonEditproduit.classList.add('btn_edit_produit');
     buttonEditproduit.dataset.produit_id = produit.id;
     buttonEditproduit.textContent = 'modifier';
     // this function will fill the inputs with the product to modify:
     buttonEditproduit.onclick = function (e) {
-        e.preventDefault();
-        debugger;
-        selectedTr = jQuery(this).parents("tr");
-
-        // fill inputs with product's data to modify:
-        let produit_id = this.dataset.produit_id;
-        $("#list_produits").val(produit_id).change();
-        jQuery('#produit_qte').val(selectedTr.children("td:nth-child(6)").text());
-        jQuery('#produit_price_total').val(selectedTr.children("td:nth-child(7)").text());
-
-        jQuery('#produit_qte').focus(); // make focus on the libelle input.
-
-        jQuery("#btn_update_produit").removeAttr('style');
-        jQuery("#btn_update_produit").css('visibility', 'visible');
-
-        jQuery("#btn_add_produit").css('visibility', 'collapse');
-
-        jQuery("#btn_update_produit").data('produit_id', produit_id); // store product id in this button's dataset.
+        prepareProduitToModify(e, jQuery(this));
     }
     tdEditProduit.appendChild(buttonEditproduit);
 
     let buttonDeleteproduit = document.createElement('button');
-    buttonDeleteproduit.id = 'btn_Delete_produit';
+    buttonDeleteproduit.classList.add('btn_Delete_produit');
     buttonDeleteproduit.dataset.produit_id = produit.id;
     buttonDeleteproduit.textContent = 'supprimer';
     buttonDeleteproduit.onclick = function (e) {
@@ -140,7 +141,7 @@ function addProduitToTable(produit, action) {
         deleteProduit(jQuery(this));
 
         jQuery('#prix_total_devie_HT').text(calculatePriceGlobal(jQuery('table tbody tr td:nth-child(7)')));
-        jQuery('#prix_total_devie_TT').text((20 * 100) / Number(jQuery('#prix_total_devie_HT').text()) + Number(jQuery('#prix_total_devie_HT').text()));
+        jQuery('#prix_total_devie_TT').text((20 * Number(jQuery('#prix_total_devie_HT').text())) / 100 + Number(jQuery('#prix_total_devie_HT').text()));
     }
     tdDeleteProduit.appendChild(buttonDeleteproduit);
 
@@ -170,7 +171,7 @@ function addProduitToTable(produit, action) {
         let nbTr = Number(jQuery("table tbody tr").length);
         if (nbTr != 1) { // if there's one row
             prevTr.after(tr); // insert tr with updated product's data in the same place.
-        }else{
+        } else {
             jQuery('#tbl_tbody_produits').append(tr);
         }
         selectedTr.remove(); // remove the old tr.
@@ -224,6 +225,32 @@ function deleteProduit(sender) {
     selectedTr = null;
 }
 /**
+ * Get product to be modified and fill form update's inputs
+ * @param e
+ * @param sender
+ */
+function prepareProduitToModify(e, sender) {
+    e.preventDefault();
+    debugger;
+    selectedTr = sender.parents("tr");
+
+    // fill inputs with product's data to modify:
+    let produit_id = sender.data('produit_id');
+    $("#list_produits").val(produit_id).change();
+    jQuery('#produit_qte').val(selectedTr.children("td:nth-child(6)").text());
+    jQuery('#produit_price_total').val(selectedTr.children("td:nth-child(7)").text());
+
+    jQuery('#produit_qte').focus(); // make focus on the libelle input.
+
+    jQuery("#btn_update_produit").removeAttr('style');
+    jQuery("#btn_update_produit").css('visibility', 'visible');
+
+    jQuery("#btn_add_produit").css('visibility', 'collapse');
+
+    jQuery("#btn_update_produit").data('produit_id', produit_id); // store product id in this button's dataset.
+
+}
+/**
  * This will render an adding form
  */
 function backToInit() {
@@ -252,3 +279,4 @@ function calculatePriceGlobal(prices) {
     }
     return priceGlobal;
 }
+

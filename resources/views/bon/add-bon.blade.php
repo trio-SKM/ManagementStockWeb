@@ -29,6 +29,7 @@
                     <th>REf</th>
                     <th>Libelle</th>
                     <th>Prix Unitaire</th>
+                    <th>Quantité</th>
                     <th colspan="2">actions</th>
                 </thead>
                 <tbody id="tbl_tbody_produits">
@@ -63,6 +64,8 @@
                 <input type="text" id="produit_ref" name="produit_ref"><br>
                 <label for="produit_price">Prix U</label>
                 <input type="text" id="produit_price" name="produit_price"><br>
+                <label for="produit_qte">Quantité</label>
+                <input type="text" id="produit_qte" name="produit_qte"><br>
                 <input type="submit" id="btn_add_produit" value="ajouter ce produit">
                 <input type="submit" style="visibility: collapse" id="btn_update_produit" value="modifier ce produit">
             </form>
