@@ -22,4 +22,12 @@ class Client extends Model
         'ice',
         'credit',
     ];
+
+    /**
+     * Get the quotations (devis) for the client.
+     */
+    public function devies()
+    {
+        return $this->hasMany(Devie::class);
+    }
 }

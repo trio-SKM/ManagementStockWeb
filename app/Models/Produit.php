@@ -18,6 +18,7 @@ class Produit extends Model
         'ref',
         'libelle',
         'price',
+        'qte',
     ];
 
     /**
@@ -26,5 +27,15 @@ class Produit extends Model
     public function bon_commande()
     {
         return $this->belongsTo(Bon_commande::class);
+    }
+    /**
+     * The quotations(devies) that belong to the product.
+     */
+    public function devies()
+    {
+        return $this->belongsToMany(Devie::class)
+                    ->as('devie_produit')
+                    ->withPivot('quantity')
+                    ->withTimestamps();
     }
 }

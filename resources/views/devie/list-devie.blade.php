@@ -6,52 +6,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Show devie</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
 </head>
 
 <body>
     <label for="devie_num">Num devie</label>
-    <input type="text" id="devie_num" name="devie_num" value="{{ old('devie_num') }}"><br>
+    <input type="text" id="devie_num" name="devie_num" value="{{ $devie->num }}"><br>
     <label for="client">Client</label>
-    <input type="text" id="client" name="client" value="{{ old('client') }}"><br>
+    <input type="text" id="client" name="client" value="{{ $devie->client->nom_complet }}"><br>
     <div>
-        <form action="{{ route('devie.edit', ['devie' => $devie->id]) }}" method="get">
-            @csrf
-            <input type="submit" name="" id="" value="modifier">
-        </form>
+        <a href="{{ route('devie.index') }}">Afficher les devies</a><br>
+        <a href="{{ route('devie.edit', ['devie' => $devie->id]) }}">Modifier</a><br>
         <form action="{{ route('devie.destroy', ['devie' => $devie->id]) }}" method="post">
             @csrf
             @method('DELETE')
             <input type="submit" name="" id="" value="supprimer">
         </form>
-        <a href="{{ route('devie.index') }}">afficher les devies</a>
     </div>
-    <!-- Do this part with AJAX request: begin-->
-    <table>
+
+    <table border="1">
         <thead>
-            <th>REf</th>
+            <th>N°</th>
+            <th>REF</th>
             <th>Libelle</th>
             <th>Quantité</th>
             <th>Prix Unitaire</th>
-            <th colspan="3">actions</th>
+            <th>Quantité</th>
+            <th>Prix T</th>
+            <th>Bon de commande - Fournisseur</th>
+            <th>Telephone</th>
         </thead>
         <tbody>
-            @if (count($produits) > 0)
-                @foreach ($produits as $produit)
+            @if (count($devie->produits) > 0)
+                @foreach ($devie->produits as $produit)
                     <tr>
-                        <td>{{ $produit->REf }}</td>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $produit->ref }}</td>
                         <td>{{ $produit->libelle }}</td>
                         <td>{{ $produit->qte }}</td>
                         <td>{{ $produit->price }}</td>
-                        <td><a href="{{ route('produit.edit', ['produit' => $produit->id]) }}">modifier</a></td>
-                        <td><a href="{{ route('produit.destroy', ['produit' => $produit->id]) }}">supprimer</a>
-                        </td>
-                        <td><a href="{{ route('produit.show', ['produit' => $produit->id]) }}">détails</a></td>
+                        <td>{{ $produit->devie_produit->quantity }}</td>
+                        <td>{{ $produit->price * $produit->devie_produit->quantity }}</td>
+                        <td>{{ $produit->bon_commande->num }} - {{ $produit->bon_commande->fournisseur->nom_complet }}</td>
+                        <td>{{ $produit->bon_commande->fournisseur->telephone }}</td>
                     </tr>
                 @endforeach
             @else
-                <div>
-                    <p>Il y a aucun produit pour ce devie.</p>
-                </div>
+                <tr>
+                    <td colspan="6">Il y a aucun produit pour ce devie.</td>
+                </tr>
             @endif
         </tbody>
     </table>

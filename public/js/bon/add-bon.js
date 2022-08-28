@@ -16,6 +16,7 @@ $("#btn_add_produit").click(function (e) {
         produit_libelle: jQuery('#produit_libelle').val(),
         produit_ref: jQuery('#produit_ref').val(),
         produit_price: jQuery('#produit_price').val(),
+        produit_qte: jQuery('#produit_qte').val(),
     };
     var type = "POST";
     var ajax_url = '/produit';
@@ -95,6 +96,7 @@ function addProduitToTable(produit, action) {
     let tdRefProduit = document.createElement('td');
     let tdLibelleProduit = document.createElement('td');
     let tdPrixProduit = document.createElement('td');
+    let tdQteProduit = document.createElement('td');
     let tdEditProduit = document.createElement('td');
     let tdDeleteProduit = document.createElement('td');
 
@@ -109,6 +111,9 @@ function addProduitToTable(produit, action) {
 
     let price = document.createTextNode(produit.price);
     tdPrixProduit.appendChild(price);
+
+    let qte = document.createTextNode(produit.qte);
+    tdQteProduit.appendChild(qte);
 
     let buttonEditproduit = document.createElement('button');
     buttonEditproduit.id = 'btn_edit_produit';
@@ -162,6 +167,7 @@ function addProduitToTable(produit, action) {
     tr.appendChild(tdRefProduit);
     tr.appendChild(tdLibelleProduit);
     tr.appendChild(tdPrixProduit);
+    tr.appendChild(tdQteProduit);
     tr.appendChild(tdEditProduit);
     tr.appendChild(tdDeleteProduit);
     if (action == 'add') {
