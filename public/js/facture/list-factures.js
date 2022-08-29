@@ -1,4 +1,4 @@
-console.log("hello from list devies");
+console.log("hello from list factures");
 console.log(produits);
 var nbProduit = 0;
 
@@ -6,9 +6,9 @@ var nbProduit = 0;
 $(".btn_show_produits").click(function (e) {
     e.preventDefault();
     debugger
-    let devie_id = jQuery(this).data('devie_id');
+    let facture_id = jQuery(this).data('facture_id');
     // check if there's no hacking across html:
-    if (isNaN(devie_id)) {
+    if (isNaN(facture_id)) {
         alert('Vous ne devez pas jouer sur les éléments HTML qui ne vous concernent pas.');
         return;
     }
@@ -16,7 +16,7 @@ $(".btn_show_produits").click(function (e) {
     removeProductsFromTable(); // clear the table from products.
     // to find the product by id:
     produits.forEach(produit => {
-        if (produit.devie_id == devie_id) {
+        if (produit.facture_id == facture_id) {
             addProduitToTable(produit);
         }
     });
@@ -27,8 +27,8 @@ $(".btn_show_produits").click(function (e) {
  */
 function removeProductsFromTable() {
     jQuery("table:nth-of-type(2) tbody tr").remove();
-    jQuery('#prix_total_devie_HT').text(calculatePriceGlobal(jQuery('table:nth-of-type(2) tbody tr td:nth-child(7)')));
-    jQuery('#prix_total_devie_TT').text((20 * Number(jQuery('#prix_total_devie_HT').text())) / 100 + Number(jQuery('#prix_total_devie_HT').text()));
+    jQuery('#prix_total_facture_HT').text(calculatePriceGlobal(jQuery('table:nth-of-type(2) tbody tr td:nth-child(7)')));
+    jQuery('#prix_total_facture_TT').text((20 * Number(jQuery('#prix_total_facture_HT').text())) / 100 + Number(jQuery('#prix_total_facture_HT').text()));
     nbProduit = 0;
 }
 /**
@@ -79,8 +79,8 @@ function addProduitToTable(produit) {
     jQuery('#tbl_tbody_produits').append(tr);
 
     // calculate the price of the quotation (devis):
-    jQuery('#prix_total_devie_HT').text(calculatePriceGlobal(jQuery('table:nth-of-type(2) tbody tr td:nth-child(7)')));
-    jQuery('#prix_total_devie_TT').text((20 * Number(jQuery('#prix_total_devie_HT').text())) / 100 + Number(jQuery('#prix_total_devie_HT').text()));
+    jQuery('#prix_total_facture_HT').text(calculatePriceGlobal(jQuery('table:nth-of-type(2) tbody tr td:nth-child(7)')));
+    jQuery('#prix_total_facture_TT').text((20 * Number(jQuery('#prix_total_facture_HT').text())) / 100 + Number(jQuery('#prix_total_facture_HT').text()));
 }
 /**
  * Calculate the global price

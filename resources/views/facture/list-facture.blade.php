@@ -5,19 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Show devie</title>
+    <title>Show facture</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
 </head>
 
 <body>
-    <label for="devie_num">Num devie</label>
-    <input type="text" id="devie_num" readonly name="devie_num" value="{{ $devie->num }}"><br>
+    <label for="facture_num">Num facture</label>
+    <input type="text" id="facture_num" readonly name="facture_num" value="{{ $facture->num }}"><br>
     <label for="client">Client</label>
-    <input type="text" id="client" readonly name="client" value="{{ $devie->client->nom_complet }}"><br>
+    <input type="text" id="client" readonly name="client" value="{{ $facture->client->nom_complet }}"><br>
     <div>
-        <a href="{{ route('devie.index') }}">Afficher les devies</a><br>
-        <a href="{{ route('devie.edit', ['devie' => $devie->id]) }}">Modifier</a><br>
-        <form action="{{ route('devie.destroy', ['devie' => $devie->id]) }}" method="post">
+        <a href="{{ route('facture.index') }}">Afficher les factures</a><br>
+        <a href="{{ route('facture.edit', ['facture' => $facture->id]) }}">Modifier</a><br>
+        <form action="{{ route('facture.destroy', ['facture' => $facture->id]) }}" method="post">
             @csrf
             @method('DELETE')
             <input type="submit" name="" id="" value="supprimer">
@@ -37,23 +37,23 @@
             <th>Telephone</th>
         </thead>
         <tbody>
-            @if (count($devie->produits) > 0)
-                @foreach ($devie->produits as $produit)
+            @if (count($facture->produits) > 0)
+                @foreach ($facture->produits as $produit)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $produit->ref }}</td>
                         <td>{{ $produit->libelle }}</td>
                         <td>{{ $produit->qte }}</td>
                         <td>{{ $produit->price }}</td>
-                        <td>{{ $produit->devie_produit->quantity }}</td>
-                        <td>{{ $produit->price * $produit->devie_produit->quantity }}</td>
+                        <td>{{ $produit->facture_produit->quantity }}</td>
+                        <td>{{ $produit->price * $produit->facture_produit->quantity }}</td>
                         <td>{{ $produit->bon_commande->num }} - {{ $produit->bon_commande->fournisseur->nom_complet }}</td>
                         <td>{{ $produit->bon_commande->fournisseur->telephone }}</td>
                     </tr>
                 @endforeach
             @else
                 <tr>
-                    <td colspan="6">Il y a aucun produit pour ce devie.</td>
+                    <td colspan="6">Il y a aucun produit pour cette facture.</td>
                 </tr>
             @endif
         </tbody>

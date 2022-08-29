@@ -38,4 +38,14 @@ class Produit extends Model
                     ->withPivot('quantity')
                     ->withTimestamps();
     }
+    /**
+     * The invoices(factures) that belong to the product.
+     */
+    public function factures()
+    {
+        return $this->belongsToMany(Facture::class)
+                    ->as('facture_produit')
+                    ->withPivot('quantity')
+                    ->withTimestamps();
+    }
 }

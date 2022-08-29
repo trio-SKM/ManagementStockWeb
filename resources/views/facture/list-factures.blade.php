@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>All devies</title>
+    <title>All factures</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
 </head>
 
@@ -14,32 +14,32 @@
         {{ session('status', '') }}
     @endif
     <div>
-        <a href="{{ route('devie.create') }}">Ajouter un devie</a>
+        <a href="{{ route('facture.create') }}">Ajouter une facture</a>
     </div>
-    @if (count($devies) > 0)
+    @if (count($factures) > 0)
         <table border="1">
             <thead>
                 <th>N°</th>
-                <th>Num devie</th>
+                <th>Num facture</th>
                 <th>Client</th>
-                <th colspan="4">actions</th>
+                <th colspan="7">actions</th>
             </thead>
             <tbody>
-                @foreach ($devies as $devie)
+                @foreach ($factures as $facture)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $devie->num }}</td>
-                        <td>{{ $devie->client->nom_complet }}</td>
-                        <td><a href="{{ route('devie.edit', ['devie' => $devie->id]) }}">modifier</a></td>
-                        <td><a href="{{ route('devie.show', ['devie' => $devie->id]) }}">détails</a></td>
+                        <td>{{ $facture->num }}</td>
+                        <td>{{ $facture->client->nom_complet }}</td>
+                        <td><a href="{{ route('facture.edit', ['facture' => $facture->id]) }}">modifier</a></td>
+                        <td><a href="{{ route('facture.show', ['facture' => $facture->id]) }}">détails</a></td>
                         <td>
-                            <form action="{{ route('devie.destroy', ['devie' => $devie->id]) }}" method="post">
+                            <form action="{{ route('facture.destroy', ['facture' => $facture->id]) }}" method="post">
                                 @csrf
                                 @method('DELETE')
                                 <input type="submit" value="supprimer">
                             </form>
                         </td>
-                        <td><button class="btn_show_produits" data-devie_id="{{ $devie->id }}">Afficher ces produits</button></td>
+                        <td><button class="btn_show_produits" data-facture_id="{{ $facture->id }}">Afficher ces produits</button></td>
                     </tr>
                 @endforeach
             </tbody>
@@ -61,23 +61,23 @@
             <tfoot id="tbl_tfoot_price_global">
                 <tr>
                     <td colspan="2">Prix total HT</td>
-                    <td colspan="7" id="prix_total_devie_HT">...</td>
+                    <td colspan="7" id="prix_total_facture_HT">...</td>
                 </tr>
                 <tr>
-                    <td colspan="2">Prix total (TT) du devie</td>
-                    <td colspan="7" id="prix_total_devie_TT">...</td>
+                    <td colspan="2">Prix total (TT) du facture</td>
+                    <td colspan="7" id="prix_total_facture_TT">...</td>
                 </tr>
             </tfoot>
         </table>
     @else
         <div>
-            <p>Il y a aucun devie ce moment.</p>
+            <p>Il y a aucune facture ce moment.</p>
         </div>
     @endif
     <script>
         var produits = {{ Illuminate\Support\Js::from($produits) }};
     </script>
-    <script src="{{ asset('js/devie/list-devies.js') }}"></script>
+    <script src="{{ asset('js/facture/list-factures.js') }}"></script>
 </body>
 
 </html>

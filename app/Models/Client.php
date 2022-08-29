@@ -30,4 +30,11 @@ class Client extends Model
     {
         return $this->hasMany(Devie::class);
     }
+    /**
+     * Get the invoices (factures) for the client.
+     */
+    public function factures()
+    {
+        return $this->hasMany(Facture::class);
+    }
 }
