@@ -6,16 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Add devie</title>
+    <title>Add facture</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
 </head>
 
 <body>
     <div style="border-bottom: 2px solid gray">
-        <form action="{{ route('devie.store') }}" method="post">
+        <form action="{{ route('facture.store') }}" method="post">
             @csrf
-            <label for="devie_num">Num devie</label>
-            <input type="text" id="devie_num" name="devie_num" value="{{ old('devie_num') }}"><br>
+            <label for="facture_num">Num facture</label>
+            <input type="text" id="facture_num" name="facture_num" value="{{ old('facture_num') }}"><br>
             <label for="client">client</label>
             <select name="client" id="client">
                 @foreach ($clients as $client)
@@ -39,11 +39,11 @@
                 <tfoot id="tbl_tfoot_price_global">
                     <tr>
                         <td colspan="2">Prix total HT</td>
-                        <td colspan="7" id="prix_total_devie_HT">...</td>
+                        <td colspan="7" id="prix_total_facture_HT">...</td>
                     </tr>
                     <tr>
-                        <td colspan="2">Prix total (TT) du devie</td>
-                        <td colspan="7" id="prix_total_devie_TT">...</td>
+                        <td colspan="2">Prix total (TT) du facture</td>
+                        <td colspan="7" id="prix_total_facture_TT">...</td>
                     </tr>
                 </tfoot>
             </table>
@@ -63,10 +63,10 @@
                 </ul>
             </div>
         @endif
-        <a href="{{ route('devie.index') }}">Afficher tous les devies</a>
+        <a href="{{ route('bon_commande.index') }}">Afficher tous les factures</a>
     </div>
     <div>
-        <h2>Ajouter produit dans ce devie</h2>
+        <h2>Ajouter produit dans ce facture</h2>
         <div>
             <label for="produit_libelle">Libelle</label>
             <select id="list_produits">
@@ -95,7 +95,7 @@
     <script>
         var bons = {{ Illuminate\Support\Js::from($bon_commandes) }};
     </script>
-    <script src="{{ asset('js/devie/add-devie.js') }}"></script>
+    <script src="{{ asset('js/facture/add-facture.js') }}"></script>
 </body>
 
 </html>

@@ -169,12 +169,25 @@ function addProduitToTable(produit, action) {
         alert('produit bien ajouté');
     } else if (action == 'update') {
         let nbTr = Number(jQuery("table tbody tr").length);
-        if (nbTr != 1) { // if there's one row
-            prevTr.after(tr); // insert tr with updated product's data in the same place.
+        if (nbTr != 1) { // if there's + than one row
+            if (selectedTr[0].rowIndex == 1) {
+                let nextTr = selectedTr.next();
+                nextTr.before(tr); // insert tr with updated product's data in the same place.
+            } else {
+                let prevTr = selectedTr.prev();
+                prevTr.after(tr); // insert tr with updated product's data in the same place.
+            }
         } else {
             jQuery('#tbl_tbody_produits').append(tr);
         }
         selectedTr.remove(); // remove the old tr.
+
+        // update quantities products:
+        let indexProduitId = $.inArray(produit.id.toString(), jQuery('#produits_ids').val().split(',')); // It will be used to extract the quantity of the removed product
+        let inpQuantitiesValues = jQuery('#quantities_values');
+        let newQuantitiesIds = inpQuantitiesValues.val().split(',');
+        newQuantitiesIds[indexProduitId] = jQuery('#produit_qte').val();
+        inpQuantitiesValues.val(newQuantitiesIds.join());
 
         alert('produit bien modifié');
     }

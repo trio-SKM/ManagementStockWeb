@@ -3,6 +3,7 @@
 use App\Http\Controllers\BonCommandeController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DevieController;
+use App\Http\Controllers\FactureController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProduitController;
@@ -32,6 +33,7 @@ Route::resources(
         'bon_commande' => BonCommandeController::class,
         'devie' => DevieController::class,
         'produit' => ProduitController::class,
+        'facture' => FactureController::class,
     ]
 );
 Route::get('test',function(){

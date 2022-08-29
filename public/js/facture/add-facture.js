@@ -139,8 +139,8 @@ function addProduitToTable(produit, action) {
 
         deleteProduit(jQuery(this));
 
-        jQuery('#prix_total_devie_HT').text(calculatePriceGlobal(jQuery('table tbody tr td:nth-child(7)')));
-        jQuery('#prix_total_devie_TT').text((20 * Number(jQuery('#prix_total_devie_HT').text())) / 100 + Number(jQuery('#prix_total_devie_HT').text()));
+        jQuery('#prix_total_facture_HT').text(calculatePriceGlobal(jQuery('table tbody tr td:nth-child(7)')));
+        jQuery('#prix_total_facture_TT').text((20 * Number(jQuery('#prix_total_facture_HT').text())) / 100 + Number(jQuery('#prix_total_facture_HT').text()));
     }
     tdDeleteProduit.appendChild(buttonDeleteproduit);
 
@@ -181,20 +181,18 @@ function addProduitToTable(produit, action) {
         }
         selectedTr.remove(); // remove the old tr.
 
-        // update quantities products:
         let indexProduitId = $.inArray(produit.id.toString(), jQuery('#produits_ids').val().split(',')); // It will be used to extract the quantity of the removed product
         let inpQuantitiesValues = jQuery('#quantities_values');
         let newQuantitiesIds = inpQuantitiesValues.val().split(',');
         newQuantitiesIds[indexProduitId] = jQuery('#produit_qte').val();
         inpQuantitiesValues.val(newQuantitiesIds.join());
 
-
         alert('produit bien modifié');
     }
 
     // calculate the price of the quotation (devis):
-    jQuery('#prix_total_devie_HT').text(calculatePriceGlobal(jQuery('table tbody tr td:nth-child(7)')));
-    jQuery('#prix_total_devie_TT').text((20 * Number(jQuery('#prix_total_devie_HT').text())) / 100 + Number(jQuery('#prix_total_devie_HT').text()));
+    jQuery('#prix_total_facture_HT').text(calculatePriceGlobal(jQuery('table tbody tr td:nth-child(7)')));
+    jQuery('#prix_total_facture_TT').text((20 * Number(jQuery('#prix_total_facture_HT').text())) / 100 + Number(jQuery('#prix_total_facture_HT').text()));
 }
 /**
  * Delete product

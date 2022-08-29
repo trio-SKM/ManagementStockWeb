@@ -16,11 +16,11 @@
         <input type="text" id="produit_ref" name="produit_ref" value="{{ $produit->ref }}"><br>
         <label for="produit_libelle">Libelle</label>
         <input type="text" id="produit_libelle" name="produit_libelle" value="{{ $produit->libelle }}"><br>
-        {{-- <label for="produit_qte">Quantité</label>
-        <input type="text" id="produit_qte" name="produit_qte" value="{{ $produit->qte }}"><br> --}}
+        <label for="produit_qte">Quantité</label>
+        <input type="text" id="produit_qte" name="produit_qte" value="{{ $produit->qte }}"><br>
         <label for="produit_price">Prix</label>
         <input type="text" id="produit_price" name="produit_price" value="{{ $produit->price }}"><br>
-        <label for="bon_commande">Bon de commande - Fournisseur</label> <!--todo-->
+        <label for="bon_commande">Bon de commande - Fournisseur</label>
         <select name="bon_commande" id="bon_commande">
             <option value="">- - -</option>
             @foreach ($bon_commandes as $bon_commande)

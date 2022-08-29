@@ -131,7 +131,6 @@ class DevieController extends Controller
      */
     public function update(Request $request, Devie $devie)
     {
-        // TODO: test it
         $validated = $request->validate([
             'devie_num' => ($request->devie_num != $devie->num) ? 'required|max:255|unique:devies,num' : 'required',
             'client' => 'required|numeric',
