@@ -22,7 +22,7 @@
                 <th>N°</th>
                 <th>Num devie</th>
                 <th>Client</th>
-                <th colspan="4">actions</th>
+                <th colspan="5">actions</th>
             </thead>
             <tbody>
                 @foreach ($devies as $devie)
@@ -40,6 +40,7 @@
                             </form>
                         </td>
                         <td><button class="btn_show_produits" data-devie_id="{{ $devie->id }}">Afficher ces produits</button></td>
+                        <td><button class="btn_convert_to_invoice" data-devie_id="{{ $devie->id }}">Convertir á facture</button></td>
                     </tr>
                 @endforeach
             </tbody>
@@ -69,6 +70,13 @@
                 </tr>
             </tfoot>
         </table>
+        <form action="{{ route('covertToInvoice') }}" method="post" id="frm_conversion_to_invoice">
+            @csrf
+            <legend>Convertir á facture</legend>
+            <input type="text" name="facture_num" placeholder="numéro de la facture">
+            <input type="hidden" name="devie" id="devie">
+            <input type="submit" value="Convertir">
+        </form>
     @else
         <div>
             <p>Il y a aucun devie ce moment.</p>

@@ -35,4 +35,11 @@ class Devie extends Model
     {
         return $this->belongsTo(Client::class);
     }
+    /**
+     * Get the invoice (facture) associated with the quotation (devis).
+     */
+    public function facture()
+    {
+        return $this->hasOne(Facture::class);
+    }
 }

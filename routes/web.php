@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BonCommandeController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\devie\ListDeviesController;
 use App\Http\Controllers\DevieController;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\FournisseurController;
@@ -36,14 +37,4 @@ Route::resources(
         'facture' => FactureController::class,
     ]
 );
-Route::get('test',function(){
-    $collection = collect([1, 2, 3, 4, 5]);
-
-    $toDelete = $collection->diff([2, 4, 6, 8]);
-    // to add
-    $collection = collect([2, 4, 6, 8]);
-
-    $toAdd = $collection->diff([1, 2, 3, 4, 5]);
-
-    return [$toDelete->all(), $toAdd];
-});
+Route::post('convertToInvoice', [ListDeviesController::class, 'convertDevisToInvoice'])->name('covertToInvoice');
