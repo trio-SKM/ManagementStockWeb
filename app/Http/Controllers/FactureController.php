@@ -20,8 +20,9 @@ class FactureController extends Controller
     public function index()
     {
         $factures = Facture::all();
-        $produits = Produit::join('facture_produit', 'produits.id','=','facture_produit.produit_id')->get();
-        return view('facture.list-factures', compact('factures', 'produits'));
+        $produits_factures = Produit::join('facture_produit', 'produits.id', '=', 'facture_produit.produit_id')->get();
+        $produits_devies = Produit::join('devie_produit', 'produits.id', '=', 'devie_produit.produit_id')->get();
+        return view('facture.list-factures', compact('factures', 'produits_factures', 'produits_devies'));
     }
 
     /**
@@ -77,15 +78,26 @@ class FactureController extends Controller
         $client = Client::find($request->client);
 
         if ($client) {
-            $client->factures()->save($facture); // associate the client with his invoices (factures).
-
+            $facture->save();
             // to associate a quotation with its products:
             $produits_ids = Str::of($request->produits)->explode(',');
             $produits_quantities = Str::of($request->quantities)->explode(',');
             for ($i = 0; $i < count($produits_ids); $i++) {
-                $facture->produits()->attach($produits_ids[$i], ['quantity' => $produits_quantities[$i]]); // create new record in the intermediate table (facture_produit).
+                $produit = Produit::find($produits_ids[$i]);
+                if ($produit->qte >= intval($produits_quantities[$i])) {
+                    $facture->produits()->attach($produits_ids[$i], ['quantity' => $produits_quantities[$i]]); // create new record in the intermediate table (facture_produit).
+                    $produit->qte -= $produits_quantities[$i];
+                    $produit->save();
+                } else {
+                    $facture->delete();
+                    $status = 'Le produit ' . $produit->libelle . ' a ' . $produit->qte . ' en stock et tu as choisie ' . intval($produits_quantities[$i]) . ' en quantity. Veuillez donner une qunatity existe.';
+                    $request->session()->flash('status', $status);
+
+                    return back();
+                }
             }
-            if ($facture->save()) {
+
+            if ($client->factures()->save($facture)) { // associate the client with his invoices (factures).
                 $status = 'La facture était bien ajouté.';
             } else {
                 $status = 'Insertion echouée.';
@@ -170,16 +182,28 @@ class FactureController extends Controller
                 $client->factures()->save($facture); // associate the client with his quotations (factures).
 
                 // to associate a quotation with its products or make update them:
-                $produits_with_their_quantities = $produits_ids->combine($produits_quantities); // get old the associated products with their quantities.
-                $old_produits_with_their_quantities = collect($facture->produits->modelKeys())->combine($facture->produits->pluck('facture_produit.quantity')); // get old the associated products with their quantities.
+                $produits_with_their_quantities = $produits_ids->combine($produits_quantities); // get the new associated products with their quantities.
+                $old_produits_with_their_quantities = collect($facture->produits->modelKeys())->combine($facture->produits->pluck('facture_produit.quantity')); // get the old associated products with their quantities.
 
                 $ids_to_associate_or_update = $produits_with_their_quantities->diffAssoc($old_produits_with_their_quantities); // get products ids to associate them with this quotation.
                 if ($ids_to_associate_or_update->isNotEmpty()) {
                     foreach ($ids_to_associate_or_update as $id => $qte) {
-                        if ($old_produits_with_their_quantities->has($id)) {
-                            $facture->produits()->updateExistingPivot($id, ['quantity' => $qte]); // update quantity because the product already exists.
+                        $produit = Produit::find($id);
+                        if ($produit->qte >= intval($qte)) {
+                            if ($old_produits_with_their_quantities->has($id)) {
+                                $facture->produits()->updateExistingPivot($id, ['quantity' => $qte]); // update quantity because the product already exists.
+                                $produit->qte += $old_produits_with_their_quantities->get($id); // rollback to initial status
+                                $produit->qte -= $qte; // then, decrease the new quantity.
+                            } else {
+                                $facture->produits()->attach($id, ['quantity' => $qte]); // create new record in the intermediate table (facture_produit).
+                                $produit->qte -= $qte;
+                            }
+                            $produit->save();
                         } else {
-                            $facture->produits()->attach($id, ['quantity' => $qte]); // create new record in the intermediate table (facture_produit).
+                            $status = 'Le produit ' . $produit->libelle . ' a ' . $produit->qte . ' en stock et tu as choisie ' . intval($qte) . ' en quantity. Veuillez donner une qunatity existe.';
+                            $request->session()->flash('status', $status);
+
+                            return back();
                         }
                     }
                 }
@@ -187,6 +211,12 @@ class FactureController extends Controller
                 $ids_to_detach = $old_produits_with_their_quantities->diffKeys($produits_with_their_quantities);
                 if ($ids_to_detach->isNotEmpty()) {
                     $facture->produits()->detach($ids_to_detach->keys());
+                    // to reset the stock quantities of detached products to their initial status:
+                    foreach ($ids_to_detach as $id => $qte) {
+                        $produit = Produit::find($id);
+                        $produit->qte += $qte;
+                        $produit->save();
+                    }
                 }
 
                 if ($facture->update()) {
@@ -214,6 +244,12 @@ class FactureController extends Controller
      */
     public function destroy(Facture $facture)
     {
+        // to reset the stock quantities of detached products to their initial status:
+        foreach ($facture::join('facture_produit', 'factures.id', '=', 'facture_produit.facture_id')->where('factures.id', $facture->id)->get() as $fact_prod) {
+            $produit = Produit::find($fact_prod->produit_id);
+            $produit->qte += $fact_prod->quantity;
+            $produit->save();
+        }
         if ($facture->delete())
             $status = "La facture était bien supprimé.";
         else

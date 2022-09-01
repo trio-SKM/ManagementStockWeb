@@ -30,7 +30,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $facture->num }}</td>
                         <td>{{ $facture->client->nom_complet }}</td>
-                        <td><a href="{{ route('facture.edit', ['facture' => $facture->id]) }}">modifier</a></td>
+                        <td><a href="@php echo $facture->devie != Null ? route('devie.edit', ['devie' => $facture->devie->id]) : route('facture.edit', ['facture' => $facture->id]) @endphp">modifier</a></td>
                         <td><a href="{{ route('facture.show', ['facture' => $facture->id]) }}">détails</a></td>
                         <td>
                             <form action="{{ route('facture.destroy', ['facture' => $facture->id]) }}" method="post">
@@ -39,7 +39,7 @@
                                 <input type="submit" value="supprimer">
                             </form>
                         </td>
-                        <td><button class="btn_show_produits" data-facture_id="{{ $facture->id }}">Afficher ces produits</button></td>
+                        <td><button class="btn_show_produits" data-facture_id="{{ $facture->id }}" data-devie_id="@php echo $facture->devie != Null ? $facture->devie->id : '' @endphp">Afficher ces produits</button></td>
                     </tr>
                 @endforeach
             </tbody>
@@ -75,7 +75,8 @@
         </div>
     @endif
     <script>
-        var produits = {{ Illuminate\Support\Js::from($produits) }};
+        var produits_factures = {{ Illuminate\Support\Js::from($produits_factures) }};
+        var produits_devies = {{ Illuminate\Support\Js::from($produits_devies) }};
     </script>
     <script src="{{ asset('js/facture/list-factures.js') }}"></script>
 </body>

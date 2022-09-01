@@ -63,7 +63,7 @@
                 </ul>
             </div>
         @endif
-        <a href="{{ route('bon_commande.index') }}">Afficher tous les factures</a>
+        <a href="{{ route('facture.index') }}">Afficher tous les factures</a>
     </div>
     <div>
         <h2>Ajouter produit dans ce facture</h2>

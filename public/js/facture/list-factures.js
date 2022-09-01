@@ -1,5 +1,6 @@
 console.log("hello from list factures");
-console.log(produits);
+console.log(produits_factures);
+console.log(produits_factures);
 var nbProduit = 0;
 
 // to get all products that are associated with the selected order form (bon de commande):
@@ -7,19 +8,28 @@ $(".btn_show_produits").click(function (e) {
     e.preventDefault();
     debugger
     let facture_id = jQuery(this).data('facture_id');
+    let devie_id = jQuery(this).data('devie_id');
     // check if there's no hacking across html:
-    if (isNaN(facture_id)) {
+    if (isNaN(facture_id) || isNaN(devie_id)) {
         alert('Vous ne devez pas jouer sur les éléments HTML qui ne vous concernent pas.');
         return;
     }
 
     removeProductsFromTable(); // clear the table from products.
-    // to find the product by id:
-    produits.forEach(produit => {
-        if (produit.facture_id == facture_id) {
-            addProduitToTable(produit);
-        }
-    });
+    // to find the product by invoice (facture) or by quotation (devis):
+    if (devie_id) { // if the invoice is associated with a quotation
+        produits_devies.forEach(produit => {
+            if (produit.devie_id == devie_id) {
+                addProduitToTable(produit);
+            }
+        });
+    } else { // if the invoice isn't associated with a quotation
+        produits_factures.forEach(produit => {
+            if (produit.facture_id == facture_id) {
+                addProduitToTable(produit);
+            }
+        });
+    }
 });
 
 /**

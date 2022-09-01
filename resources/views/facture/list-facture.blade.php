@@ -29,7 +29,7 @@
             <th>N°</th>
             <th>REF</th>
             <th>Libelle</th>
-            <th>Quantité</th>
+            <th>Quantité en stock</th>
             <th>Prix Unitaire</th>
             <th>Quantité</th>
             <th>Prix T</th>

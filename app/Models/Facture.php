@@ -35,4 +35,11 @@ class Facture extends Model
     {
         return $this->belongsTo(Client::class);
     }
+    /**
+     * Get the quotation (devis) that owns the invoice (facture).
+     */
+    public function devie()
+    {
+        return $this->belongsTo(Devie::class);
+    }
 }
