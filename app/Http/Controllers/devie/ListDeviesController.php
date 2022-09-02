@@ -21,16 +21,35 @@ class ListDeviesController extends Controller
         $client = Client::find($devie->client->id);
         $facture = new Facture(['num' => $request->facture_num,]);
         if ($devie && $client) {
+            for ($i=0; $i < count($devie->produits); $i++) {
+                if ($this->checkQuantity($devie->produits[$i])) {
+                    $devie->produits[$i]->qte -= $devie->produits[$i]->devie_produit->quantity;
+                    $devie->produits[$i]->save();
+                } else {
+                    $status = 'Le produit ' . $devie->produits[$i]->libelle . ' a ' . $devie->produits[$i]->qte . ' en stock et tu as choisie ' . intval($devie->produits[$i]->devie_produit->quantity) . ' en quantity. Veuillez donner une qunatity existe.';
+                    $request->session()->flash('status', $status);
+
+                    return back();
+                }
+            }
             if ($devie->facture()->save($facture) && $client->factures()->save($facture)) {
                 $status = 'La facture était bien ajouté.';
             } else {
                 $status = 'Insertion echouée.';
             }
-        }else{
+        } else {
             $status = 'Devis n\'existe pas.';
         }
         $request->session()->flash('status', $status);
 
         return redirect(route('facture.index'));
+    }
+    /**
+     * * @param Produit $produit product
+     * * @return bool whether the quantity is correct or not
+     */
+    public function checkQuantity($produit)
+    {
+        return $produit->qte >= $produit->devie_produit->quantity;
     }
 }

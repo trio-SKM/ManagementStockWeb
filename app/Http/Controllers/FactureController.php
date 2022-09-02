@@ -245,10 +245,17 @@ class FactureController extends Controller
     public function destroy(Facture $facture)
     {
         // to reset the stock quantities of detached products to their initial status:
-        foreach ($facture::join('facture_produit', 'factures.id', '=', 'facture_produit.facture_id')->where('factures.id', $facture->id)->get() as $fact_prod) {
-            $produit = Produit::find($fact_prod->produit_id);
-            $produit->qte += $fact_prod->quantity;
-            $produit->save();
+        if ($facture->devie_id != null) { // if the facture is created from quotation (conversion).
+            for ($i=0; $i < count($facture->devie->produits); $i++) {
+                $facture->devie->produits[$i]->qte += $facture->devie->produits[$i]->devie_produit->quantity;
+                $facture->devie->produits[$i]->save();
+            }
+        } else{
+            foreach ($facture::join('facture_produit', 'factures.id', '=', 'facture_produit.facture_id')->where('factures.id', $facture->id)->get() as $fact_prod) {
+                $produit = Produit::find($fact_prod->produit_id);
+                $produit->qte += $fact_prod->quantity;
+                $produit->save();
+            }
         }
         if ($facture->delete())
             $status = "La facture était bien supprimé.";

@@ -176,10 +176,20 @@ class DevieController extends Controller
                 $ids_to_associate_or_update = $produits_with_their_quantities->diffAssoc($old_produits_with_their_quantities); // get products ids to associate them with this quotation.
                 if ($ids_to_associate_or_update->isNotEmpty()) {
                     foreach ($ids_to_associate_or_update as $id => $qte) {
+                        $produit = Produit::find($id);
                         if ($old_produits_with_their_quantities->has($id)) {
                             $devie->produits()->updateExistingPivot($id, ['quantity' => $qte]); // update quantity because the product already exists.
+                            if ($devie->facture != null) { // check if the update is for an invoice
+                                $produit->qte += $old_produits_with_their_quantities->get($id); // rollback to initial status
+                                $produit->qte -= $qte; // then, decrease the new quantity.
+                                $produit->save();
+                            }
                         } else {
                             $devie->produits()->attach($id, ['quantity' => $qte]); // create new record in the intermediate table (devie_produit).
+                            if ($devie->facture != null) { // check if the update is for an invoice
+                                $produit->qte -= $qte;
+                                $produit->save();
+                            }
                         }
                     }
                 }
