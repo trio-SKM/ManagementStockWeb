@@ -22,7 +22,8 @@
                 <th>N°</th>
                 <th>Num facture</th>
                 <th>Client</th>
-                <th colspan="7">actions</th>
+                <th>Devis</th>
+                <th colspan="4">actions</th>
             </thead>
             <tbody>
                 @foreach ($factures as $facture)
@@ -30,6 +31,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $facture->num }}</td>
                         <td>{{ $facture->client->nom_complet }}</td>
+                        <td>@if($facture->devie != null) {{$facture->devie->num}} @else --- @endif</td>
                         <td><a href="@php echo $facture->devie != Null ? route('devie.edit', ['devie' => $facture->devie->id]) : route('facture.edit', ['facture' => $facture->id]) @endphp">modifier</a></td>
                         <td><a href="{{ route('facture.show', ['facture' => $facture->id]) }}">détails</a></td>
                         <td>

@@ -14,6 +14,9 @@
     <input type="text" id="facture_num" readonly name="facture_num" value="{{ $facture->num }}"><br>
     <label for="client">Client</label>
     <input type="text" id="client" readonly name="client" value="{{ $facture->client->nom_complet }}"><br>
+    <label for="devie">Devis</label>
+    <input type="text" id="devie" readonly name="devie"
+        value="@php echo $facture->devie != null? $facture->devie->num: '- - -' @endphp"><br>
     <div>
         <a href="{{ route('facture.index') }}">Afficher les factures</a><br>
         <a href="{{ route('facture.edit', ['facture' => $facture->id]) }}">Modifier</a><br>
@@ -37,23 +40,27 @@
             <th>Telephone</th>
         </thead>
         <tbody>
-            @if (count($facture->produits) > 0)
-                @foreach ($facture->produits as $produit)
+            @php
+                $produits = $facture->devie == null ? $facture->produits : $facture->devie->produits;
+            @endphp
+            @if (count($produits) > 0)
+                @foreach ($produits as $produit)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $produit->ref }}</td>
                         <td>{{ $produit->libelle }}</td>
                         <td>{{ $produit->qte }}</td>
                         <td>{{ $produit->price }}</td>
-                        <td>{{ $produit->facture_produit->quantity }}</td>
-                        <td>{{ $produit->price * $produit->facture_produit->quantity }}</td>
-                        <td>{{ $produit->bon_commande->num }} - {{ $produit->bon_commande->fournisseur->nom_complet }}</td>
+                        <td>@if ($facture->devie == null) {{ $produit->facture_produit->quantity }} @else {{ $produit->devie_produit->quantity }} @endif</td>
+                        <td> @if ($facture->devie == null) {{ $produit->price * $produit->facture_produit->quantity }} @else {{ $produit->price * $produit->devie_produit->quantity }} @endif</td>
+                        <td>{{ $produit->bon_commande->num }} - {{ $produit->bon_commande->fournisseur->nom_complet }}
+                        </td>
                         <td>{{ $produit->bon_commande->fournisseur->telephone }}</td>
                     </tr>
                 @endforeach
             @else
                 <tr>
-                    <td colspan="6">Il y a aucun produit pour cette facture.</td>
+                    <td colspan="9">Il y a aucun produit pour cette facture.</td>
                 </tr>
             @endif
         </tbody>

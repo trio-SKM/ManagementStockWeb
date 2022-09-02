@@ -22,6 +22,7 @@
                 <th>N°</th>
                 <th>Num devie</th>
                 <th>Client</th>
+                <th>Facture</th>
                 <th colspan="5">actions</th>
             </thead>
             <tbody>
@@ -30,6 +31,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $devie->num }}</td>
                         <td>{{ $devie->client->nom_complet }}</td>
+                        <td>@if($devie->facture != null) {{$devie->facture->num}} @else --- @endif</td>
                         <td><a href="{{ route('devie.edit', ['devie' => $devie->id]) }}">modifier</a></td>
                         <td><a href="{{ route('devie.show', ['devie' => $devie->id]) }}">détails</a></td>
                         <td>
@@ -40,7 +42,7 @@
                             </form>
                         </td>
                         <td><button class="btn_show_produits" data-devie_id="{{ $devie->id }}">Afficher ces produits</button></td>
-                        <td><button class="btn_convert_to_invoice" data-devie_id="{{ $devie->id }}">Convertir á facture</button></td>
+                        <td> @if($devie->facture == null)<button class="btn_convert_to_invoice" data-devie_id="{{ $devie->id }}">Convertir á facture</button>@else --- @endif</td>
                     </tr>
                 @endforeach
             </tbody>
