@@ -1,101 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Add devie</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-</head>
+@section('title','Ajouter devis')
 
-<body>
-    <div style="border-bottom: 2px solid gray">
-        <form action="{{ route('devie.store') }}" method="post">
-            @csrf
-            <label for="devie_num">Num devie</label>
-            <input type="text" id="devie_num" name="devie_num" value="{{ old('devie_num') }}"><br>
-            <label for="client">client</label>
-            <select name="client" id="client">
-                @foreach ($clients as $client)
-                    <option value="{{$client->id}}">{{$client->nom_complet}}</option>
-                @endforeach
-            </select>
-            <table border="1">
-                <thead>
-                    <th>N°</th>
-                    <th>REF</th>
-                    <th>Libelle</th>
-                    <th>Prix U</th>
-                    <th>Quantité en stock</th>
-                    <th>Quantité</th>
-                    <th>Prix T</th>
-                    <th colspan="2">Action</th>
-                </thead>
-                <tbody id="tbl_tbody_produits">
+@section('custom_libs')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+@endsection
 
-                </tbody>
-                <tfoot id="tbl_tfoot_price_global">
-                    <tr>
-                        <td colspan="2">Prix total HT</td>
-                        <td colspan="7" id="prix_total_devie_HT">...</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Prix total (TT) du devie</td>
-                        <td colspan="7" id="prix_total_devie_TT">...</td>
-                    </tr>
-                </tfoot>
-            </table>
-            <input type="hidden" name="produits" id="produits_ids">
-            <input type="hidden" name="quantities" id="quantities_values">
-            <input type="submit" name="btnAdd" id="btnAdd" value="ajouter">
-        </form>
-        @if (session('status'))
-            {{ session('status', '') }}
-        @endif
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        <a href="{{ route('devie.index') }}">Afficher tous les devies</a>
+@section('content_page')
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-12">
+      <!-- Page header -->
+        <div class="border-bottom pb-4 mb-4 ">
+            <h3 class="mb-0 fw-bold">Overview E12</h3>
+      </div>
     </div>
-    <div>
-        <h2>Ajouter produit dans ce devie</h2>
-        <div>
-            <label for="produit_libelle">Libelle</label>
-            <select id="list_produits">
-                @foreach ($bon_commandes as $bon_commande)
-                    @foreach ($bon_commande->produits as $produit)
-                        <option value="{{$produit->id}}" data-bon_commande_num_fournisseur_nom="{{$bon_commande->num}} - {{$bon_commande->fournisseur->nom_complet}}">{{$produit->libelle}}</option>
-                    @endforeach
-                @endforeach
-            </select><br>
-            <label for="produit_ref">REF</label>
-            <input type="text" id="produit_ref" readonly><br>
-            <label for="bon_commande">Bon de commande - Fournisseur</label>
-            <input type="text" id="bon_commande" readonly><br>
-            <label for="produit_price">Prix U</label>
-            <input type="text" id="produit_price" readonly><br>
-            <label for="produit_qte_stock">Quantité en stock</label>
-            <input type="text" id="produit_qte_stock" readonly><br>
-            <label for="produit_qte">Quantité</label>
-            <input type="text" id="produit_qte"><br>
-            <label for="produit_price_total">Prix Total</label>
-            <input type="text" id="produit_price_total" readonly><br>
-            <input type="submit" id="btn_add_produit" value="ajouter ce produit">
-            <input type="submit" style="visibility: collapse" id="btn_update_produit" value="modifier ce produit">
+</div>
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+        <div class="card h100">
+            <div class="card-header bg-white py-4">
+                <div class="row">
+                    <div class="col-xs-12 col-md-4">
+                        <input class="form-control form-control-sm" placeholder="N° Devis" type="text" id="nom_complet" name="fournisseur_name" value="{{ old('fournisseur_name') }}">
+                    </div>
+                    <div class="col-xs-12 col-md-8">
+                        <div class="input-group">
+                            <select class="livesearchclient form-control" id="client" name="livesearchclient"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-xs-12 col-md-6">
+                        <div class="input-group">
+                            <select class="livesearchproduit form-control" id="list_produits" name="livesearchproduit"></select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-2">
+                        <input class="form-control form-control-sm" placeholder="QTE" type="text" id="produit_qte">
+                        <input type="hidden" id="produit_price">
+                    </div>
+                    <div class="col-xs-12 col-md-4">
+                        <div class="input-group">
+                            <input class="form-control form-control-sm" placeholder="Prix Total" type="text" id="produit_price_total">
+                            <button class="btn btn-secondary btn-sm" type="button" id="btn_add_produit"><i class="bi bi-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table text-nowrap mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th>N°</th>
+                        <th>REF</th>
+                        <th>Libelle</th>
+                        <th>Prix U</th>
+                        <th>Quantité en stock</th>
+                        <th>Quantité</th>
+                        <th>Prix Total</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbl_tbody_produits">
+
+                    </tbody>
+                    <tfoot id="tbl_tfoot_price_global">
+                        <tr>
+                            <td colspan="2">Prix total HT</td>
+                            <td colspan="7" id="prix_total_devie_HT">...</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Prix total (TT) du devie</td>
+                            <td colspan="7" id="prix_total_devie_TT">...</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
-    <script>
-        var bons = {{ Illuminate\Support\Js::from($bon_commandes) }};
-    </script>
-    <script src="{{ asset('js/devie/add-devie.js') }}"></script>
-</body>
+</div>
+@endsection
 
-</html>
+@section('custom_script')
+<script>
+    var bons = {{ Illuminate\Support\Js::from($bon_commandes) }};
+</script>
+<script src="{{ asset('js/devie/add-devie.js') }}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.livesearchclient').select2({
+        placeholder: 'Select Client',
+        ajax: {
+            url: '/ajax-autocomplete-search',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.nom_complet,
+                            id: item.id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+    $('.livesearchproduit').select2({
+        placeholder: 'Select Produit',
+        ajax: {
+            url: '/ajax-autocomplete-search-produit',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        debugger
+                        return {
+                            text: item.ref,
+                            id: item.id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+    });
+</script>
+@endsection
