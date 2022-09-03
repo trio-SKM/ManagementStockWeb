@@ -22,6 +22,8 @@
         <input type="text" id="nom_societe" name="client_nom_societe" value="{{ $client->nom_societe }}"><br>
         <label for="ice">ICE</label>
         <input type="text" id="ice" name="client_ice" value="{{ $client->ice }}"><br>
+        <label for="credit">Credit</label>
+        <input type="text" id="credit" name="client_credit" value="{{ $client->credit }}"><br>
         <input type="submit" name="" id="" value="modifier">
     </form>
     <br><br><br>

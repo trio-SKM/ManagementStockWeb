@@ -38,9 +38,9 @@ class ClientController extends Controller
     {
         $validated = $request->validate([
             'client_name' => 'required|max:255',
-            'client_rc' => 'required|unique:clients,rc',
+            'client_rc' => 'required|unique:clients,rc|numeric',
             'client_nom_societe' => 'required|max:255',
-            'client_ice' => 'required|unique:clients,ice',
+            'client_ice' => 'required|unique:clients,ice|numeric',
         ]);
 
         $client = Client::create([
@@ -94,15 +94,17 @@ class ClientController extends Controller
     {
         $validated = $request->validate([
             'client_name' => 'required|max:255',
-            'client_rc' => ($request->client_rc != $client->rc) ? 'required|unique:clients,rc' : 'required',
+            'client_rc' => ($request->client_rc != $client->rc) ? 'required|unique:clients,rc|numeric' : 'required|numeric',
             'client_nom_societe' => 'required|max:255',
-            'client_ice' => ($request->client_rc != $client->rc) ? 'required|unique:clients,ice' : 'required',
+            'client_ice' => ($request->client_rc != $client->rc) ? 'required|unique:clients,ice|numeric' : 'required|numeric',
+            'client_credit' => 'required|numeric|min:0',
         ]);
         $client->nom_complet = $request->client_name;
         $client->telephone = $request->client_tele;
         $client->rc = $request->client_rc;
         $client->nom_societe = $request->client_nom_societe;
         $client->ice = $request->client_ice;
+        $client->credit = $request->client_credit;
 
         if ($client->update()) {
             $status = 'Le client était bien modifié.';

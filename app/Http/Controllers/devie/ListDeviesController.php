@@ -21,6 +21,7 @@ class ListDeviesController extends Controller
         $client = Client::find($devie->client->id);
         $facture = new Facture(['num' => $request->facture_num,]);
         if ($devie && $client) {
+            // to calculate quantities (decrease or increase):
             for ($i=0; $i < count($devie->produits); $i++) {
                 if ($this->checkQuantity($devie->produits[$i])) {
                     $devie->produits[$i]->qte -= $devie->produits[$i]->devie_produit->quantity;
