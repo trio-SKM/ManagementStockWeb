@@ -3,13 +3,13 @@ var nbProduit = 0;
 
 // to get all products that are associated with the selected order form (bon de commande):
 $(".btn_show_produits").click(function (e) {
+    $(".products_in_bon").toggelClass("d-none");
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content') // add the CSRF token to the request.
         }
     });
     e.preventDefault();
-    debugger
     let bon_commande_id = jQuery(this).data('bon_commande_id');
     // check if there's no hacking across html:
     if (isNaN(bon_commande_id)) {
@@ -24,8 +24,7 @@ $(".btn_show_produits").click(function (e) {
         async: false,
         url: ajax_url,
         dataType: 'json',
-        success: function (produits) {
-            debugger
+        success: function (produits) {            
             removeProductsFromTable(); // clear the table from products.
             if (produits.length != 0) {
                 // add products to the table product:
@@ -65,7 +64,6 @@ function removeProductsFromTable() {
  * @param produit object of type Produit
  */
 function addProduitToTable(produit) {
-    debugger
     let tr = document.createElement('tr');
 
     let tdNbProduit = document.createElement('td');

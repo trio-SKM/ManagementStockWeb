@@ -9,6 +9,7 @@ use App\Http\Controllers\FactureController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProduitController;
+use App\Http\Controllers\Select2SearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
 });
 Route::view('/login', 'auth.login')->name('login-view');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login');
@@ -40,3 +41,6 @@ Route::resources(
 );
 Route::post('convertToInvoice', [ListDeviesController::class, 'convertDevisToInvoice'])->name('covertToInvoice');
 Route::get('/dashboard/{filter_value}', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::get('ajax-autocomplete-search', [Select2SearchController::class,'selectSearchClient']);
+Route::get('ajax-autocomplete-search-produit', [Select2SearchController::class,'selectSearchProduit']);
