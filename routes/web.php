@@ -44,3 +44,5 @@ Route::get('/dashboard/{filter_value}', [DashboardController::class, 'index'])->
 
 Route::get('ajax-autocomplete-search', [Select2SearchController::class,'selectSearchClient']);
 Route::get('ajax-autocomplete-search-produit', [Select2SearchController::class,'selectSearchProduit']);
+Route::get('/dashboard/clients/credit', [DashboardController::class, 'clientsWithCredit'])->name('clients-credit');
+Route::get('/dashboard/fournisseurs/dette', [DashboardController::class, 'fournisseursWithDette'])->name('fournisseurs-dette');

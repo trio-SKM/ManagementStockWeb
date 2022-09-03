@@ -19,7 +19,9 @@ class DashboardController extends Controller
         $credit = $this->getCredit();
         $dette = $this->getDette();
         $gains = $this->getGains($filter_value);
-        return view('dashboard', compact('nb_clients', 'nb_fournisseurs', 'nb_clients_with_credit', 'nb_fournisseurs_with_dette', 'credit', 'dette', 'gains'));
+        $expenses = $this->getExpenses($filter_value);
+        $produits_with_small_qte = $this->produitsWithSmallQte(5);
+        return view('dashboard', compact('nb_clients', 'nb_fournisseurs', 'nb_clients_with_credit', 'nb_fournisseurs_with_dette', 'credit', 'dette', 'gains', 'expenses', 'produits_with_small_qte'));
     }
     function getNbClients($filter_value)
     {
@@ -65,23 +67,65 @@ class DashboardController extends Controller
     {
         $gains = 0;
         if ($filter_value == 'Today') {
+            // calculate invoices without quotations:
             $gains = DB::table('facture_produit')
                 ->join('factures', 'facture_produit.facture_id', '=', 'factures.id')
                 ->join('produits', 'facture_produit.produit_id', '=', 'produits.id')
-                ->selectRaw('sum(price * quantity) as total_price')
+                ->selectRaw('SUM(produits.price*quantity)*0.2 + SUM(produits.price*quantity) as total_price')
                 ->where('facture_produit.created_at', 'like', '%' . date_format(today(), 'Y-m-d') . '%')
                 ->first()
                 ->total_price;
-            $gains += $gains * 0.2;
+            // add global price of invoices with quotations:
+            $gains += DB::table('devie_produit')
+                ->join('produits', 'devie_produit.produit_id', '=', 'produits.id')
+                ->join('devies', 'devie_produit.devie_id', '=', 'devies.id')
+                ->join('factures', 'devies.id', '=', 'factures.devie_id')
+                ->selectRaw('SUM(produits.price*quantity)*0.2 + SUM(produits.price*quantity) as total_price')
+                ->where('devie_produit.created_at', 'like', '%' . date_format(today(), 'Y-m-d') . '%')
+                ->first()
+                ->total_price;
         } elseif ($filter_value == 'Global') {
             $gains = DB::table('facture_produit')
                 ->join('factures', 'facture_produit.facture_id', '=', 'factures.id')
                 ->join('produits', 'facture_produit.produit_id', '=', 'produits.id')
-                ->selectRaw('sum(price * quantity) as total_price')
+                ->selectRaw('SUM(produits.price*quantity)*0.2 + SUM(produits.price*quantity) as total_price')
                 ->first()
                 ->total_price;
-            $gains += $gains * 0.2;
+            // add global price of invoices with quotations:
+            $gains += DB::table('devie_produit')
+                ->join('produits', 'devie_produit.produit_id', '=', 'produits.id')
+                ->join('devies', 'devie_produit.devie_id', '=', 'devies.id')
+                ->join('factures', 'devies.id', '=', 'factures.devie_id')
+                ->selectRaw('SUM(produits.price*quantity)*0.2 + SUM(produits.price*quantity) as total_price')
+                ->first()
+                ->total_price;
         }
         return $gains;
+    }
+    function getExpenses($filter_value)
+    {
+        $expenses = 0;
+        if ($filter_value == 'Today') {
+            // calculate invoices without quotations:
+            $expenses = Produit::where('created_at', 'like', '%' . date_format(today(), 'Y-m-d') . '%')->sum('price_buy');
+        } elseif ($filter_value == 'Global') {
+            $expenses = Produit::sum('price_buy');
+        }
+        return $expenses;
+    }
+    public function clientsWithCredit()
+    {
+        $clients_with_credit = Client::where('credit', '<>', 0)->get();
+        return $clients_with_credit;
+    }
+    public function fournisseursWithDette()
+    {
+        $fournisseurs_with_dette = Fournisseur::where('dette', '<>', 0)->get();
+        return $fournisseurs_with_dette;
+    }
+    public function produitsWithSmallQte($min_qte)
+    {
+        $produits_with_small_qte = Produit::where('qte', '<=', $min_qte)->get();
+        return $produits_with_small_qte;
     }
 }

@@ -18,8 +18,9 @@
         <a href="{{ route('bon_commande.create') }}">Ajouter un bon de commande</a>
     </div>
     @if (count($bons) > 0)
-        <table>
+        <table border="1" style="margin-bottom: 30px">
             <thead>
+                <th>N°</th>
                 <th>Num bon de commande</th>
                 <th>Nom de fournisseur</th>
                 <th colspan="4">actions</th>
@@ -27,6 +28,7 @@
             <tbody>
                 @foreach ($bons as $bon)
                     <tr>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $bon->num }}</td>
                         <td>{{($bon->fournisseur != null)?$bon->fournisseur->nom_complet: "- - -"}}</td>
                         <td><a href="{{ route('bon_commande.show', ['bon_commande' => $bon->id]) }}">détails</a></td>
@@ -48,10 +50,11 @@
         <table border="1">
             <thead>
                 <th>N°</th>
-                <th>REf</th>
+                <th>REF</th>
                 <th>Libelle</th>
-                {{-- <th>Quantité</th> --}}
+                <th>Prix d'achat</th>
                 <th>Prix Unitaire</th>
+                <th>Quantité</th>
                 {{-- <th colspan="3">actions</th> TODO in the next version --}}
             </thead>
             <tbody id="tbl_tbody_produits">

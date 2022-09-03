@@ -26,8 +26,9 @@
             <table border="1">
                 <thead>
                     <th>N°</th>
-                    <th>REf</th>
+                    <th>REF</th>
                     <th>Libelle</th>
+                    <th>Prix d'achat</th>
                     <th>Prix Unitaire</th>
                     <th>Quantité</th>
                     <th colspan="2">actions</th>
@@ -62,6 +63,8 @@
                 <input type="text" name="produit_libelle" id="produit_libelle"><br>
                 <label for="produit_ref">REF</label>
                 <input type="text" id="produit_ref" name="produit_ref"><br>
+                <label for="produit_price_buy">Prix U (prix d'achat)</label>
+                <input type="text" id="produit_price_buy" name="produit_price_buy"><br>
                 <label for="produit_price">Prix U</label>
                 <input type="text" id="produit_price" name="produit_price"><br>
                 <label for="produit_qte">Quantité</label>

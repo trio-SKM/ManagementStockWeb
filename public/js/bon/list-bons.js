@@ -39,6 +39,7 @@ $(".btn_show_produits").click(function (e) {
                 let message = document.createTextNode("Il y a aucun produit avec ce bon de commande.");
                 tdMessage.appendChild(message);
                 tr.appendChild(tdMessage);
+                jQuery('#tbl_tbody_produits').append(tr);
             }
         },
         error: function (errorResp) {
@@ -71,7 +72,9 @@ function addProduitToTable(produit) {
     let tdNbProduit = document.createElement('td');
     let tdRefProduit = document.createElement('td');
     let tdLibelleProduit = document.createElement('td');
+    let tdPrixBuyProduit = document.createElement('td');
     let tdPrixProduit = document.createElement('td');
+    let tdQteProduit = document.createElement('td');
 
     let nb = document.createTextNode(++nbProduit);
     tdNbProduit.appendChild(nb);
@@ -82,13 +85,21 @@ function addProduitToTable(produit) {
     let libelle = document.createTextNode(produit.libelle);
     tdLibelleProduit.appendChild(libelle);
 
+    let price_buy = document.createTextNode(produit.price_buy);
+    tdPrixBuyProduit.appendChild(price_buy);
+
     let price = document.createTextNode(produit.price);
     tdPrixProduit.appendChild(price);
+
+    let qte = document.createTextNode(produit.qte);
+    tdQteProduit.appendChild(qte);
 
     tr.appendChild(tdNbProduit);
     tr.appendChild(tdRefProduit);
     tr.appendChild(tdLibelleProduit);
+    tr.appendChild(tdPrixBuyProduit);
     tr.appendChild(tdPrixProduit);
+    tr.appendChild(tdQteProduit);
 
     jQuery('#tbl_tbody_produits').append(tr);
 }

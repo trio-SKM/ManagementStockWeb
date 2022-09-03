@@ -18,6 +18,7 @@ class Produit extends Model
         'ref',
         'libelle',
         'price',
+        'price_buy',
         'qte',
     ];
 

@@ -21,23 +21,28 @@
             @method('DELETE')
             <input type="submit" name="" id="" value="supprimer">
         </form>
-        <a href="{{ route('bon_commande.edit', ['bon_commande' => $bon_commande->id]) }}">Modifier ce bon de commande</a>
+        <a href="{{ route('bon_commande.edit', ['bon_commande' => $bon_commande->id]) }}">Modifier</a><br><br>
         <a href="{{ route('bon_commande.index') }}">Afficher les bons</a>
     </div>
-    <table>
+    <table border="1">
         <thead>
-            <th>REf</th>
+            <th>N°</th>
+            <th>REF</th>
             <th>Libelle</th>
-            {{-- <th>Quantité</th> --}}
+            <th>Prix d'achat</th>
             <th>Prix Unitaire</th>
+            <th>Quantité</th>
         </thead>
         <tbody>
             @if (count($bon_commande->produits) > 0)
                 @foreach ($bon_commande->produits as $produit)
                     <tr>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $produit->ref }}</td>
                         <td>{{ $produit->libelle }}</td>
+                        <td>{{ $produit->price_buy }}</td>
                         <td>{{ $produit->price }}</td>
+                        <td>{{ $produit->qte }}</td>
                     </tr>
                 @endforeach
             @else
