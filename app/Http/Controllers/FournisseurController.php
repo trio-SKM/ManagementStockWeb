@@ -38,9 +38,9 @@ class FournisseurController extends Controller
     {
         $validated = $request->validate([
             'fournisseur_name' => 'required|max:255',
-            'fournisseur_rc' => 'required|unique:fournisseurs,rc',
+            'fournisseur_rc' => 'required|unique:fournisseurs,rc|numeric',
             'fournisseur_nom_societe' => 'required|max:255',
-            'fournisseur_ice' => 'required|unique:fournisseurs,ice',
+            'fournisseur_ice' => 'required|unique:fournisseurs,ice|numeric',
         ]);
 
         $fournisseur = Fournisseur::create([
@@ -94,9 +94,9 @@ class FournisseurController extends Controller
     {
         $validated = $request->validate([
             'fournisseur_name' => 'required|max:255',
-            'fournisseur_rc' => ($request->fournisseur_rc != $fournisseur->rc) ? 'required|unique:fournisseurs,rc' : 'required',
+            'fournisseur_rc' => ($request->fournisseur_rc != $fournisseur->rc) ? 'required|unique:fournisseurs,rc|numeric' : 'required|numeric',
             'fournisseur_nom_societe' => 'required|max:255',
-            'fournisseur_ice' => ($request->fournisseur_ice != $fournisseur->ice) ? 'required|unique:fournisseurs,ice' : 'required',
+            'fournisseur_ice' => ($request->fournisseur_ice != $fournisseur->ice) ? 'required|unique:fournisseurs,ice|numeric' : 'required|numeric',
             'fournisseur_dette' => 'numeric|required',
         ]);
         $fournisseur->nom_complet = $request->fournisseur_name;

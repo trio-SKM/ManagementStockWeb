@@ -21,6 +21,14 @@ class Fournisseur extends Model
         'ice',
         'dette',
     ];
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+    ];
 
     /**
      * Get the orders forms for the supplier.

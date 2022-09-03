@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BonCommandeController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\devie\ListDeviesController;
 use App\Http\Controllers\DevieController;
 use App\Http\Controllers\FactureController;
@@ -38,3 +39,4 @@ Route::resources(
     ]
 );
 Route::post('convertToInvoice', [ListDeviesController::class, 'convertDevisToInvoice'])->name('covertToInvoice');
+Route::get('/dashboard/{filter_value}', [DashboardController::class, 'index'])->name('dashboard');

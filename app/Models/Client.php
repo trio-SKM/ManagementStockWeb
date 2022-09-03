@@ -22,6 +22,14 @@ class Client extends Model
         'ice',
         'credit',
     ];
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+    ];
 
     /**
      * Get the quotations (devis) for the client.
