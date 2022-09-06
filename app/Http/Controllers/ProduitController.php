@@ -46,7 +46,8 @@ class ProduitController extends Controller
             [
                 'produit_ref' => 'required|max:255|unique:produits,ref',
                 'produit_libelle' => 'required|max:255',
-                'produit_price' => 'required|numeric',
+                'produit_price' => 'required|numeric|min:0',
+                'produit_price_buy' => 'required|numeric|min:0',
                 'produit_qte' => 'required|numeric',
             ],
             [
@@ -75,6 +76,7 @@ class ProduitController extends Controller
             'libelle' => $request->produit_libelle,
             'qte' => $request->produit_qte,
             'price' => $request->produit_price,
+            'price_buy' => $request->produit_price_buy,
         ]);
 
         if ($produit) {
@@ -128,7 +130,8 @@ class ProduitController extends Controller
                 'produit_ref' => ($request->produit_ref != $produit->ref) ? 'required|unique:produits,ref' : 'required',
                 'produit_libelle' => 'required|max:255',
                 'produit_price' => 'required|numeric',
-                'produit_qte' => 'required|numeric',
+                'produit_qte' => 'required|numeric|min:0',
+                'produit_price_buy' => 'required|numeric|min:0',
                 'bon_commande' => [
                     function ($attribute, $value, $fail)
                     {
@@ -160,6 +163,7 @@ class ProduitController extends Controller
         $produit->ref = $request->produit_ref;
         $produit->libelle = $request->produit_libelle;
         $produit->price = $request->produit_price;
+        $produit->price_buy = $request->produit_price_buy;
         $produit->qte = $request->produit_qte;
         if (is_numeric($request->bon_commande)) {
             $bon_commande = Bon_commande::find($request->bon_commande);

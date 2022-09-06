@@ -11,12 +11,14 @@ $("#btn_add_produit").click(function (e) {
             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content') // add the CSRF token to the request.
         }
     });
+    debugger
     e.preventDefault();
     var produit_data = {
         produit_libelle: jQuery('#produit_libelle').val(),
         produit_ref: jQuery('#produit_ref').val(),
         produit_price: jQuery('#produit_price').val(),
         produit_qte: jQuery('#produit_qte').val(),
+        produit_price_buy: jQuery('#produit_price_buy').val(),
     };
     var type = "POST";
     var ajax_url = '/produit';
@@ -55,6 +57,8 @@ $("#btn_update_produit").click(function (e) {
         produit_libelle: jQuery('#produit_libelle').val(),
         produit_ref: jQuery('#produit_ref').val(),
         produit_price: jQuery('#produit_price').val(),
+        produit_price_buy: jQuery('#produit_price_buy').val(),
+        produit_qte: jQuery('#produit_qte').val(),
     };
     var type = "PUT";
     var ajax_url = '/produit/' + produit_id;
@@ -95,6 +99,7 @@ function addProduitToTable(produit, action) {
     let tdNbProduit = document.createElement('td');
     let tdRefProduit = document.createElement('td');
     let tdLibelleProduit = document.createElement('td');
+    let tdPrixBuyProduit = document.createElement('td');
     let tdPrixProduit = document.createElement('td');
     let tdQteProduit = document.createElement('td');
     let tdEditProduit = document.createElement('td');
@@ -108,6 +113,9 @@ function addProduitToTable(produit, action) {
 
     let libelle = document.createTextNode(produit.libelle);
     tdLibelleProduit.appendChild(libelle);
+
+    let price_buy = document.createTextNode(produit.price_buy);
+    tdPrixBuyProduit.appendChild(price_buy);
 
     let price = document.createTextNode(produit.price);
     tdPrixProduit.appendChild(price);
@@ -133,6 +141,8 @@ function addProduitToTable(produit, action) {
         jQuery('#produit_libelle').val(produitToModify.libelle);
         jQuery('#produit_ref').val(produitToModify.ref);
         jQuery('#produit_price').val(produitToModify.price);
+        jQuery('#produit_price_buy').val(produitToModify.price_buy);
+        jQuery('#produit_qte').val(produitToModify.qte);
 
         jQuery('#produit_libelle').focus(); // make focus on the libelle input.
 
@@ -166,6 +176,7 @@ function addProduitToTable(produit, action) {
     tr.appendChild(tdNbProduit);
     tr.appendChild(tdRefProduit);
     tr.appendChild(tdLibelleProduit);
+    tr.appendChild(tdPrixBuyProduit);
     tr.appendChild(tdPrixProduit);
     tr.appendChild(tdQteProduit);
     tr.appendChild(tdEditProduit);
@@ -174,13 +185,28 @@ function addProduitToTable(produit, action) {
         jQuery('#tbl_tbody_produits').append(tr);
 
         jQuery('#produit_ref').val("");
+        jQuery('#produit_libelle').val("");
+        jQuery('#produit_price').val("");
+        jQuery('#produit_price_buy').val("");
+        jQuery('#produit_qte').val("");
 
         let inpProduitsIds = jQuery('#produits_ids');
         inpProduitsIds.val((inpProduitsIds.val() == "") ? inpProduitsIds.val() + produit.id : inpProduitsIds.val() + "," + produit.id); // save ids of newly created products in order to associate them with this order form.
 
         alert('produit bien ajouté');
     } else if (action == 'update') {
-        selectedTr.prev().after(tr); // insert tr with updated product's data in the same place.
+        let nbTr = Number(jQuery("table tbody tr").length);
+        if (nbTr != 1) { // if there's + than one row
+            if (selectedTr[0].rowIndex == 1) {
+                let nextTr = selectedTr.next();
+                nextTr.before(tr); // insert tr with updated product's data in the same place.
+            } else {
+                let prevTr = selectedTr.prev();
+                prevTr.after(tr); // insert tr with updated product's data in the same place.
+            }
+        } else {
+            jQuery('#tbl_tbody_produits').append(tr);
+        }
         selectedTr.remove(); // remove the old tr.
 
         alert('produit bien modifié');
@@ -195,9 +221,11 @@ function backToInit() {
     jQuery("#btn_update_produit").css('visibility', 'collapse');
     jQuery("#btn_add_produit").css('visibility', 'visible');
 
-    jQuery('#produit_libelle').val("");
     jQuery('#produit_ref').val("");
+    jQuery('#produit_libelle').val("");
     jQuery('#produit_price').val("");
+    jQuery('#produit_price_buy').val("");
+    jQuery('#produit_qte').val("");
 
     jQuery("#frm_produit").attr('action', '/produit');
 
