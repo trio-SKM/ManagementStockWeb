@@ -8,6 +8,7 @@ use App\Http\Controllers\DevieController;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PrintingController;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\Select2SearchController;
 use Illuminate\Support\Facades\Route;
@@ -46,3 +47,4 @@ Route::get('ajax-autocomplete-search', [Select2SearchController::class,'selectSe
 Route::get('ajax-autocomplete-search-produit', [Select2SearchController::class,'selectSearchProduit']);
 Route::get('/dashboard/clients/credit', [DashboardController::class, 'clientsWithCredit'])->name('clients-credit');
 Route::get('/dashboard/fournisseurs/dette', [DashboardController::class, 'fournisseursWithDette'])->name('fournisseurs-dette');
+Route::get('impression/{id}/{type}', [PrintingController::class, 'imprimer'])->name('impression');
