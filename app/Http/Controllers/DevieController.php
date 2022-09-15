@@ -45,7 +45,7 @@ class DevieController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'devie_num' => 'required|max:255|unique:devies,num',
+            // 'devie_num' => 'required|max:255|unique:devies,num',
             'client' => 'required|numeric',
             'produits' => [
                 'required',
@@ -73,7 +73,8 @@ class DevieController extends Controller
             ],
         ]);
 
-        $devie = new Devie(['num' => $request->devie_num,]);
+        // $devie = new Devie(['num' => $request->devie_num,]);
+        $devie = new Devie;
         $client = Client::find($request->client);
 
         if ($client) {

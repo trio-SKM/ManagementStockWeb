@@ -46,7 +46,7 @@ class FactureController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'facture_num' => 'required|max:255|unique:factures,num',
+            // 'facture_num' => 'required|max:255|unique:factures,num',
             'client' => 'required|numeric',
             'produits' => [
                 'required',
@@ -74,7 +74,7 @@ class FactureController extends Controller
             ],
         ]);
 
-        $facture = new Facture(['num' => $request->facture_num,]);
+        $facture = new Facture;
         $client = Client::find($request->client);
 
         if ($client) {

@@ -15,7 +15,7 @@ class CreateFactureProduitTable extends Migration
     {
         Schema::create('facture_produit', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('facture_id')->constrained('factures')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('facture_id')->constrained('factures', 'num')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('produit_id')->constrained('produits')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('quantity');
             $table->timestamps();

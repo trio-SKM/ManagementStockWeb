@@ -14,10 +14,9 @@ class CreateFacturesTable extends Migration
     public function up()
     {
         Schema::create('factures', function (Blueprint $table) {
-            $table->id();
-            $table->string('num')->unique();
+            $table->id('num');
             $table->foreignId('client_id')->nullable()->constrained('clients')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('devie_id')->nullable()->constrained('devies')->onDelete('cascade')->onUpdate('cascade'); // if the client want to convert quotation to invoice
+            $table->foreignId('devie_id')->nullable()->constrained('devies', 'num')->onDelete('cascade')->onUpdate('cascade'); // if the client want to convert quotation to invoice
             $table->timestamps();
         });
     }

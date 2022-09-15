@@ -13,13 +13,15 @@ class ListDeviesController extends Controller
     public function convertDevisToInvoice(Request $request)
     {
         $validated = $request->validate([
-            'facture_num' => 'required|max:255|unique:factures,num',
+            // 'facture_num' => 'required|max:255|unique:factures,num',
             'devie' => 'required|numeric',
         ]);
 
         $devie = Devie::find($request->devie);
         $client = Client::find($devie->client->id);
-        $facture = new Facture(['num' => $request->facture_num,]);
+        // $facture = new Facture(['num' => $request->facture_num,]);
+        $facture = new Facture;
+        $facture->increment('num');
         if ($devie && $client) {
             // to calculate quantities (decrease or increase):
             for ($i=0; $i < count($devie->produits); $i++) {

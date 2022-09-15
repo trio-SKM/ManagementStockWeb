@@ -22,14 +22,23 @@
 
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-12">
-        <form action="{{ route('devie.update', ['devie' => $devie->id]) }}" method="post">
+        <form action="{{ route('devie.update', ['devie' => $devie->num]) }}" method="post">
             @csrf
             @method('PUT')
         <div class="card h100">
             <div class="card-header bg-white py-4">
                 <div class="row">
                     <div class="col-xs-12 col-md-4">
-                        <input form="frm_add_devie" class="form-control form-control-sm" placeholder="N° Devis" type="text" id="devie_num" name="devie_num" value="{{ $devie->num }}">
+                        @php
+                            use Illuminate\Support\Str;
+                            $zeros = "";
+                            $nb_zeros = 8 - Str::length($devie->num);
+                            for ($i=0; $i < $nb_zeros; $i++) {
+                                $zeros .= "0";
+                            }
+                            $devie_num = $zeros . $devie->num . "/" . $devie->created_at->format('y');
+                        @endphp
+                        <input form="frm_add_devie" class="form-control form-control-sm" placeholder="N° Devis" type="text" id="devie_num" name="devie_num" value="{{ $devie_num }}">
                     </div>
                     <div class="col-xs-12 col-md-8">
                         <div class="input-group">
@@ -74,7 +83,7 @@
                     </div>
                     </form>
                      <div class="col-xs-12 col-md-6 mt-2">
-                        <form action="{{ route('devie.destroy', ['devie' => $devie->id]) }}" method="post">
+                        <form action="{{ route('devie.destroy', ['devie' => $devie->num]) }}" method="post">
                             @csrf
                             @method('DELETE')
                             <button type="submit" name="btnDelete" id="" class="btn btn-danger btn-sm w-100">Supprimer</button>
@@ -82,7 +91,7 @@
                     </div>
                 </div>
             </div>
-        
+
             <div class="table-responsive">
                 <table class="table text-nowrap mb-0">
                     <thead class="table-light">
