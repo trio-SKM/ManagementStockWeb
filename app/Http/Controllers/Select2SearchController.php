@@ -26,7 +26,7 @@ class Select2SearchController extends Controller
     	$produits = [];
         if($request->has('q')){
             $search  = $request->q;
-            $produits = Produit::select("id", "ref", "libelle","price")
+            $produits = Produit::select("id", "ref", "libelle","price","qte")
             		->where('ref', 'LIKE', "%$search%")
                     ->orWhere('libelle', 'LIKE', "%$search%")
             		->get();
