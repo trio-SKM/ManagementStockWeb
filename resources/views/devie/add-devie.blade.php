@@ -2,10 +2,12 @@
 
 @section('title','Ajouter devis')
 
+@section('custom_meta')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
+
 @section('custom_libs')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link href="{{ asset('assets/libs/select2/select2.min.css') }}" rel="stylesheet" />
 @endsection
 
 @section('content_page')
@@ -20,15 +22,17 @@
 
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+        <form id="frm_add_devie" action="{{ route('devie.store') }}" method="post">
+            @csrf
         <div class="card h100">
             <div class="card-header bg-white py-4">
                 <div class="row">
                     <div class="col-xs-12 col-md-4">
-                        <input class="form-control form-control-sm" placeholder="N° Devis" type="text" id="nom_complet" name="fournisseur_name" value="{{ old('fournisseur_name') }}">
+                        <input form="frm_add_devie" class="form-control form-control-sm" placeholder="N° Devis" type="text" id="devie_num" name="devie_num" value="{{ old('devie_num') }}">
                     </div>
                     <div class="col-xs-12 col-md-8">
                         <div class="input-group">
-                            <select class="livesearchclient form-control" id="client" name="livesearchclient"></select>
+                            <select form="frm_add_devie" class="livesearchclient form-control" id="client" name="client"></select>
                         </div>
                     </div>
                 </div>
@@ -41,16 +45,22 @@
                     <div class="col-xs-12 col-md-2">
                         <input class="form-control form-control-sm" placeholder="QTE" type="text" id="produit_qte">
                         <input type="hidden" id="produit_price">
+                        <input type="hidden" name="produits" id="produits_ids">
+                        <input type="hidden" name="quantities" id="quantities_values">
                     </div>
                     <div class="col-xs-12 col-md-4">
                         <div class="input-group">
                             <input class="form-control form-control-sm" placeholder="Prix Total" type="text" id="produit_price_total">
                             <button class="btn btn-secondary btn-sm" type="button" id="btn_add_produit"><i class="bi bi-plus"></i></button>
+                            <button class="btn btn-secondary btn-sm d-none" type="button" id="btn_update_produit"><i class="bi bi-pencil-square"></i></button>
                         </div>
+                    </div>
+                    <div class="col-xs-12 mt-2">
+                        <button type="submit" name="btnAdd" id="btnAdd" class="btn btn-primary btn-sm w-100">Ajouter</button>
                     </div>
                 </div>
             </div>
-            
+        </form>
             <div class="table-responsive">
                 <table class="table text-nowrap mb-0">
                     <thead class="table-light">
@@ -89,48 +99,6 @@
 <script>
     var bons = {{ Illuminate\Support\Js::from($bon_commandes) }};
 </script>
+<script src="{{ asset('assets/libs/select2/select2.min.js') }}"></script>
 <script src="{{ asset('js/devie/add-devie.js') }}"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('.livesearchclient').select2({
-        placeholder: 'Select Client',
-        ajax: {
-            url: '/ajax-autocomplete-search',
-            dataType: 'json',
-            delay: 250,
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (item) {
-                        return {
-                            text: item.nom_complet,
-                            id: item.id
-                        }
-                    })
-                };
-            },
-            cache: true
-        }
-    });
-    $('.livesearchproduit').select2({
-        placeholder: 'Select Produit',
-        ajax: {
-            url: '/ajax-autocomplete-search-produit',
-            dataType: 'json',
-            delay: 250,
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (item) {
-                        debugger
-                        return {
-                            text: item.ref,
-                            id: item.id
-                        }
-                    })
-                };
-            },
-            cache: true
-        }
-    });
-    });
-</script>
 @endsection

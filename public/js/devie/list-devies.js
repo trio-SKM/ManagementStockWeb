@@ -6,16 +6,14 @@ $(document).ready(function(){
     jQuery("#frm_conversion_to_invoice").css("visibility", "collapse"); // hide the popup at the start.
 })
 // to get all products that are associated with the selected order form (bon de commande):
-$(".btn_show_produits").click(function (e) {
-    e.preventDefault();
-    debugger
+$(".btn_show_produits").click(function () {
     let devie_id = jQuery(this).data('devie_id');
     // check if there's no hacking across html:
     if (isNaN(devie_id)) {
         alert('Vous ne devez pas jouer sur les éléments HTML qui ne vous concernent pas.');
         return;
     }
-
+    debugger;
     removeProductsFromTable(); // clear the table from products.
     // to find the product by id:
     produits.forEach(produit => {
@@ -43,8 +41,8 @@ $(".btn_convert_to_invoice").click(function (e) {
  * Clear table products
  */
 function removeProductsFromTable() {
-    jQuery("table:nth-of-type(2) tbody tr").remove();
-    jQuery('#prix_total_devie_HT').text(calculatePriceGlobal(jQuery('table:nth-of-type(2) tbody tr td:nth-child(7)')));
+    jQuery("#table-details-devis tbody tr").remove();
+    jQuery('#prix_total_devie_HT').text(calculatePriceGlobal(jQuery('#table-details-devis tbody tr td:nth-child(7)')));
     jQuery('#prix_total_devie_TT').text((20 * Number(jQuery('#prix_total_devie_HT').text())) / 100 + Number(jQuery('#prix_total_devie_HT').text()));
     nbProduit = 0;
 }
@@ -96,7 +94,7 @@ function addProduitToTable(produit) {
     jQuery('#tbl_tbody_produits').append(tr);
 
     // calculate the price of the quotation (devis):
-    jQuery('#prix_total_devie_HT').text(calculatePriceGlobal(jQuery('table:nth-of-type(2) tbody tr td:nth-child(7)')));
+    jQuery('#prix_total_devie_HT').text(calculatePriceGlobal(jQuery('#table-details-devis tbody tr td:nth-child(7)')));
     jQuery('#prix_total_devie_TT').text((20 * Number(jQuery('#prix_total_devie_HT').text())) / 100 + Number(jQuery('#prix_total_devie_HT').text()));
 }
 /**

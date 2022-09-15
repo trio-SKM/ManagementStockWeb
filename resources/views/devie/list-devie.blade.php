@@ -24,7 +24,7 @@
         </form>
     </div>
 
-    <table border="1">
+    <table>
         <thead>
             <th>N°</th>
             <th>REF</th>
