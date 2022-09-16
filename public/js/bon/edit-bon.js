@@ -143,10 +143,9 @@ function prepareProduitToModify(e, sender) {
 
     jQuery('#produit_libelle').focus(); // make focus on the libelle input.
 
-    jQuery("#btn_update_produit").removeAttr('style');
-    jQuery("#btn_update_produit").css('visibility', 'visible');
+    jQuery("#btn_update_produit").toggleClass('d-none');
 
-    jQuery("#btn_add_produit").css('visibility', 'collapse');
+    jQuery("#btn_add_produit").toggleClass('d-none');
 
     jQuery("#btn_update_produit").data('produit_id', produit_id); // store product id in this button's dataset.
 
@@ -191,8 +190,7 @@ function addProduitToTable(produit, action) {
     let tdPrixBuyProduit = document.createElement('td');
     let tdPrixProduit = document.createElement('td');
     let tdQteProduit = document.createElement('td');
-    let tdEditProduit = document.createElement('td');
-    let tdDeleteProduit = document.createElement('td');
+    let tdActionProduit = document.createElement('td');
 
     let nb = document.createTextNode((action == 'add') ? ++nbProduit : selectedTr.children("td:first-child").text());
     tdNbProduit.appendChild(nb);
@@ -216,21 +214,23 @@ function addProduitToTable(produit, action) {
     buttonEditproduit.classList.add('btn_edit_produit');
 
     buttonEditproduit.dataset.produit_id = produit.id;
-    buttonEditproduit.textContent = 'modifier';
+    buttonEditproduit.innerHTML = '<i class="bi bi-pencil-square"></i>';
+    buttonEditproduit.classList = 'btn btn-success btn-sm me-1';
     // this function will fill the inputs with the product to modify:
     buttonEditproduit.onclick = function (e) {
         prepareProduitToModify(e, jQuery(this));
     }
-    tdEditProduit.appendChild(buttonEditproduit);
+    tdActionProduit.appendChild(buttonEditproduit);
 
     let buttonDeleteproduit = document.createElement('button');
     buttonDeleteproduit.classList.add('btn_delete_produit');
     buttonDeleteproduit.dataset.produit_id = produit.id;
-    buttonDeleteproduit.textContent = 'supprimer';
+    buttonDeleteproduit.innerHTML = '<i class="bi bi-trash3"></i>';
+    buttonDeleteproduit.classList = 'btn btn-danger btn-sm';
     buttonDeleteproduit.onclick = function (e) {
         deleteProduit(e, jQuery(this));
     }
-    tdDeleteProduit.appendChild(buttonDeleteproduit);
+    tdActionProduit.appendChild(buttonDeleteproduit);
 
     tr.appendChild(tdNbProduit);
     tr.appendChild(tdRefProduit);
@@ -238,8 +238,7 @@ function addProduitToTable(produit, action) {
     tr.appendChild(tdPrixBuyProduit);
     tr.appendChild(tdPrixProduit);
     tr.appendChild(tdQteProduit);
-    tr.appendChild(tdEditProduit);
-    tr.appendChild(tdDeleteProduit);
+    tr.appendChild(tdActionProduit);
     if (action == 'add') {
         jQuery('#tbl_tbody_produits').append(tr);
 

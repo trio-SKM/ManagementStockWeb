@@ -36,8 +36,8 @@ $(".btn_show_produits").click(function (e) {
  * Clear table products
  */
 function removeProductsFromTable() {
-    jQuery("table:nth-of-type(2) tbody tr").remove();
-    jQuery('#prix_total_facture_HT').text(calculatePriceGlobal(jQuery('table:nth-of-type(2) tbody tr td:nth-child(7)')));
+    jQuery("#table-details-facture tbody tr").remove();
+    jQuery('#prix_total_facture_HT').text(calculatePriceGlobal(jQuery('#table-details-facture tbody tr td:nth-child(7)')));
     jQuery('#prix_total_facture_TT').text((20 * Number(jQuery('#prix_total_facture_HT').text())) / 100 + Number(jQuery('#prix_total_facture_HT').text()));
     nbProduit = 0;
 }
@@ -89,7 +89,7 @@ function addProduitToTable(produit) {
     jQuery('#tbl_tbody_produits').append(tr);
 
     // calculate the price of the quotation (devis):
-    jQuery('#prix_total_facture_HT').text(calculatePriceGlobal(jQuery('table:nth-of-type(2) tbody tr td:nth-child(7)')));
+    jQuery('#prix_total_facture_HT').text(calculatePriceGlobal(jQuery('#table-details-facture tbody tr td:nth-child(7)')));
     jQuery('#prix_total_facture_TT').text((20 * Number(jQuery('#prix_total_facture_HT').text())) / 100 + Number(jQuery('#prix_total_facture_HT').text()));
 }
 /**

@@ -7,7 +7,7 @@
   <div class="col-lg-12 col-md-12 col-12">
     <!-- Page header -->
       <div class="border-bottom pb-4 mb-4 ">
-          <h3 class="mb-0 fw-bold">Overview</h3>
+          <h3 class="mb-0 fw-bold">Détails du fournisseur</h3>
     </div>
   </div>
 </div>
@@ -63,12 +63,12 @@
                 <!-- card body -->
                 <div class="card-body">
                   <!-- card title -->
-                  <h4 class="card-title">About {{ $client->nom_complet }}</h4>
-                  <span class="text-uppercase fw-medium text-dark
+                  <h4 class="card-title">A propos {{ $client->nom_complet }}</h4>
+                  {{-- <span class="text-uppercase fw-medium text-dark
                       fs-5 ls-2">Bio</span>
                   <!-- text -->
                   <p class="mt-2 mb-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspen disse var ius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat.
-                  </p>
+                  </p> --}}
                   <!-- row -->
                   <div class="row">
                     <div class="col-12 mb-5">
@@ -78,8 +78,8 @@
                       <p class="mb-0">{{ $client->nom_societe }}</p>
                     </div>
                     <div class="col-6 mb-5">
-                      <h6 class="text-uppercase fs-5 ls-2">Phone </h6>
-                      <p class="mb-0">+{{ $client->telephone }}</p>
+                      <h6 class="text-uppercase fs-5 ls-2">Téléphone </h6>
+                      <p class="mb-0">{{ $client->telephone }}</p>
                     </div>
                     <div class="col-6 mb-5">
                       <h6 class="text-uppercase fs-5 ls-2">RC </h6>
@@ -90,9 +90,9 @@
                       <p class="mb-0">{{ $client->ice }}</p>
                     </div>
                     <div class="col-6">
-                      <h6 class="text-uppercase fs-5 ls-2">Location
+                      <h6 class="text-uppercase fs-5 ls-2">Crédit
                       </h6>
-                      <p class="mb-0">Ahmedabad, India</p>
+                      <p class="mb-0">{{ $client->credit }}</p>
                     </div>
                   </div>
                 </div>
@@ -105,54 +105,27 @@
                 <div class="card-body">
                   <!-- card title -->
                   <h4 class="card-title">Détails Transaction</h4>
-                  <div class="d-md-flex justify-content-between
-                      align-items-center mb-4">
-                    <div class="d-flex align-items-center">
-                      <div>
-                        <div class="icon-shape icon-lg border p-4 rounded-1">
-                          <img src="../assets/images/brand/slack-logo.svg" alt="">
+                  @if (count($client->factures) > 0)
+                    @foreach ($client->factures as $facture)
+                        <div class="d-md-flex justify-content-between
+                            align-items-center mb-4">
+                            <div class="d-flex align-items-center">
+                                <div class="ms-3 ">
+                                    <h5 class="mb-1"><a class="text-inherit">Numéro de facture</a></h5>
+                                    <p class="mb-0 fs-5 text-muted">{{$facture->num}}</p>
+                                </div>
+                            <!-- text -->
+                            <div class="ms-3 ">
+                                <h5 class="mb-1"><a class="text-inherit">Nombre des produits</a></h5>
+                                <p class="mb-0 fs-5 text-muted">{{$facture->produits()->count()}}</p>
+                            </div>
+                            </div>
                         </div>
-                      </div>
-                      <!-- text -->
-                      <div class="ms-3 ">
-                        <h5 class="mb-1"><a href="#" class="text-inherit">Slack Figma Design
-                            UI</a></h5>
-                        <p class="mb-0 fs-5 text-muted">Project description and details about...</p>
-                      </div>
-                    </div>
-                    <div class="d-flex align-items-center ms-10 ms-md-0 mt-3">
-                      <!-- avatar group -->
-                      <div class="avatar-group me-2">
-                        <!-- img -->
-                        <span class="avatar avatar-sm">
-                            <img alt="avatar" src="../assets/images/avatar/avatar-1.jpg" class="rounded-circle">
-                          </span>
-                        <!-- img -->
-                        <span class="avatar avatar-sm">
-                            <img alt="avatar" src="../assets/images/avatar/avatar-2.jpg" class="rounded-circle">
-                          </span>
-                        <!-- img -->
-                        <span class="avatar avatar-sm">
-                            <img alt="avatar" src="../assets/images/avatar/avatar-3.jpg" class="rounded-circle">
-                          </span>
-                      </div>
-                      <div>
-                        <!-- dropdown -->
-                        <div class="dropdown dropstart">
-                          <a href="#" class="text-muted text-primary-hover" id="dropdownprojectOne" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical icon-xxs"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
-                          </a>
-                          <div class="dropdown-menu" aria-labelledby="dropdownprojectOne">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else
-                                here</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="d-md-flex justify-content-between
+                    @endforeach
+                  @else
+                    <x-data-not-found message="Il y a aucune facture pour ce client." />
+                  @endif
+                  {{-- <div class="d-md-flex justify-content-between
                       align-items-center mb-4">
                     <div class="d-flex align-items-center">
                       <div>
@@ -342,7 +315,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> --}}
                 </div>
               </div>
             </div>

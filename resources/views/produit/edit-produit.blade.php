@@ -40,11 +40,6 @@
                                         id="produit_libelle" name="produit_libelle" value="{{ $produit->libelle }}">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label" for="produit_price">Prix Unitaire</label>
-                                    <input class="form-control" placeholder="Entre prix de produit" type="text"
-                                        id="produit_price" name="produit_price" value="{{ $produit->price }}">
-                                </div>
-                                <div class="mb-3">
                                     <label class="form-label" for="rc">Prix d'achat</label>
                                     <input class="form-control" placeholder="Entre le prix d'achat de produit"
                                         type="text" id="produit_price_buy" name="produit_price_buy"
@@ -54,6 +49,11 @@
                                     <label class="form-label" for="rc">Quantité en stock</label>
                                     <input class="form-control" placeholder="Entre la quantité en stock de produit"
                                         type="text" id="produit_qte" name="produit_qte" value="{{ $produit->qte }}">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="produit_price">Prix Unitaire</label>
+                                    <input class="form-control" placeholder="Entre prix de produit" type="text"
+                                        id="produit_price" name="produit_price" value="{{ $produit->price }}">
                                 </div>
                                 @if ($produit->bon_commande != null)
                                     <div class="mb-3">
@@ -76,7 +76,7 @@
                             <form action="{{ route('produit.destroy', ['produit' => $produit->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <input class="btn btn-danger w-100" type="submit" name="btn_delete_produit"
+                                <input class="btn btn-danger w-100 mb-3" type="submit" name="btn_delete_produit"
                                     id="btn_delete_produit" value="Supprimer">
                             </form>
                             @if (session('status'))

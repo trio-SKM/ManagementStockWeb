@@ -15,7 +15,7 @@
     <div class="col-lg-12 col-md-12 col-12">
       <!-- Page header -->
         <div class="border-bottom pb-4 mb-4 ">
-            <h3 class="mb-0 fw-bold">Overview E12</h3>
+            <h3 class="mb-0 fw-bold">Modifier un devis</h3>
       </div>
     </div>
 </div>
@@ -38,11 +38,11 @@
                             }
                             $devie_num = $zeros . $devie->num . "/" . $devie->created_at->format('y');
                         @endphp
-                        <input form="frm_add_devie" class="form-control form-control-sm" placeholder="N° Devis" type="text" id="devie_num" name="devie_num" value="{{ $devie_num }}">
+                        <input class="form-control form-control-sm" placeholder="N° Devis" type="text" id="devie_num" name="devie_num" value="{{ $devie_num }}">
                     </div>
                     <div class="col-xs-12 col-md-8">
                         <div class="input-group">
-                            <select form="frm_add_devie" class="livesearchclient form-control" id="client" name="client">
+                            <select class="livesearchclient form-control" id="client" name="client">
                                 @foreach($clients as $client)
                                     <option value="{{ $client->id }}" {{ $client->id == $devie->client->id ? 'selected' : '' }}>{{ $client->nom_complet }}</option>
                                 @endforeach
@@ -142,6 +142,18 @@
                     </tfoot>
                 </table>
             </div>
+            @if (session('status'))
+                <div class="alert alert-success mx-2" role="alert">
+                    {{ session('status', '') }}
+                </div>
+            @endif
+            @if ($errors->any())
+                <ul class="list-group mx-2">
+                    @foreach ($errors->all() as $error)
+                        <li class="list-group-item list-group-item-danger mb-2">{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endif
         </div>
     </div>
 </div>
@@ -149,7 +161,7 @@
 
 @section('custom_script')
 <script>
-    var bons = {{ Illuminate\Support\Js::from($bon_commandes) }};
+    var produits = {{ Illuminate\Support\Js::from($produits) }};
 </script>
 <script src="{{ asset('assets/libs/select2/select2.min.js') }}"></script>
 <script src="{{ asset('js/devie/edit-devie.js') }}"></script>

@@ -9,7 +9,7 @@
 <div class="modal fade gd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-        <table id="table-details-bon" class="table mb-0">
+        <table id="table-details-facture" class="table mb-0">
             <thead class="table-light">
                 <th>N°</th>
                 <th>REF</th>
@@ -22,6 +22,16 @@
             <tbody id="tbl_tbody_produits">
 
             </tbody>
+            <tfoot id="tbl_tfoot_price_global">
+                <tr>
+                    <td colspan="2">Prix total HT</td>
+                    <td colspan="7" id="prix_total_facture_HT">...</td>
+                </tr>
+                <tr>
+                    <td colspan="2">Prix total (TT) du devie</td>
+                    <td colspan="7" id="prix_total_facture_TT">...</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
   </div>
@@ -30,7 +40,7 @@
         <div class="col-lg-12 col-md-12 col-12">
             <!-- Page header -->
             <div class="border-bottom pb-4 mb-4">
-                <h3 class="mb-0 fw-bold">List des Bon de Commandes</h3>
+                <h3 class="mb-0 fw-bold">List des factures</h3>
             </div>
         </div>
     </div>
@@ -38,13 +48,13 @@
     <div class="py-4">
         <div class="card h-100">
             <!-- card header  -->
-            <div class="card-header bg-white py-3 text-end">
+            <div class="card-header bg-white py-3 text-end mx-2">
                 <h4 class="mb-0"><a class="btn btn-dark" href="{{ route('facture.create') }}"><i class="bi bi-plus"></i>
                         Ajouter une facture</a> </h4>
             </div>
             <!-- table  -->
             @if (count($factures) > 0)
-                <div class="table-responsive">
+                <div class="table-responsive mx-2 mb-3">
                     <table class="table text-nowrap mb-0">
                         <thead class="table-light">
                             <tr>
@@ -72,7 +82,7 @@
                                     <td class="align-middle">{{ $facture->client->nom_complet }}</td>
                                     <td class="align-middle">@if($facture->devie != null) {{$facture->devie->num}} @else --- @endif</td>
                                     <td class="align-middle">
-                            <button type="button" data-bs-toggle="modal" data-bs-target=".gd-example-modal-lg" class="btn btn-primary btn_show_produits" data-facture_id="{{ $facture->id }}" data-devie_id="@php echo $facture->devie != Null ? $facture->devie->id : '' @endphp"><i class="bi bi-eye"></i></button>
+                            <button type="button" data-bs-toggle="modal" data-bs-target=".gd-example-modal-lg" class="btn btn-primary btn_show_produits" data-facture_id="{{ $facture->num }}" data-devie_id="@php echo $facture->devie != Null ? $facture->devie->num : '' @endphp"><i class="bi bi-eye"></i></button>
                         </td>
                                     <td class="align-middle">
                                         <div class="dropdown dropstart">
@@ -112,7 +122,7 @@
                 <x-data-not-found message="Il y a aucune facture ce moment." />
             @endif
             @if (session()->exists('status'))
-                <div class="alert alert-success" role="alert">
+                <div class="alert alert-success mx-2 mb-3" role="alert">
                     {{ session('status', '') }}
                 </div>
             @endif

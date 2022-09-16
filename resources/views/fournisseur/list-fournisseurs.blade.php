@@ -15,28 +15,36 @@
     <div class="py-4">
         <div class="card h-100">
             <!-- card header  -->
-            <div class="card-header bg-white py-3 text-end">
+            <div class="card-header bg-white py-3 text-end mx-2">
                 <h4 class="mb-0"><a class="btn btn-dark" href="{{ route('fournisseur.create') }}"><i class="bi bi-plus"></i>
                         Ajouter un fournisseur</a> </h4>
             </div>
             <!-- table  -->
             @if (count($fournisseurs) > 0)
-                <div class="table-responsive">
+                <div class="table-responsive mb-3 mx-2">
                     <table class="table text-nowrap mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th>ID</th>
+                                <th>N°</th>
                                 <th>Nom complet</th>
                                 <th>Télephone</th>
+                                <th>RC</th>
+                                <th>ICE</th>
+                                <th>Societé</th>
+                                <th>Dette</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($fournisseurs as $fournisseur)
                                 <tr>
-                                    <td class="align-middle">{{ $fournisseur->id }}</td>
+                                    <td class="align-middle">{{ $loop->iteration }}</td>
                                     <td class="align-middle">{{ $fournisseur->nom_complet }}</td>
                                     <td class="align-middle">{{ $fournisseur->telephone }}</td>
+                                    <td class="align-middle">{{ $fournisseur->rc }}</td>
+                                    <td class="align-middle">{{ $fournisseur->ice }}</td>
+                                    <td class="align-middle">{{ $fournisseur->nom_societe }}</td>
+                                    <td class="align-middle">{{ $fournisseur->dette }}</td>
                                     <td class="align-middle">
                                         <div class="dropdown dropstart">
                                             <a class="text-muted text-primary-hover" href="#" role="button"
@@ -76,7 +84,7 @@
                 <x-data-not-found message="Il y a aucun fournisseur ce moment." />
             @endif
             @if (session()->exists('status'))
-                <div class="alert alert-success" role="alert">
+                <div class="alert alert-success mx-2" role="alert">
                     {{ session('status', '') }}
                 </div>
             @endif

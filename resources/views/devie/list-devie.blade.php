@@ -7,7 +7,7 @@
         <div class="col-lg-12 col-md-12 col-12">
             <!-- Page header -->
             <div class="border-bottom pb-4 mb-4">
-                <h3 class="mb-0 fw-bold">Détails Facture</h3>
+                <h3 class="mb-0 fw-bold">Détails Devis</h3>
             </div>
         </div>
     </div>
@@ -15,9 +15,9 @@
     <div class="py-4">
         <div class="card h-100">
             <!-- card header  -->
-            <div class="card-header bg-white py-3 text-end">
-                <h4 class="mb-0"><a class="btn btn-dark" href="{{ route('devie.index') }}"><i class="bi bi-plus"></i>
-                        Afficher Devis</a></h4>
+            <div class="card-header bg-white py-3 text-end mx-2">
+                <h4 class="mb-0"><a class="btn btn-dark" href="{{ route('devie.index') }}">
+                        Afficher les autres Devis</a></h4>
                 <div class="row text-start mt-3">
                     <div class="col-xs-12 col-md-4">
                         @php
@@ -46,14 +46,14 @@
             </div>
             <!-- table  -->
             @if (count($devie->produits) > 0)
-                <div class="table-responsive">
+                <div class="table-responsive  mx-2 mb-3">
                     <table class="table text-nowrap mb-0">
                         <thead class="table-light">
                             <tr>
                                 <th>N°</th>
                                 <th>REF</th>
                                 <th>Libelle</th>
-                                <th>Quantité</th>
+                                <th>Quantité en stock</th>
                                 <th>Prix Unitaire</th>
                                 <th>Quantité</th>
                                 <th>Prix T</th>
@@ -71,8 +71,8 @@
                                     <td class="align-middle">{{ $produit->price }}</td>
                                     <td class="align-middle">{{ $produit->devie_produit->quantity }}</td>
                                     <td class="align-middle">{{ $produit->price * $produit->devie_produit->quantity }}</td>
-                                    <td class="align-middle">{{ $produit->bon_commande->num }} - {{ $produit->bon_commande->fournisseur->nom_complet }}</td>
-                                    <td class="align-middle">{{ $produit->bon_commande->fournisseur->telephone }}</td>
+                                    <td class="align-middle">@php echo ($produit->bon_commande != null)? $produit->bon_commande->num . '-' . $produit->bon_commande->fournisseur->nom_complet : '- - -' @endphp</td>
+                                    <td class="align-middle">@php echo ($produit->bon_commande != null)? $produit->bon_commande->fournisseur->telephone : '- - -' @endphp</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -82,7 +82,7 @@
                 <x-data-not-found message="Il y a aucun produit pour ce devie." />
             @endif
             @if (session()->exists('status'))
-                <div class="alert alert-success" role="alert">
+                <div class="alert alert-success mx-2" role="alert">
                     {{ session('status', '') }}
                 </div>
             @endif

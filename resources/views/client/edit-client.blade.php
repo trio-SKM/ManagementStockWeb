@@ -6,8 +6,8 @@
     <div class="row">
           <div class="col-lg-12 col-md-12 col-12">
             <!-- Page header -->
-            <div class="border-bottom pb-4 mb-4">             
-                <h3 class="mb-0 fw-bold">Modifier les information d'un client</h3>             
+            <div class="border-bottom pb-4 mb-4">
+                <h3 class="mb-0 fw-bold">Modifier les information d'un client</h3>
             </div>
           </div>
         </div>
@@ -49,13 +49,17 @@
             <input class="form-control" placeholder="N° ICE Ex: 123456789569" type="text" id="ice" name="client_ice" value="{{ $client->ice }}">
         </div>
         <div class="mb-3">
+            <label class="form-label" for="credit">Crédit</label>
+            <input class="form-control" placeholder="Crédit en DHs ..." type="text" id="credit" name="client_credit" value="{{ $client->credit }}">
+        </div>
+        <div class="mb-3">
             <input class="btn btn-primary w-100" type="submit" name="btnAdd" id="btnAdd" value="Modifier">
         </div>
         </form>
         <form action="{{ route('client.destroy', ['client' => $client->id]) }}" method="POST">
             @csrf
             @method('DELETE')
-            <input class="btn btn-danger w-100" type="submit" name="" id="" value="Supprimer">
+            <input class="btn btn-danger w-100 mb-3" type="submit" name="" id="" value="Supprimer">
         </form>
         @if (session('status'))
         <div class="alert alert-success" role="alert">
@@ -67,7 +71,7 @@
                     @foreach ($errors->all() as $error)
                         <li class="list-group-item list-group-item-danger mb-2">{{ $error }}</li>
                     @endforeach
-                </ul>            
+                </ul>
         @endif
                   </div>
                 </div>

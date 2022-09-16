@@ -15,9 +15,9 @@
     <div class="py-4">
         <div class="card h-100">
             <!-- card header  -->
-            <div class="card-header bg-white py-3 text-end">
-                <h4 class="mb-0"><a class="btn btn-dark" href="{{ route('facture.index') }}"><i class="bi bi-plus"></i>
-                        Afficher Factures</a></h4>
+            <div class="card-header bg-white py-3 text-end mx-2">
+                <h4 class="mb-0"><a class="btn btn-dark" href="{{ route('facture.index') }}">
+                        Afficher les Factures</a></h4>
                 <div class="row text-start mt-3">
                     @php
                         use Illuminate\Support\Str;
@@ -28,14 +28,14 @@
                         }
                         $facture_num = $zeros . $facture->num . "/" . $facture->created_at->format('y');
                     @endphp
-                    <div class="col-xs-12 col-md-4">N° Facture: <strong>{{ $ffacture_num }}</strong></div>
+                    <div class="col-xs-12 col-md-4">N° Facture: <strong>{{ $facture_num }}</strong></div>
                     <div class="col-xs-12 col-md-4">Client: <strong>{{ $facture->client->nom_complet }}</strong></div>
                     <div class="col-xs-12 col-md-4 mb-2">Devis N°: <strong>@php echo $facture->devie != null? $facture->devie->num: '- - -' @endphp</strong></div>
                     <div class="col-xs-12 col-md-6">
-                        <a href="{{ route('facture.edit', ['facture' => $facture->id]) }}" class="btn btn-success w-100">Modifier</a>
+                        <a href="{{ route('facture.edit', ['facture' => $facture->num]) }}" class="btn btn-success w-100">Modifier</a>
                     </div>
                     <div class="col-xs-12 col-md-6">
-                        <form action="{{ route('facture.destroy', ['facture' => $facture->id]) }}" method="post">
+                        <form action="{{ route('facture.destroy', ['facture' => $facture->num]) }}" method="post">
                             @csrf
                             @method('DELETE')
                             <button type="submit" name="btnDelete" id="btnDelete" class="btn btn-danger w-100">Supprimer</button>
@@ -48,7 +48,7 @@
                 $produits = $facture->devie == null ? $facture->produits : $facture->devie->produits;
             @endphp
             @if (count($produits) > 0)
-                <div class="table-responsive">
+                <div class="table-responsive mx-2 mb-3">
                     <table class="table text-nowrap mb-0">
                         <thead class="table-light">
                             <tr>
@@ -73,7 +73,8 @@
                                     <td class="align-middle">{{ $produit->price }}</td>
                                     <td class="align-middle">@if ($facture->devie == null) {{ $produit->facture_produit->quantity }} @else {{ $produit->devie_produit->quantity }} @endif</td>
                                     <td class="align-middle">@if ($facture->devie == null) {{ $produit->price * $produit->facture_produit->quantity }} @else {{ $produit->price * $produit->devie_produit->quantity }} @endif</td>
-                                    <td class="align-middle">{{ $produit->bon_commande->fournisseur->telephone }}</td>
+                                    <td class="align-middle">@if ($produit->bon_commande != null) {{ $produit->bon_commande->num . '-' . $produit->bon_commande->fournisseur->num }} @else --- @endif</td>
+                                    <td class="align-middle">@if ($produit->bon_commande != null) {{ $produit->bon_commande->fournisseur->telephone }} @else --- @endif</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -83,7 +84,7 @@
                 <x-data-not-found message="Il y a aucun produit pour cette facture." />
             @endif
             @if (session()->exists('status'))
-                <div class="alert alert-success" role="alert">
+                <div class="alert alert-success mx-2" role="alert">
                     {{ session('status', '') }}
                 </div>
             @endif

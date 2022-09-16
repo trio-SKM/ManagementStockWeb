@@ -2,6 +2,10 @@
 
 @section('title', 'Ajouter Bon De Commande')
 
+@section('custom_meta')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
+
 @section('custom_libs')
 <link href="{{ asset('assets/libs/select2/select2.min.css') }}" rel="stylesheet" />
 @endsection
@@ -24,7 +28,7 @@
                     </div>
                     <form action="{{ route('produit.store') }}" method="post" id="frm_produit">
                         <div class="mb-3">
-                            <input type="text" class="form-control form-control-sm" name="produit_libelle" id="produit_libelle" placeholder="Libelle">  
+                            <input type="text" class="form-control form-control-sm" name="produit_libelle" id="produit_libelle" placeholder="Libelle">
                         </div>
                         <div class="mb-3">
                             <input type="text" class="form-control form-control-sm" id="produit_ref" name="produit_ref" placeholder="REF">
@@ -56,38 +60,43 @@
                         <div class="col-xs-12 col-md-4">
                             <input type="text" id="bon_commande_num" class="form-control form-control-sm" name="bon_commande_num" value="{{ $bon_commande->num }}" placeholder="Numéro bon de commande">
                         </div>
-                        <div class="col-xs-12 col-md-8"> 
-                            <select name="fournisseur" id="fournisseur" class="livesearchfournisseurs form-control"></select>      
+                        <div class="col-xs-12 col-md-8">
+                            <select name="fournisseur" id="fournisseur" class="livesearchfournisseurs form-control">
+                                @foreach($fournisseurs as $fournisseur)
+                                    <option value="{{ $fournisseur->id }}" {{ $fournisseur->id == $bon_commande->fournisseur->id ? 'selected' : '' }}>{{ $fournisseur->nom_complet }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-xs-12 col-md-6 mt-2">
-                            <input type="hidden" name="produits" id="produits_ids">
-                            <button type="submit" name="btnUpdate" id="btnUpdate" class="btn btn-primary btn-sm w-100">Modifier</button>      
+                            {{-- <input type="hidden" name="produits" id="produits_ids"> --}}
+                            <button type="submit" name="btnUpdate" id="btnUpdate" class="btn btn-primary btn-sm w-100">Modifier</button>
                         </div>
-                        <div class="col-xs-12 col-md-6 mt-2">
-                            <form action="{{ route('bon_commande.destroy', ['bon_commande' => $bon_commande->id]) }}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" name="btnDelete" id="" class="btn btn-danger btn-sm w-100">Supprimer</button>
-                            </form>  
-                        </div>
-                    </div>
-                    
-                </div>
-                <div class="table-responsive">
-                @php
-                // TODO: cut this code from here and paste it into a controller (EditBonController).
-                $produits_ids="";
-                if (count($bon_commande->produits) != 0) {
-                    for ($i=0; $i < count($bon_commande->produits); $i++) {
-                        if ($i == 0) {
-                            $produits_ids .= $bon_commande->produits[$i]->id;
-                        }else {
-                            $produits_ids .= "," . $bon_commande->produits[$i]->id;
+                        @php
+                        // TODO: cut this code from here and paste it into a controller (EditBonController).
+                        $produits_ids="";
+                        if (count($bon_commande->produits) != 0) {
+                            for ($i=0; $i < count($bon_commande->produits); $i++) {
+                                if ($i == 0) {
+                                    $produits_ids .= $bon_commande->produits[$i]->id;
+                                }else {
+                                    $produits_ids .= "," . $bon_commande->produits[$i]->id;
+                                }
+                            }
                         }
-                    }
-                }
-                @endphp
-                <input type="hidden" name="produits" id="produits_ids" value="{{ $produits_ids }}">
+                        @endphp
+                        <input type="hidden" name="produits" id="produits_ids" value="{{ $produits_ids }}">
+                    </form>
+                    <div class="col-xs-12 col-md-6 mt-2">
+                        <form action="{{ route('bon_commande.destroy', ['bon_commande' => $bon_commande->id]) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" name="btnDelete" id="" class="btn btn-danger btn-sm w-100">Supprimer</button>
+                        </form>
+                    </div>
+                    </div>
+
+                </div>
+                <div class="table-responsive mx-2 mb-3">
                 @if (count($bon_commande->produits) != 0)
                     <table class="table text-nowrap">
                         <thead class="table-light">
@@ -121,8 +130,19 @@
                     @else
                         <x-data-not-found message="Il y a aucun produit dans ce bon de commande." />
                     @endif
-                    </form>
                 </div>
+                @if (session('status'))
+                    <div class="alert alert-success mx-2" role="alert">
+                        {{ session('status', '') }}
+                    </div>
+                @endif
+                @if ($errors->any())
+                    <ul class="list-group mx-2">
+                        @foreach ($errors->all() as $error)
+                            <li class="list-group-item list-group-item-danger mb-2">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
             </div>
         </div>
     </div>

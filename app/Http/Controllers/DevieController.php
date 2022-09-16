@@ -31,9 +31,10 @@ class DevieController extends Controller
      */
     public function create()
     {
-        $bon_commandes = Bon_commande::all();
+        // $bon_commandes = Bon_commande::all();
+        $produits = Produit::all();
         $clients = Client::all();
-        return view('devie.add-devie', compact('bon_commandes', 'clients'));
+        return view('devie.add-devie', compact('produits', 'clients'));
     }
 
     /**
@@ -118,9 +119,10 @@ class DevieController extends Controller
      */
     public function edit(Devie $devie)
     {
-        $bon_commandes = Bon_commande::all();
+        $produits = Produit::all();
+        // $bon_commandes = Bon_commande::all();
         $clients = Client::all();
-        return view('devie.edit-devie', compact('devie', 'clients', 'bon_commandes'));
+        return view('devie.edit-devie', compact('devie', 'clients', 'produits'));
     }
 
     /**
@@ -133,7 +135,7 @@ class DevieController extends Controller
     public function update(Request $request, Devie $devie)
     {
         $validated = $request->validate([
-            'devie_num' => ($request->devie_num != $devie->num) ? 'required|max:255|unique:devies,num' : 'required',
+            // 'devie_num' => ($request->devie_num != $devie->num) ? 'required|max:255|unique:devies,num' : 'required',
             'client' => 'required|numeric',
             'produits' => [
                 'required',
