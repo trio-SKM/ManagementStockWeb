@@ -1,69 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Show bon</title>
-</head>
+@section('title', 'Details de bon N°' . $bon_commande->num)
 
-<body>
-    <label for="bon_commande_num">Num bon de commande</label>
-    <input type="text" id="bon_commande_num" readonly value="{{$bon_commande->num}}"><br>
-    <label for="fournisseur_nom_complet">Nom complet du fournisseur</label>
-    <input type="text" id="fournisseur_nom_complet" readonly value="{{$bon_commande->fournisseur->nom_complet}}"><br>
-    <label for="fournisseur_tel">Téléphone de fournisseur</label>
-    <input type="text" id="fournisseur_tel" readonly value="{{$bon_commande->fournisseur->telephone}}"><br>
-    <div>
-        <form action="{{ route('bon_commande.destroy', ['bon_commande' => $bon_commande->id]) }}" method="post">
-            @csrf
-            @method('DELETE')
-            <input type="submit" name="" id="" value="supprimer">
-        </form>
-        <a href="{{ route('bon_commande.edit', ['bon_commande' => $bon_commande->id]) }}">Modifier</a><br><br>
-        <a href="{{ route('bon_commande.index') }}">Afficher les bons</a>
-    </div>
-    <table border="1">
-        <thead>
-            <th>N°</th>
-            <th>REF</th>
-            <th>Libelle</th>
-            <th>Prix d'achat</th>
-            <th>Prix Unitaire</th>
-            <th>Quantité</th>
-        </thead>
-        <tbody>
-            @if (count($bon_commande->produits) > 0)
-                @foreach ($bon_commande->produits as $produit)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $produit->ref }}</td>
-                        <td>{{ $produit->libelle }}</td>
-                        <td>{{ $produit->price_buy }}</td>
-                        <td>{{ $produit->price }}</td>
-                        <td>{{ $produit->qte }}</td>
-                    </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="3">Il y a aucun produit pour ce bon de commande.</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+@section('content_page')
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-12">
+            <!-- Page header -->
+            <div class="border-bottom pb-4 mb-4 ">
+                <h3 class="mb-0 fw-bold">Overview {{$bon_commande->num}}</h3>
+            </div>
         </div>
-    @endif
-    @if (session('status'))
-        {{ session('status', '') }}
-    @endif
-</body>
+    </div>
+    <div class="row">
+        <div class="col-xl-4 col-lg-12 col-md-12 col-12 mb-6 mb-xl-0">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center
+                    justify-content-between">
+                        <div>
+                            <h4 class="mb-0">Bon de Commande N°: {{$bon_commande->num}}</h4>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-around">
+                        <div class="text-center">
+                            <h1 class="mt-3  mb-1 fw-bold">{{$bon_commande->fournisseur->nom_complet}}</h1>
+                            <p>Nom founisseurs</p>
+                        </div>
+                        <div class="text-center">
+                            <h1 class="mt-3  mb-1 fw-bold">{{$bon_commande->fournisseur->telephone}}</h1>
+                            <p>Tél Fournisseur</p>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <a href="{{ route('bon_commande.edit', ['bon_commande' => $bon_commande->id]) }}"
+                            class="btn btn-primary">Modifier</a>
+                        <form action="{{ route('bon_commande.destroy', ['bon_commande' => $bon_commande->id]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input class="btn btn-danger w-100" type="submit" name="btn_delete_produit"
+                                id="btn_delete_produit" value="Supprimer">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 col-lg-12 col-md-12 col-12">
+            <div class="card h-100">
+                <div class="card-header bg-white py-4">
+                    <h4 class="mb-0">Historique de produit </h4>
+                </div>
+                 @if (count($bon_commande->produits) > 0)
+                <div class="table-responsive">
+                    <table class="table text-nowrap">
+                        <thead class="table-light">
+                            <tr>
+                                <th>N°</th>
+                                <th>REF</th>
+                                <th>Libelle</th>
+                                <th>Prix d'achat</th>
+                                <th>Prix Unitaire</th>
+                                <th>Quantité</th>
+                            </tr>
+                        </thead>
+                         <tbody>
+                            @foreach ($bon_commande->produits as $produit)
+                                <tr>
+                                    <td class="align-middle">{{ $loop->iteration }}</td>
+                                    <td class="align-middle">{{ $produit->ref }}</td>
+                                    <td class="align-middle">{{ $produit->libelle }}</td>
+                                    <td class="align-middle">{{ $produit->price_buy }}</td>
+                                    <td class="align-middle">{{ $produit->price }}</td>
+                                    <td class="align-middle">{{ $produit->qte }}</td>
+                                </tr>
+                            @endforeach
+                    </tbody>
+                    </table>
+                </div>
+                 @else
+                    <x-data-not-found message="Il y a aucun produit pour ce bon de commande." />
+                @endif
+            </div>
+        </div>
+    </div>
+    </div>
+@endsection
 
-</html>

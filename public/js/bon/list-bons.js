@@ -58,7 +58,7 @@ $(".btn_show_produits").click(function (e) {
  * Clear table products
  */
 function removeProductsFromTable() {
-    jQuery("table:nth-of-type(2) tbody tr").remove();
+    jQuery("#table-details-bon tbody tr").remove();
     nbProduit = 0;
 }
 /**
