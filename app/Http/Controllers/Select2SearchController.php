@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use App\Models\Produit;
+use App\Models\Fournisseur;
 use Illuminate\Http\Request;
 
 class Select2SearchController extends Controller
@@ -32,5 +33,17 @@ class Select2SearchController extends Controller
             		->get();
         }
         return response()->json($produits);
+    }
+
+    public function selectSearchFournisseur(Request $request) 
+    {
+        $fournisseurs = [];
+        if($request->has('q')){
+            $search  = $request->q;
+            $fournisseurs = Fournisseur::select("id", "nom_complet")
+            		->where('nom_complet', 'LIKE', "%$search%")
+            		->get();
+        }
+        return response()->json($fournisseurs);
     }
 }

@@ -5,6 +5,45 @@ var produitToOperate = null;
 var selectedTr = null;
 
 $(document).ready(function () {
+    $('.livesearchclient').select2({
+        placeholder: 'Select Client',
+        ajax: {
+            url: '/ajax-autocomplete-search',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.nom_complet,
+                            id: item.id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+    $('.livesearchproduit').select2({
+        placeholder: 'Select Produit',
+        ajax: {
+            url: '/ajax-autocomplete-search-produit',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        produitToOperate = item
+                        return {
+                            text: item.ref,
+                            id: item.id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
     // display all info for the first product when the page has been successfully loading:
     if (bons.length != 0) {
         $("#list_produits").trigger('change');
@@ -22,19 +61,19 @@ $("#list_produits").change(function (e) {
     }
 
     // to find the product by id:
-    bons.forEach(bon => {
-        bon.produits.forEach(prd => {
-            if (prd.id == produit_id) {
-                produitToOperate = prd;
-            }
-        })
-    });
+    // bons.forEach(bon => {
+    //     bon.produits.forEach(prd => {
+    //         if (prd.id == produit_id) {
+    //             produitToOperate = prd;
+    //         }
+    //     })
+    // });
 
     // fill inputs with product's data:
-    jQuery('#produit_ref').val(produitToOperate.ref);
+    //jQuery('#produit_ref').val(produitToOperate.ref);
     jQuery('#produit_price').val(produitToOperate.price);
-    jQuery('#produit_qte_stock').val(produitToOperate.qte);
-    jQuery('#bon_commande').val(jQuery(this)[0].selectedOptions[0].dataset.bon_commande_num_fournisseur_nom);
+    //jQuery('#produit_qte_stock').val(produitToOperate.qte);
+    //jQuery('#bon_commande').val(jQuery(this)[0].selectedOptions[0].dataset.bon_commande_num_fournisseur_nom);
 });
 // calculate the global price by the selected quantity:
 $("#produit_qte").change(function (e) {
