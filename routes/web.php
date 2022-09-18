@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/dashboard', function () {
     return view('dashboard');
 });
 Route::view('/login', 'auth.login')->name('login-view');
@@ -48,3 +48,8 @@ Route::get('ajax-autocomplete-search-produit', [Select2SearchController::class,'
 Route::get('/dashboard/clients/credit', [DashboardController::class, 'clientsWithCredit'])->name('clients-credit');
 Route::get('/dashboard/fournisseurs/dette', [DashboardController::class, 'fournisseursWithDette'])->name('fournisseurs-dette');
 Route::get('impression/{id}/{type}', [PrintingController::class, 'imprimer'])->name('impression');
+Route::get('ajax-autocomplete-search-fournisseur', [Select2SearchController::class,'selectSearchFournisseur']);
+
+Auth::routes();
+
+Route::get('/home', [DashboardController::class, 'index'])->name('dashboard');

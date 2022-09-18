@@ -104,10 +104,10 @@
                             <div id="navFacture" class="collapse " data-bs-parent="#sideNavbar">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('fournisseur.create') }}"> Ajouter Facture</a>
+                                        <a class="nav-link" href="{{ route('facture.create') }}"> Ajouter Facture</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('fournisseur.index') }}">List des Factures</a>
+                                        <a class="nav-link" href="{{ route('facture.index') }}">List des Factures</a>
                                     </li>
                                 </ul>
                             </div>

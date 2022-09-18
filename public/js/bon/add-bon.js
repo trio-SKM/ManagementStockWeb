@@ -4,6 +4,27 @@ var produits = [];
 var produitToModify = null;
 var selectedTr = null;
 
+$(document).ready(function () {
+    $('.livesearchfournisseurs').select2({
+        placeholder: 'Select Fournisseur',
+        ajax: {
+            url: '/ajax-autocomplete-search-fournisseur',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.nom_complet,
+                            id: item.id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+});
 // to Add new product that will be associated with this order form(bon de commande):
 $("#btn_add_produit").click(function (e) {
     $.ajaxSetup({

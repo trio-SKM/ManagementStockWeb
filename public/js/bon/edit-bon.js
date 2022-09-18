@@ -2,6 +2,27 @@ console.log("hello from edit bon");
 var nbProduit = 0;
 var produitToModify = null;
 var selectedTr = null;
+$(document).ready(function () {
+    $('.livesearchfournisseurs').select2({
+        placeholder: 'Select Fournisseur',
+        ajax: {
+            url: '/ajax-autocomplete-search-fournisseur',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.nom_complet,
+                            id: item.id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+});
 
 $(document).ready(function () {
     nbProduit = jQuery("table:nth-of-type(1) tbody tr").length; // get number of products.

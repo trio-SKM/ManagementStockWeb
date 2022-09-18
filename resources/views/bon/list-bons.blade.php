@@ -27,7 +27,7 @@
         <div class="col-lg-12 col-md-12 col-12">
             <!-- Page header -->
             <div class="border-bottom pb-4 mb-4">
-                <h3 class="mb-0 fw-bold">List des Fournisseurs</h3>
+                <h3 class="mb-0 fw-bold">List des Bon de Commandes</h3>
             </div>
         </div>
     </div>

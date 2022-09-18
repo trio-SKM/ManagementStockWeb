@@ -1,32 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Edit bon</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-</head>
+@section('title', 'Ajouter Bon De Commande')
 
-<body>
-    <div>
-        <form action="{{ route('bon_commande.update', ['bon_commande' => $bon_commande->id]) }}" method="post">
-            @csrf
-            @method('PUT')
-            <label for="bon_commande_num">Num bon de commande</label>
-            <input type="text" id="bon_commande_num" name="bon_commande_num" value="{{ $bon_commande->num }}"><br>
-            <label for="bon_commande">Fournisseur</label>
-            <select name="fournisseur_id" id="fournisseur_id">
-                @foreach ($fournisseurs as $fournisseur)
-                    <option value="{{ $fournisseur->id }}"
-                        {{ $fournisseur->id == $bon_commande->fournisseur->id ? 'selected' : '' }}>
-                        {{ $fournisseur->nom_complet }}
-                    </option>
-                @endforeach
-            </select>
-            @php
+@section('custom_libs')
+<link href="{{ asset('assets/libs/select2/select2.min.css') }}" rel="stylesheet" />
+@endsection
+
+@section('content_page')
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-12">
+            <!-- Page header -->
+            <div class="border-bottom pb-4 mb-4 ">
+                <h3 class="mb-0 fw-bold">Modifier bon de commande</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-lg-12 col-md-12 col-12 mb-6 mb-xl-0">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="card-header bg-white">
+                        <h4 class="border-bottom">Ajouter produit</h4>
+                    </div>
+                    <form action="{{ route('produit.store') }}" method="post" id="frm_produit">
+                        <div class="mb-3">
+                            <input type="text" class="form-control form-control-sm" name="produit_libelle" id="produit_libelle" placeholder="Libelle">  
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control form-control-sm" id="produit_ref" name="produit_ref" placeholder="REF">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control form-control-sm" id="produit_price_buy" name="produit_price_buy" placeholder="Prix U (prix d'achat)">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control form-control-sm" id="produit_price" name="produit_price" placeholder="Prix U">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control form-control-sm" id="produit_qte" name="produit_qte" placeholder="Quantité">
+                        </div>
+                        <div class="mb-3">
+                            <input type="submit" id="btn_add_produit" value="Ajouter ce produit" class="btn btn-primary btn-sm w-100">
+                            <input type="submit" style="visibility: collapse" id="btn_update_produit" value="Modifier ce produit" class="btn btn-success btn-sm w-100">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-lg-12 col-md-12 col-12">
+            <div class="card h-100">
+                <div class="card-header bg-white py-4">
+                    <form action="{{ route('bon_commande.update', ['bon_commande' => $bon_commande->id]) }}" method="post">
+                    @csrf
+                    @method('PUT')
+                    <div class="row">
+                        <div class="col-xs-12 col-md-4">
+                            <input type="text" id="bon_commande_num" class="form-control form-control-sm" name="bon_commande_num" value="{{ $bon_commande->num }}" placeholder="Numéro bon de commande">
+                        </div>
+                        <div class="col-xs-12 col-md-8"> 
+                            <select name="fournisseur" id="fournisseur" class="livesearchfournisseurs form-control"></select>      
+                        </div>
+                        <div class="col-xs-12 col-md-6 mt-2">
+                            <input type="hidden" name="produits" id="produits_ids">
+                            <button type="submit" name="btnUpdate" id="btnUpdate" class="btn btn-primary btn-sm w-100">Modifier</button>      
+                        </div>
+                        <div class="col-xs-12 col-md-6 mt-2">
+                            <form action="{{ route('bon_commande.destroy', ['bon_commande' => $bon_commande->id]) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" name="btnDelete" id="" class="btn btn-danger btn-sm w-100">Supprimer</button>
+                            </form>  
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="table-responsive">
+                @php
                 // TODO: cut this code from here and paste it into a controller (EditBonController).
                 $produits_ids="";
                 if (count($bon_commande->produits) != 0) {
@@ -38,21 +86,23 @@
                         }
                     }
                 }
-            @endphp
-            <input type="hidden" name="produits" id="produits_ids" value="{{ $produits_ids }}">
-            <table border="1">
-                <thead>
-                    <th>N°</th>
-                    <th>REF</th>
-                    <th>Libelle</th>
-                    <th>Prix d'achat</th>
-                    <th>Prix Unitaire</th>
-                    <th>Quantité</th>
-                    <th colspan="2">actions</th>
-                </thead>
-                <tbody id="tbl_tbody_produits">
-                    @if (count($bon_commande->produits) != 0)
-                        @for($i=0; $i<count($bon_commande->produits); $i++)
+                @endphp
+                <input type="hidden" name="produits" id="produits_ids" value="{{ $produits_ids }}">
+                @if (count($bon_commande->produits) != 0)
+                    <table class="table text-nowrap">
+                        <thead class="table-light">
+                            <tr>
+                                <th>N°</th>
+                                <th>REF</th>
+                                <th>Libelle</th>
+                                <th>Prix d'achat</th>
+                                <th>Prix Unitaire</th>
+                                <th>Quantité</th>
+                                <th colspan="2">actions</th>
+                            </tr>
+                        </thead>
+                         <tbody id="tbl_tbody_produits">
+                            @for($i=0; $i<count($bon_commande->produits); $i++)
                             <tr>
                                 <td>{{$i + 1}}</td>
                                 <td>{{ $bon_commande->produits[$i]->ref }}</td>
@@ -60,60 +110,28 @@
                                 <td>{{ $bon_commande->produits[$i]->price_buy }}</td>
                                 <td>{{ $bon_commande->produits[$i]->price }}</td>
                                 <td>{{ $bon_commande->produits[$i]->qte }}</td>
-                                <td><button class="btn_edit_produit" data-produit_id="{{$bon_commande->produits[$i]->id}}">modifier</button></td>
-                                <td><button class="btn_delete_produit" data-produit_id="{{$bon_commande->produits[$i]->id}}">supprimer</button></td>
+                                <td>
+                                <button class="btn btn-success btn-sm btn_edit_produit" data-produit_id="{{$bon_commande->produits[$i]->id}}"><i class="bi bi-pencil-square"></i></button>
+                                <button class="btn btn-danger btn-sm btn_delete_produit" data-produit_id="{{$bon_commande->produits[$i]->id}}"><i class="bi bi-trash3"></i></button>
+                                </td>
                             </tr>
-                        @endfor
+                            @endfor
+                        </tbody>
+                    </table>
                     @else
-                        <tr id="trIndicator">
-                            <td colspan="6">Il y a aucun produit dans ce bon de commande.</td>
-                        </tr>
+                        <x-data-not-found message="Il y a aucun produit dans ce bon de commande." />
                     @endif
-                </tbody>
-            </table>
-            <input type="submit" name="btnUpdate" id="" value="modifier">
-        </form>
-        <br><br><br>
-        <div>
-            <form action="{{ route('bon_commande.destroy', ['bon_commande' => $bon_commande->id]) }}" method="post">
-                @csrf
-                @method('DELETE')
-                <input type="submit" name="" id="" value="supprimer">
-            </form>
-            <a href="{{ route('bon_commande.index') }}">afficher les bon de commande</a>
-        </div>
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+                    </form>
+                </div>
             </div>
-        @endif
-        @if (session('status'))
-            {{ session('status', '') }}
-        @endif
+        </div>
     </div>
-    <div>
-        <label for="produit_libelle">Libelle</label>
-        <input type="text" name="produit_libelle" id="produit_libelle"><br>
-        <label for="produit_ref">REF</label>
-        <input type="text" id="produit_ref" name="produit_ref"><br>
-        <label for="produit_price_buy">Prix U (prix d'achat)</label>
-        <input type="text" id="produit_price_buy" name="produit_price_buy"><br>
-        <label for="produit_price">Prix U</label>
-        <input type="text" id="produit_price" name="produit_price"><br>
-        <label for="produit_qte">Quantité en stock</label>
-        <input type="text" id="produit_qte" name="produit_qte"><br>
-        <input type="submit" id="btn_add_produit" value="ajouter ce produit">
-        <input type="submit" style="visibility: collapse" id="btn_update_produit" value="modifier ce produit">
     </div>
-
+@endsection
+@section('custom_script')
     <script>
         var produits = {{ Illuminate\Support\Js::from($bon_commande->produits) }};
     </script>
+    <script src="{{ asset('assets/libs/select2/select2.min.js') }}"></script>
     <script src="{{ asset('js/bon/edit-bon.js') }}"></script>
-</body>
-
-</html>
+@endsection
