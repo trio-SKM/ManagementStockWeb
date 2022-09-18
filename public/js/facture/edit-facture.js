@@ -5,6 +5,46 @@ var produitToOperate = null;
 var selectedTr = null;
 
 $(document).ready(function () {
+    $('.livesearchclient').select2({
+        placeholder: 'Select Client',
+        ajax: {
+            url: '/ajax-autocomplete-search',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.nom_complet,
+                            id: item.id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+    $('.livesearchproduit').select2({
+        placeholder: 'Select Produit',
+        ajax: {
+            url: '/ajax-autocomplete-search-produit',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        produitToOperate = item
+                        return {
+                            text: item.ref,
+                            id: item.id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+    
     nbProduit = jQuery("table:nth-of-type(1) tbody tr").length; // get number of products.
     // display all info for the first product when the page has been successfully loading:
     if (bons.length != 0) {

@@ -2,7 +2,7 @@
     <div class="nav-scroller">
         <!-- Brand logo -->
         <a class="navbar-brand" href="./index.html">
-            <img src="./assets/images/brand/logo/logo.svg" alt="" />
+            <img src="{{asset('assets/images/brand/logo/logo.svg')}}" alt="" />
         </a>
         <!-- Navbar nav -->
         <ul class="navbar-nav flex-column" id="sideNavbar">
