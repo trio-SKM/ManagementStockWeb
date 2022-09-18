@@ -1,83 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Show facture</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-</head>
+@section('title', 'Detail Facture N° ')
 
-<body>
-    <label for="facture_num">Num facture</label>
-    <input type="text" id="facture_num" readonly name="facture_num" value="{{ $facture->num }}"><br>
-    <label for="client">Client</label>
-    <input type="text" id="client" readonly name="client" value="{{ $facture->client->nom_complet }}"><br>
-    <label for="devie">Devis</label>
-    <input type="text" id="devie" readonly name="devie"
-        value="@php echo $facture->devie != null? $facture->devie->num: '- - -' @endphp"><br>
-    <div>
-        <a href="{{ route('facture.index') }}">Afficher les factures</a><br>
-        <a href="{{ route('facture.edit', ['facture' => $facture->id]) }}">Modifier</a><br>
-        <form action="{{ route('facture.destroy', ['facture' => $facture->id]) }}" method="post">
-            @csrf
-            @method('DELETE')
-            <input type="submit" name="" id="" value="supprimer">
-        </form>
+@section('content_page')
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-12">
+            <!-- Page header -->
+            <div class="border-bottom pb-4 mb-4">
+                <h3 class="mb-0 fw-bold">Détails Facture</h3>
+            </div>
+        </div>
     </div>
 
-    <table border="1">
-        <thead>
-            <th>N°</th>
-            <th>REF</th>
-            <th>Libelle</th>
-            <th>Quantité en stock</th>
-            <th>Prix Unitaire</th>
-            <th>Quantité</th>
-            <th>Prix T</th>
-            <th>Bon de commande - Fournisseur</th>
-            <th>Telephone</th>
-        </thead>
-        <tbody>
+    <div class="py-4">
+        <div class="card h-100">
+            <!-- card header  -->
+            <div class="card-header bg-white py-3 text-end">
+                <h4 class="mb-0"><a class="btn btn-dark" href="{{ route('facture.index') }}"><i class="bi bi-plus"></i>
+                        Afficher Factures</a></h4>
+                <div class="row text-start mt-3">
+                    <div class="col-xs-12 col-md-4">N° Facture: <strong>{{ $facture->num }}</strong></div>
+                    <div class="col-xs-12 col-md-4">Client: <strong>{{ $facture->client->nom_complet }}</strong></div>
+                    <div class="col-xs-12 col-md-4 mb-2">Devis N°: <strong>@php echo $facture->devie != null? $facture->devie->num: '- - -' @endphp</strong></div>
+                    <div class="col-xs-12 col-md-6">
+                        <a href="{{ route('facture.edit', ['facture' => $facture->id]) }}" class="btn btn-success w-100">Modifier</a>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <form action="{{ route('facture.destroy', ['facture' => $facture->id]) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" name="btnDelete" id="btnDelete" class="btn btn-danger w-100">Supprimer</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- table  -->
             @php
                 $produits = $facture->devie == null ? $facture->produits : $facture->devie->produits;
             @endphp
             @if (count($produits) > 0)
-                @foreach ($produits as $produit)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $produit->ref }}</td>
-                        <td>{{ $produit->libelle }}</td>
-                        <td>{{ $produit->qte }}</td>
-                        <td>{{ $produit->price }}</td>
-                        <td>@if ($facture->devie == null) {{ $produit->facture_produit->quantity }} @else {{ $produit->devie_produit->quantity }} @endif</td>
-                        <td> @if ($facture->devie == null) {{ $produit->price * $produit->facture_produit->quantity }} @else {{ $produit->price * $produit->devie_produit->quantity }} @endif</td>
-                        <td>{{ $produit->bon_commande->num }} - {{ $produit->bon_commande->fournisseur->nom_complet }}
-                        </td>
-                        <td>{{ $produit->bon_commande->fournisseur->telephone }}</td>
-                    </tr>
-                @endforeach
+                <div class="table-responsive">
+                    <table class="table text-nowrap mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>N°</th>
+                                <th>REF</th>
+                                <th>Libelle</th>
+                                <th>Quantité en stock</th>
+                                <th>Prix Unitaire</th>
+                                <th>Quantité</th>
+                                <th>Prix T</th>
+                                <th>Bon de commande - Fournisseur</th>
+                                <th>Telephone</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($produits as $produit)
+                                <tr>
+                                    <td class="align-middle">{{ $loop->iteration }}</td>
+                                    <td class="align-middle">{{ $produit->ref }}</td>
+                                    <td class="align-middle">{{ $produit->libelle }}</td>
+                                    <td class="align-middle">{{ $produit->qte }}</td>
+                                    <td class="align-middle">{{ $produit->price }}</td>
+                                    <td class="align-middle">@if ($facture->devie == null) {{ $produit->facture_produit->quantity }} @else {{ $produit->devie_produit->quantity }} @endif</td>
+                                    <td class="align-middle">@if ($facture->devie == null) {{ $produit->price * $produit->facture_produit->quantity }} @else {{ $produit->price * $produit->devie_produit->quantity }} @endif</td>
+                                    <td class="align-middle">{{ $produit->bon_commande->fournisseur->telephone }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             @else
-                <tr>
-                    <td colspan="9">Il y a aucun produit pour cette facture.</td>
-                </tr>
+                <x-data-not-found message="Il y a aucun produit pour cette facture." />
             @endif
-        </tbody>
-    </table>
-    <!-- Do this part with AJAX request: begin-->
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+            @if (session()->exists('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status', '') }}
+                </div>
+            @endif
         </div>
-    @endif
-    @if (session('status'))
-        {{ session('status', '') }}
-    @endif
-</body>
-
-</html>
+    </div>
+@endsection

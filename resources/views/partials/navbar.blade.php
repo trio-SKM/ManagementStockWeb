@@ -104,7 +104,7 @@
         <a class="rounded-circle" href="#" role="button" id="dropdownUser"
           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <div class="avatar avatar-md avatar-indicators avatar-online">
-            <img alt="avatar" src="./assets/images/avatar/avatar-1.jpg"
+            <img alt="avatar" src="{{asset('assets/images/avatar/avatar-1.jpg')}}"
               class="rounded-circle" />
           </div>
         </a>
@@ -151,10 +151,13 @@
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="./index.html">
+              <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class="me-2 icon-xxs dropdown-item-icon"
-                  data-feather="power"></i>Sign Out
+                  data-feather="power"></i>Déconnextion
               </a>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+              </form>
             </li>
           </ul>
 

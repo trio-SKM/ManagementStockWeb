@@ -81,11 +81,11 @@
                     <tfoot id="tbl_tfoot_price_global">
                         <tr>
                             <td colspan="2">Prix total HT</td>
-                            <td colspan="7" id="prix_total_devie_HT">...</td>
+                            <td colspan="7" id="prix_total_facture_HT">...</td>
                         </tr>
                         <tr>
                             <td colspan="2">Prix total (TT) du devie</td>
-                            <td colspan="7" id="prix_total_devie_TT">...</td>
+                            <td colspan="7" id="prix_total_facture_TT">...</td>
                         </tr>
                     </tfoot>
                 </table>
