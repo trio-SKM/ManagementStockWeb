@@ -33,7 +33,11 @@
                     </div>
                     <div class="col-xs-12 col-md-8">
                         <div class="input-group">
-                            <select form="frm_add_devie" class="livesearchclient form-control" id="client" name="client"></select>
+                            <select form="frm_add_devie" class="livesearchclient form-control" id="client" name="client">
+                                @foreach($clients as $client)
+                                    <option value="{{ $client->id }}" {{ $client->id == $devie->client->id ? 'selected' : '' }}>{{ $client->nom_complet }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
