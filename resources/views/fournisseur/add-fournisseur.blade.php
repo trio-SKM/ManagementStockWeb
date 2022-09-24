@@ -48,7 +48,7 @@
             <input class="form-control" placeholder="N° ICE Ex: 123456789569" type="text" id="ice" name="fournisseur_ice" value="{{ old('fournisseur_ice') }}">
         </div>
         <div class="mb-3">
-            <input class="btn btn-primary" type="submit" name="btnAdd" id="btnAdd" value="Ajouter">
+            <input class="btn btn-primary w-100" type="submit" name="btnAdd" id="btnAdd" value="Ajouter">
         </div>
         </form>
         @if (session('status'))

@@ -15,6 +15,9 @@
     <link href="{{asset('assets/libs/dropzone/dist/dropzone.css')}}"  rel="stylesheet">
     <link href="{{asset('assets/libs/@mdi/font/css/materialdesignicons.min.css')}}" rel="stylesheet" />
     <link href="{{asset('assets/libs/prismjs/themes/prism-okaidia.min.css')}}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" rel="stylesheet"  />
+ 
     @yield('custom_libs')
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/theme.min.css')}}">
@@ -57,6 +60,10 @@
     <script src="{{asset('assets/libs/dropzone/dist/min/dropzone.min.js')}}"></script>
     <script src="{{asset('assets/libs/prismjs/plugins/toolbar/prism-toolbar.min.js')}}"></script>
     <script src="{{asset('assets/libs/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js')}}"></script>
+    
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
     <!-- Optional JavaScript -->
     @yield('custom_script')
 

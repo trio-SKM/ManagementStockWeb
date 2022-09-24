@@ -21,7 +21,7 @@
                 <!-- table  -->
                 @if (count($clients) > 0)
                 <div class="table-responsive mb-3 mx-2">
-                  <table class="table text-nowrap mb-0">
+                  <table class="table text-nowrap mb-0" id="mytable">
                     <thead class="table-light">
                       <tr>
                         <th>N°</th>

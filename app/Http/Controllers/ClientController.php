@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
 class ClientController extends Controller
 {
     /**
@@ -36,13 +36,27 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'client_name' => 'required|max:255',
-            'client_rc' => 'required|unique:clients,rc|numeric',
-            'client_nom_societe' => 'required|max:255',
-            'client_ice' => 'required|unique:clients,ice|numeric',
-        ]);
-
+        Validator::make(
+            $request->all(),
+            [
+                'client_name' => 'required|max:255',
+                'client_rc' => 'required|unique:clients,rc|numeric',
+                'client_nom_societe' => 'required|max:255',
+                'client_ice' => 'required|unique:clients,ice|numeric',
+            ],
+            [
+                'required' => 'Le champs :attribute est obligatoire.',
+                'unique' => 'Le champs :attribute doit être unique.',
+                'numeric' => 'Le champs :attribute doit être numerique',
+                'max'
+            ],
+            [
+                'client_name' => 'Nom Complet',
+                'client_rc' => 'RC',
+                'client_nom_societe' => 'Nom de la société',
+                'client_ice' => 'ICE',
+            ]
+        )->validate();
         $client = Client::create([
             'nom_complet' => $request->client_name,
             'telephone' => $request->client_tele,

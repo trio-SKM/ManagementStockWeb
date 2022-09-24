@@ -94,3 +94,10 @@
         </div>
     </div>
 @endsection
+@section('custom_script')
+<script>
+    $(document).ready(function () {
+    $('#mytable').DataTable();
+});
+</script>
+@endsection
