@@ -17,13 +17,11 @@ class ListDeviesController extends Controller
             'devie' => 'required|numeric',
         ]);
 
-        $devie = Devie::find($request->devie);
+        $devie = Devie::where('num', $request->devie)->first();
         $client = Client::find($devie->client->id);
-        // $facture = new Facture(['num' => $request->facture_num,]);
         $facture = new Facture;
-        $facture->increment('num');
         if ($devie && $client) {
-            // to calculate quantities (decrease or increase):
+            // to calculate quantities (decrease):
             for ($i=0; $i < count($devie->produits); $i++) {
                 if ($this->checkQuantity($devie->produits[$i])) {
                     $devie->produits[$i]->qte -= $devie->produits[$i]->devie_produit->quantity;

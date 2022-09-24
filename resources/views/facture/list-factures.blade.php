@@ -90,16 +90,16 @@
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownTeamOne">
                                                 <a class="dropdown-item"
-                                                    href="@php echo $facture->devie != Null ? route('devie.edit', ['devie' => $facture->devie->id]) : route('facture.edit', ['facture' => $facture->id]) @endphp">Modifier</a>
+                                                    href="@php echo $facture->devie != Null ? route('devie.edit', ['devie' => $facture->devie->num]) : route('facture.edit', ['facture' => $facture->num]) @endphp">Modifier</a>
                                                 <form
-                                                    action="{{ route('facture.destroy', ['facture' => $facture->id]) }}"
+                                                    action="{{ route('facture.destroy', ['facture' => $facture->num]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="dropdown-item">Supprimer</button>
                                                 </form>
                                                 <a class="dropdown-item"
-                                                    href="{{ route('facture.show', ['facture' => $facture->id]) }}">Détails</a>
+                                                    href="{{ route('facture.show', ['facture' => $facture->num]) }}">Détails</a>
                                             </div>
                                         </div>
                                     </td>

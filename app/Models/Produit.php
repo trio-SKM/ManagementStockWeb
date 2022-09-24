@@ -34,7 +34,7 @@ class Produit extends Model
      */
     public function devies()
     {
-        return $this->belongsToMany(Devie::class)
+        return $this->belongsToMany(Devie::class, 'devie_produit', 'produit_id', 'devie_id')
                     ->as('devie_produit')
                     ->withPivot('quantity')
                     ->withTimestamps();

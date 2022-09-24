@@ -23,19 +23,19 @@ $(".btn_show_produits").click(function () {
     });
 });
 // convert quotation (devis) to invoice (facture):
-$(".btn_convert_to_invoice").click(function (e) {
-    e.preventDefault();
-    debugger
-    let devie_id = jQuery(this).data('devie_id');
-    // check if there's no hacking across html:
-    if (isNaN(devie_id)) {
-        alert('Vous ne devez pas jouer sur les éléments HTML qui ne vous concernent pas.');
-        return;
-    }
-    jQuery("#frm_conversion_to_invoice").css("visibility", "visible");
-    jQuery("#devie").val(devie_id);
+// $(".btn_convert_to_invoice").click(function (e) {
+//     e.preventDefault();
+//     debugger
+//     let devie_id = jQuery(this).data('devie_id');
+//     // check if there's no hacking across html:
+//     if (isNaN(devie_id)) {
+//         alert('Vous ne devez pas jouer sur les éléments HTML qui ne vous concernent pas.');
+//         return;
+//     }
+//     jQuery("#frm_conversion_to_invoice").css("visibility", "visible");
+//     jQuery("#devie").val(devie_id);
 
-});
+// });
 
 /**
  * Clear table products
