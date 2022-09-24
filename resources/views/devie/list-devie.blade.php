@@ -20,14 +20,23 @@
                         Afficher Devis</a></h4>
                 <div class="row text-start mt-3">
                     <div class="col-xs-12 col-md-4">
-                        N° Devis: <strong>{{ $devie->num }} </strong>
+                        @php
+                            use Illuminate\Support\Str;
+                            $zeros = "";
+                            $nb_zeros = 8 - Str::length($devie->num);
+                            for ($i=0; $i < $nb_zeros; $i++) {
+                                $zeros .= "0";
+                            }
+                            $devie_num = $zeros . $devie->num . "/" . $devie->created_at->format('y');
+                        @endphp
+                        N° Devis: <strong>{{ $devie_num }} </strong>
                             Client: <strong>{{ $devie->client->nom_complet }}</strong>
                     </div>
                     <div class="col-xs-12 col-md-4">
-                        <a href="{{ route('devie.edit', ['devie' => $devie->id]) }}" class="btn btn-success w-100">Modifier</a>
+                        <a href="{{ route('devie.edit', ['devie' => $devie->num]) }}" class="btn btn-success w-100">Modifier</a>
                     </div>
                     <div class="col-xs-12 col-md-4">
-                        <form action="{{ route('devie.destroy', ['devie' => $devie->id]) }}" method="post">
+                        <form action="{{ route('devie.destroy', ['devie' => $devie->num]) }}" method="post">
                             @csrf
                             @method('DELETE')
                             <button type="submit" name="btnDelete" id="btnDelete" class="btn btn-danger w-100">Supprimer</button>

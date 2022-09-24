@@ -29,7 +29,16 @@
             <div class="card-header bg-white py-4">
                 <div class="row">
                     <div class="col-xs-12 col-md-4">
-                        <input class="form-control form-control-sm" placeholder="N° facture" type="text" id="facture_num" name="facture_num" value="{{ $facture->num }}">
+                        @php
+                            use Illuminate\Support\Str;
+                            $zeros = "";
+                            $nb_zeros = 8 - Str::length($facture->num);
+                            for ($i=0; $i < $nb_zeros; $i++) {
+                                $zeros .= "0";
+                            }
+                            $facture_num = $zeros . $facture->num . "/" . $facture->created_at->format('y');
+                        @endphp
+                        <input class="form-control form-control-sm" placeholder="N° facture" type="text" id="facture_num" name="facture_num" value="{{ $facture_num }}">
                     </div>
                     <div class="col-xs-12 col-md-8">
                         <div class="input-group">

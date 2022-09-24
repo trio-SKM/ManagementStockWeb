@@ -16,7 +16,7 @@ class CreateDevieProduitTable extends Migration
     {
         Schema::create('devie_produit', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('devie_id')->constrained('devies')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('devie_id')->constrained('devies', 'num')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('produit_id')->constrained('produits')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('quantity');
             $table->timestamps();

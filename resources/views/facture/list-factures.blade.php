@@ -1,3 +1,6 @@
+@php
+    use Illuminate\Support\Str;
+@endphp
 @extends('app')
 
 @section('title', 'List de Facture')
@@ -57,7 +60,15 @@
                             @foreach ($factures as $facture)
                                 <tr>
                                     <td class="align-middle">{{ $loop->iteration }}</td>
-                                    <td class="align-middle">{{ $facture->num }}</td>
+                                    @php
+                                        $zeros = "";
+                                        $nb_zeros = 8 - Str::length($facture->num);
+                                        for ($i=0; $i < $nb_zeros; $i++) {
+                                            $zeros .= "0";
+                                        }
+                                        $facture_num = $zeros . $facture->num . "/" . $facture->created_at->format('y');
+                                    @endphp
+                                    <td class="align-middle">{{ $facture_num }}</td>
                                     <td class="align-middle">{{ $facture->client->nom_complet }}</td>
                                     <td class="align-middle">@if($facture->devie != null) {{$facture->devie->num}} @else --- @endif</td>
                                     <td class="align-middle">

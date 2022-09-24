@@ -19,7 +19,16 @@
                 <h4 class="mb-0"><a class="btn btn-dark" href="{{ route('facture.index') }}"><i class="bi bi-plus"></i>
                         Afficher Factures</a></h4>
                 <div class="row text-start mt-3">
-                    <div class="col-xs-12 col-md-4">N° Facture: <strong>{{ $facture->num }}</strong></div>
+                    @php
+                        use Illuminate\Support\Str;
+                        $zeros = "";
+                        $nb_zeros = 8 - Str::length($facture->num);
+                        for ($i=0; $i < $nb_zeros; $i++) {
+                            $zeros .= "0";
+                        }
+                        $facture_num = $zeros . $facture->num . "/" . $facture->created_at->format('y');
+                    @endphp
+                    <div class="col-xs-12 col-md-4">N° Facture: <strong>{{ $ffacture_num }}</strong></div>
                     <div class="col-xs-12 col-md-4">Client: <strong>{{ $facture->client->nom_complet }}</strong></div>
                     <div class="col-xs-12 col-md-4 mb-2">Devis N°: <strong>@php echo $facture->devie != null? $facture->devie->num: '- - -' @endphp</strong></div>
                     <div class="col-xs-12 col-md-6">
