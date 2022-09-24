@@ -10,6 +10,12 @@ class Facture extends Model
     use HasFactory;
 
     /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'num';
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -40,6 +46,6 @@ class Facture extends Model
      */
     public function devie()
     {
-        return $this->belongsTo(Devie::class);
+        return $this->belongsTo(Devie::class,'devie_id', 'num');
     }
 }

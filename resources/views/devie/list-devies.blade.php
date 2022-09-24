@@ -94,9 +94,13 @@ use Illuminate\Support\Str;
                                                 class="bi bi-eye"></i></button></td>
                                     <td>
                                         @if ($devie->facture == null)
-                                            <button class="btn btn-primary btn_convert_to_invoice"
+                                        <form action="{{ route('covertToInvoice') }}" method="post">
+                                            @csrf
+                                            <input type="hidden" name="devie" value="{{ $devie->num }}">
+                                            <button type="submit" class="btn btn-primary btn_convert_to_invoice"
                                                 data-devie_id="{{ $devie->num }}"><i
                                                     class="bi bi-arrow-left-right"></i></button>
+                                        </form>
                                         @else
                                             ---
                                         @endif

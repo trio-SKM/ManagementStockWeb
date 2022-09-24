@@ -10,6 +10,12 @@ class Devie extends Model
     use HasFactory;
 
     /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'num';
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -23,7 +29,7 @@ class Devie extends Model
      */
     public function produits()
     {
-        return $this->belongsToMany(Produit::class)
+        return $this->belongsToMany(Produit::class, 'devie_produit', 'devie_id', 'produit_id')
                     ->as('devie_produit')
                     ->withPivot('quantity')
                     ->withTimestamps();
@@ -40,6 +46,6 @@ class Devie extends Model
      */
     public function facture()
     {
-        return $this->hasOne(Facture::class);
+        return $this->hasOne(Facture::class, 'devie_id', 'num');
     }
 }
