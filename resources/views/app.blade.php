@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     @yield('custom_meta')
     <!-- Favicon icon-->
-    <link rel="shortcut icon" type="image/x-icon" href="./assets/images/favicon/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/images/favicon/favicon.ico')}}">
 
     <!-- Libs CSS -->
     <script src="{{asset('assets/libs/feather-icons/dist/feather.min.js')}}"></script>
