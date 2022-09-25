@@ -7,7 +7,7 @@
         <div class="col-lg-12 col-md-12 col-12">
             <!-- Page header -->
             <div class="border-bottom pb-4 mb-4 ">
-                <h3 class="mb-0 fw-bold">Overview {{ $produit->ref }}</h3>
+                <h3 class="mb-0 fw-bold">Détails de produit:  {{ $produit->ref }}</h3>
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
                     </div>
                    {{--  <div class="mt-3">
                         <img src="../assets/images/placeholder/placeholder-4by3.svg" class="card-img-top mb-2"
-                            alt="..."> 
+                            alt="...">
                         <h4 class="card-title"></h4>
                         {{-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
                             card's content.</p>
@@ -32,7 +32,7 @@
                             <li class="list-group-item">Cras justo odio</li>
                             <li class="list-group-item">Dapibus ac facilisis in</li>
                             <li class="list-group-item">Vestibulum at eros</li>
-                        </ul> 
+                        </ul>
                     </div>--}}
                     <div class="d-flex align-items-center justify-content-around">
                         <div class="text-center">
@@ -63,33 +63,44 @@
         </div>
         <div class="col-xl-8 col-lg-12 col-md-12 col-12">
             <div class="card h-100">
-                <div class="card-header bg-white py-4">
+                <div class="card-header bg-white py-4 mx-2">
                     <h4 class="mb-0">Historique de produit </h4>
                 </div>
-                <div class="table-responsive">
-                    <table class="table text-nowrap">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Fournisseur</th>
-                                <th>Bon de Commande</th>
-                                <th>Prix d'achat</th>
-                                <th>Prix de vente</th>
-                                <th>Date de transaction</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                @if ($produit->bon_commande != null)
-                                    <td class="align-middle">{{ $produit->bon_commande->num }}</td>
-                                    <td class="align-middle">{{ $produit->bon_commande->fournisseur->nom_complet }}</td>
-                                @endif
-                                <td class="align-middle">{{ $produit->price }}</td>
-                                <td class="align-middle">{{ $produit->price_buy }}</td>
-                                <td class="align-middle">23/12/2020</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                @if ($produit->bon_commande != null)
+                    <div class="table-responsive mx-2">
+                        <table class="table text-nowrap">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Numéro</th>
+                                    <th>Fournisseur</th>
+                                    <th>Téléphone</th>
+                                    <th>Date livraison</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="align-middle">
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <img src="{{ asset('assets/images/avatar/avatar-2.jpg') }}" alt=""
+                                                    class="avatar-md avatar rounded-circle">
+                                            </div>
+                                            <div class="ms-3 lh-1">
+                                                <h5 class=" mb-1">{{$produit->bon_commande->num}}</h5>
+                                                {{-- <p class="mb-0">anita@example.com</p> --}}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">{{$produit->bon_commande->fournisseur->nom_complet}}</td>
+                                    <td class="align-middle">{{$produit->bon_commande->fournisseur->telephone}}</td>
+                                    <td class="align-middle">{{date_format($produit->bon_commande->created_at, 'Y-m-d')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+
+                @endif
             </div>
         </div>
     </div>

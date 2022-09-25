@@ -128,7 +128,7 @@ class BonCommandeController extends Controller
             ],
         ]);
 
-        $fournisseur = Fournisseur::find($request->fournisseur_id);
+        $fournisseur = Fournisseur::find($request->fournisseur);
         if ($fournisseur) {
             $bon_commande->fournisseur()->associate($fournisseur);
             $bon_commande->num = $request->bon_commande_num;

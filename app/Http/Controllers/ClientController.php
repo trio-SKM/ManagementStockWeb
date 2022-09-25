@@ -96,7 +96,7 @@ class ClientController extends Controller
             'client_name' => 'required|max:255',
             'client_rc' => ($request->client_rc != $client->rc) ? 'required|unique:clients,rc|numeric' : 'required|numeric',
             'client_nom_societe' => 'required|max:255',
-            'client_ice' => ($request->client_rc != $client->rc) ? 'required|unique:clients,ice|numeric' : 'required|numeric',
+            'client_ice' => ($request->client_ice != $client->ice) ? 'required|unique:clients,ice|numeric' : 'required|numeric',
             'client_credit' => 'required|numeric|min:0',
         ]);
         $client->nom_complet = $request->client_name;

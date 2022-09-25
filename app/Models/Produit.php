@@ -44,7 +44,7 @@ class Produit extends Model
      */
     public function factures()
     {
-        return $this->belongsToMany(Facture::class)
+        return $this->belongsToMany(Facture::class, 'facture_produit', 'produit_id', 'facture_id')
                     ->as('facture_produit')
                     ->withPivot('quantity')
                     ->withTimestamps();

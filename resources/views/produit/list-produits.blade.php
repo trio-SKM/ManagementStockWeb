@@ -13,14 +13,14 @@
         <div class="py-4">
             <div class="card h-100">
                 <!-- card header  -->
-                <div class="card-header bg-white py-3 text-end">
+                <div class="card-header bg-white py-3 text-end mx-2">
                     <h4 class="mb-0"><a class="btn btn-dark" href="{{ route('produit.create') }}"><i class="bi bi-plus"></i>
                             Ajouter un produit</a> </h4>
                 </div>
                 <!-- table  -->
                 @if (count($produits) > 0)
 
-                    <div class="table-responsive">
+                    <div class="table-responsive mx-2">
                         <table class="table text-nowrap mb-0">
                             <thead class="table-light">
                                 <tr>
@@ -86,7 +86,7 @@
                     <x-data-not-found message="Il y a aucun produit ce moment." />
                 @endif
                 @if (session()->exists('status'))
-                    <div class="alert alert-success" role="alert">
+                    <div class="alert alert-success mx-2" role="alert">
                         {{ session('status', '') }}
                     </div>
                 @endif

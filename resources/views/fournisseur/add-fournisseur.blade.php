@@ -6,8 +6,8 @@
     <div class="row">
           <div class="col-lg-12 col-md-12 col-12">
             <!-- Page header -->
-            <div class="border-bottom pb-4 mb-4">             
-                <h3 class="mb-0 fw-bold">Ajouter Fournisseur</h3>             
+            <div class="border-bottom pb-4 mb-4">
+                <h3 class="mb-0 fw-bold">Ajouter Fournisseur</h3>
             </div>
           </div>
         </div>
@@ -29,7 +29,7 @@
         @csrf
         <div class="mb-3">
             <label class="form-label" for="nom_complet">Nom complet</label>
-            <input class="form-control" placeholder="Entre le nom complet du client" type="text" id="nom_complet" name="fournisseur_name" value="{{ old('fournisseur_name') }}">
+            <input class="form-control" placeholder="Entre le nom complet du fournisseur" type="text" id="nom_complet" name="fournisseur_name" value="{{ old('fournisseur_name') }}">
         </div>
         <div class="mb-3">
             <label class="form-label" for="telephone">Telephone</label>
@@ -61,7 +61,7 @@
                     @foreach ($errors->all() as $error)
                         <li class="list-group-item list-group-item-danger mb-2">{{ $error }}</li>
                     @endforeach
-                </ul>            
+                </ul>
         @endif
                   </div>
                 </div>

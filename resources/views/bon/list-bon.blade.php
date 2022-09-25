@@ -7,7 +7,7 @@
         <div class="col-lg-12 col-md-12 col-12">
             <!-- Page header -->
             <div class="border-bottom pb-4 mb-4 ">
-                <h3 class="mb-0 fw-bold">Overview {{$bon_commande->num}}</h3>
+                <h3 class="mb-0 fw-bold">Détails bon de commande</h3>
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@
                     <h4 class="mb-0">Historique de produit </h4>
                 </div>
                  @if (count($bon_commande->produits) > 0)
-                <div class="table-responsive">
+                <div class="table-responsive mx-2">
                     <table class="table text-nowrap">
                         <thead class="table-light">
                             <tr>

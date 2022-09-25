@@ -15,7 +15,7 @@
     <div class="col-lg-12 col-md-12 col-12">
       <!-- Page header -->
         <div class="border-bottom pb-4 mb-4 ">
-            <h3 class="mb-0 fw-bold">Facture</h3>
+            <h3 class="mb-0 fw-bold">Ajouter une Facture</h3>
       </div>
     </div>
 </div>
@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-xs-12 col-md-8">
                         <div class="input-group">
-                            <select form="frm_add_devie" class="livesearchclient form-control" id="client" name="client"></select>
+                            <select class="livesearchclient form-control" id="client" name="client"></select>
                         </div>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                 </div>
             </div>
         </form>
-            <div class="table-responsive">
+            <div class="table-responsive mx-2 mb-3">
                 <table class="table text-nowrap mb-0">
                     <thead class="table-light">
                       <tr>
@@ -90,6 +90,18 @@
                     </tfoot>
                 </table>
             </div>
+            @if (session('status'))
+                <div class="alert alert-success mx-2" role="alert">
+                    {{ session('status', '') }}
+                </div>
+            @endif
+            @if ($errors->any())
+                <ul class="list-group mx-2">
+                    @foreach ($errors->all() as $error)
+                        <li class="list-group-item list-group-item-danger mb-2">{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endif
         </div>
     </div>
 </div>
@@ -97,7 +109,7 @@
 
 @section('custom_script')
 <script>
-    var bons = {{ Illuminate\Support\Js::from($bon_commandes) }};
+    var produits = {{ Illuminate\Support\Js::from($produits) }};
 </script>
 <script src="{{ asset('assets/libs/select2/select2.min.js') }}"></script>
 <script src="{{ asset('js/facture/add-facture.js') }}"></script>

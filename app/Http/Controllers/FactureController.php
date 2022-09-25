@@ -32,9 +32,10 @@ class FactureController extends Controller
      */
     public function create()
     {
-        $bon_commandes = Bon_commande::all();
+        // $bon_commandes = Bon_commande::all();
+        $produits = Produit::all();
         $clients = Client::all();
-        return view('facture.add-facture', compact('bon_commandes', 'clients'));
+        return view('facture.add-facture', compact('produits', 'clients'));
     }
 
     /**
@@ -129,9 +130,10 @@ class FactureController extends Controller
      */
     public function edit(Facture $facture)
     {
-        $bon_commandes = Bon_commande::all();
+        $produits = Produit::all();
+        // $bon_commandes = Bon_commande::all();
         $clients = Client::all();
-        return view('facture.edit-facture', compact('facture', 'clients', 'bon_commandes'));
+        return view('facture.edit-facture', compact('facture', 'clients', 'produits'));
     }
 
     /**

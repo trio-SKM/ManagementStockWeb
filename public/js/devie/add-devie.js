@@ -1,5 +1,6 @@
 console.log('here we go');
-console.log(bons);
+// console.log(bons);
+console.log(produits);
 var nbProduit = 0;
 var produitToOperate = null;
 var selectedTr = null;
@@ -33,7 +34,6 @@ $(document).ready(function () {
             processResults: function (data) {
                 return {
                     results: $.map(data, function (item) {
-                        produitToOperate = item
                         return {
                             text: item.ref,
                             id: item.id
@@ -45,9 +45,9 @@ $(document).ready(function () {
         }
     });
     // display all info for the first product when the page has been successfully loading:
-    if (bons.length != 0) {
-        $("#list_produits").trigger('change');
-    }
+    // if (bons.length != 0) {
+    //     $("#list_produits").trigger('change');
+    // }
 })
 // fill the product form by the selected product's info:
 $("#list_produits").change(function (e) {
@@ -67,10 +67,20 @@ $("#list_produits").change(function (e) {
     //         }
     //     })
     // });
+    produits.forEach(prd => {
+        if (prd.id == produit_id) {
+            produitToOperate = prd;
+        }
+    });
 
     // fill inputs with product's data:
     //jQuery('#produit_ref').val(produitToOperate.ref);
     jQuery('#produit_price').val(produitToOperate.price);
+    if ($("#produit_qte").val() != "") {
+        $("#produit_qte").trigger('change');
+    } else {
+        jQuery('#produit_price_total').val("");
+    }
     //jQuery('#produit_qte_stock').val(produitToOperate.qte);
     //jQuery('#bon_commande').val(jQuery(this)[0].selectedOptions[0].dataset.bon_commande_num_fournisseur_nom);
 });
@@ -80,7 +90,7 @@ $("#produit_qte").change(function (e) {
     let qte = jQuery(this).val();
     // check if there's no hacking across html:
     if (isNaN(qte)) {
-        alert('Vous ne devez pas jouer sur les éléments HTML qui ne vous concernent pas.');
+        alert('Veuillez donner une valeur numérique valide.');
         return;
     }
 
@@ -94,6 +104,12 @@ $("#btn_add_produit").click(function (e) {
 // to update a product that will be associated with this :
 $("#btn_update_produit").click(function (e) {
     e.preventDefault();
+    let produit_id = jQuery(this).data('produit_id');
+    produits.forEach(prd => {
+        if (prd.id == produit_id) {
+            produitToOperate = prd;
+        }
+    });
     addProduitToTable(produitToOperate, 'update'); // to change infos of the modified product.
     backToInit();
 });
@@ -276,7 +292,7 @@ function deleteProduit(sender) {
 function backToInit() {
     jQuery("#btn_update_produit").toggleClass('d-none');
     jQuery("#btn_add_produit").toggleClass('d-none');
-    
+
 
     jQuery('#produit_qte').val("");
     jQuery('#produit_price_total').val("");

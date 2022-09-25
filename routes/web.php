@@ -53,4 +53,4 @@ Route::get('ajax-autocomplete-search-fournisseur', [Select2SearchController::cla
 
 Auth::routes();
 
-Route::get('/home', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/home', [DashboardController::class, 'index'])->name('home');

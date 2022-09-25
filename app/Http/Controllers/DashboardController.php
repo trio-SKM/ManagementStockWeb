@@ -69,7 +69,7 @@ class DashboardController extends Controller
         if ($filter_value == 'Today') {
             // calculate invoices without quotations:
             $gains = DB::table('facture_produit')
-                ->join('factures', 'facture_produit.facture_id', '=', 'factures.id')
+                ->join('factures', 'facture_produit.facture_id', '=', 'factures.num')
                 ->join('produits', 'facture_produit.produit_id', '=', 'produits.id')
                 ->selectRaw('SUM(produits.price*quantity)*0.2 + SUM(produits.price*quantity) as total_price')
                 ->where('facture_produit.created_at', 'like', '%' . date_format(today(), 'Y-m-d') . '%')
@@ -78,15 +78,15 @@ class DashboardController extends Controller
             // add global price of invoices with quotations:
             $gains += DB::table('devie_produit')
                 ->join('produits', 'devie_produit.produit_id', '=', 'produits.id')
-                ->join('devies', 'devie_produit.devie_id', '=', 'devies.id')
-                ->join('factures', 'devies.id', '=', 'factures.devie_id')
+                ->join('devies', 'devie_produit.devie_id', '=', 'devies.num')
+                ->join('factures', 'devies.num', '=', 'factures.devie_id')
                 ->selectRaw('SUM(produits.price*quantity)*0.2 + SUM(produits.price*quantity) as total_price')
                 ->where('devie_produit.created_at', 'like', '%' . date_format(today(), 'Y-m-d') . '%')
                 ->first()
                 ->total_price;
         } elseif ($filter_value == 'Global') {
             $gains = DB::table('facture_produit')
-                ->join('factures', 'facture_produit.facture_id', '=', 'factures.id')
+                ->join('factures', 'facture_produit.facture_id', '=', 'factures.num')
                 ->join('produits', 'facture_produit.produit_id', '=', 'produits.id')
                 ->selectRaw('SUM(produits.price*quantity)*0.2 + SUM(produits.price*quantity) as total_price')
                 ->first()
@@ -94,8 +94,8 @@ class DashboardController extends Controller
             // add global price of invoices with quotations:
             $gains += DB::table('devie_produit')
                 ->join('produits', 'devie_produit.produit_id', '=', 'produits.id')
-                ->join('devies', 'devie_produit.devie_id', '=', 'devies.id')
-                ->join('factures', 'devies.id', '=', 'factures.devie_id')
+                ->join('devies', 'devie_produit.devie_id', '=', 'devies.num')
+                ->join('factures', 'devies.num', '=', 'factures.devie_id')
                 ->selectRaw('SUM(produits.price*quantity)*0.2 + SUM(produits.price*quantity) as total_price')
                 ->first()
                 ->total_price;
@@ -107,9 +107,14 @@ class DashboardController extends Controller
         $expenses = 0;
         if ($filter_value == 'Today') {
             // calculate invoices without quotations:
-            $expenses = Produit::where('created_at', 'like', '%' . date_format(today(), 'Y-m-d') . '%')->sum('price_buy');
+            $expenses = Produit::where('created_at', 'like', '%' . date_format(today(), 'Y-m-d') . '%')
+                ->selectRaw('SUM(price_buy*qte) as expenses')
+                ->first()
+                ->expenses;
         } elseif ($filter_value == 'Global') {
-            $expenses = Produit::sum('price_buy');
+            $expenses = Produit::selectRaw('SUM(price_buy*qte) as expenses')
+                ->first()
+                ->expenses;
         }
         return $expenses;
     }

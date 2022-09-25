@@ -35,13 +35,13 @@
     <div class="py-4">
         <div class="card h-100">
             <!-- card header  -->
-            <div class="card-header bg-white py-3 text-end">
+            <div class="card-header bg-white py-3 text-end mx-2">
                 <h4 class="mb-0"><a class="btn btn-dark" href="{{ route('bon_commande.create') }}"><i class="bi bi-plus"></i>
                         Ajouter un bon de commande</a> </h4>
             </div>
             <!-- table  -->
             @if (count($bons) > 0)
-                <div class="table-responsive">
+                <div class="table-responsive mx-2 mb-3">
                     <table class="table text-nowrap mb-0">
                         <thead class="table-light">
                             <tr>
@@ -99,7 +99,7 @@
                 <x-data-not-found message="Il y a aucun bon ce moment." />
             @endif
             @if (session()->exists('status'))
-                <div class="alert alert-success" role="alert">
+                <div class="alert alert-success mx-2" role="alert">
                     {{ session('status', '') }}
                 </div>
             @endif

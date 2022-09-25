@@ -9,7 +9,7 @@
         <div class="col-lg-12 col-md-12 col-12">
             <!-- Page header -->
             <div class="border-bottom pb-4 mb-4 ">
-                <h3 class="mb-0 fw-bold">Overview</h3>
+                <h3 class="mb-0 fw-bold">détails du client</h3>
             </div>
         </div>
         </div>
@@ -17,7 +17,7 @@
           <div class="col-xl-12 col-lg-12 col-md-12 col-12">
             <!-- Bg -->
             <div class="pt-20 rounded-top" style="background:
-                url(../assets/images/background/profile-cover.jpg) no-repeat;
+                url({{asset('assets/images/background/profile-cover.jpg')}}) no-repeat;
                 background-size: cover;">
             </div>
             <div class="bg-white rounded-bottom smooth-shadow-sm ">
@@ -28,10 +28,10 @@
                   <div class="avatar-xxl avatar-indicators avatar-online me-2
                       position-relative d-flex justify-content-end
                       align-items-end mt-n10">
-                    <img src="../assets/images/avatar/avatar-1.jpg" class="avatar-xxl
+                    <img src="{{ asset('assets/images/avatar/avatar-1.jpg') }}" class="avatar-xxl
                         rounded-circle border border-4 border-white-color-40" alt="">
                     <a href="#!" class="position-absolute top-0 right-0 me-2" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="Verified">
-                      <img src="../assets/images/svg/checked-mark.svg" alt="" width="30" height="30">
+                      <img src="{{ asset('assets/images/svg/checked-mark.svg') }}" alt="" width="30" height="30">
                     </a>
                   </div>
                   <!-- text -->
@@ -41,7 +41,7 @@
 
                       </a>
                     </h2>
-                    <p class="mb-0 d-block">@imjituchauhan</p>
+                    {{-- <p class="mb-0 d-block">@imjituchauhan</p> --}}
                   </div>
                 </div>
                 <div class="d-flex align-items-center">
@@ -65,12 +65,12 @@
                     <!-- card body -->
                     <div class="card-body">
                     <!-- card title -->
-                    <h4 class="card-title">About {{ $fournisseur->nom_complet }}</h4>
-                    <span class="text-uppercase fw-medium text-dark
+                    <h4 class="card-title">A propos de  {{ $fournisseur->nom_complet }}</h4>
+                    {{-- <span class="text-uppercase fw-medium text-dark
                         fs-5 ls-2">Bio</span>
                     <!-- text -->
                     <p class="mt-2 mb-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspen disse var ius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat.
-                    </p>
+                    </p> --}}
                     <!-- row -->
                     <div class="row">
                         <div class="col-12 mb-5">
@@ -80,8 +80,8 @@
                         <p class="mb-0">{{ $fournisseur->nom_societe }}</p>
                         </div>
                         <div class="col-6 mb-5">
-                        <h6 class="text-uppercase fs-5 ls-2">Phone </h6>
-                        <p class="mb-0">+{{ $fournisseur->telephone }}</p>
+                        <h6 class="text-uppercase fs-5 ls-2">Téléphone </h6>
+                        <p class="mb-0">{{ $fournisseur->telephone }}</p>
                         </div>
                         <div class="col-6 mb-5">
                         <h6 class="text-uppercase fs-5 ls-2">RC </h6>
@@ -92,9 +92,9 @@
                         <p class="mb-0">{{ $fournisseur->ice }}</p>
                         </div>
                         <div class="col-6">
-                        <h6 class="text-uppercase fs-5 ls-2">Location
+                        <h6 class="text-uppercase fs-5 ls-2">Dette
                         </h6>
-                        <p class="mb-0">Ahmedabad, India</p>
+                        <p class="mb-0">{{ $fournisseur->dette }}</p>
                         </div>
                     </div>
                     </div>
@@ -114,7 +114,7 @@
                             <table class="table text-nowrap mb-0">
                                 <thead class="table-light">
                                 <tr>
-                                    <th>ID</th>
+                                    <th>N°</th>
                                     <th>Num Bon de commande</th>
                                     <th></th>
                                 </tr>
