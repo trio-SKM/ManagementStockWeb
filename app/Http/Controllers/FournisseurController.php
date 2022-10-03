@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Fournisseur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class FournisseurController extends Controller
 {
@@ -36,13 +37,27 @@ class FournisseurController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'fournisseur_name' => 'required|max:255',
-            'fournisseur_rc' => 'required|unique:fournisseurs,rc|numeric',
-            'fournisseur_nom_societe' => 'required|max:255',
-            'fournisseur_ice' => 'required|unique:fournisseurs,ice|numeric',
-        ]);
-
+        Validator::make(
+            $request->all(),
+            [
+                'fournisseur_name' => 'required|max:255',
+                'fournisseur_rc' => 'required|unique:fournisseurs,rc|numeric',
+                'fournisseur_nom_societe' => 'required|max:255',
+                'fournisseur_ice' => 'required|unique:fournisseurs,ice|numeric',
+            ],
+            [
+                'required' => 'Le champs :attribute est obligatoire.',
+                'unique' => 'Le champs :attribute doit être unique.',
+                'numeric' => 'Le champs :attribute doit être numerique',
+                'max'
+            ],
+            [
+                'fournisseur_name' => 'Nom de Fournisseur',
+                'fournisseur_rc' => 'RC de Fournisseur',
+                'fournisseur_nom_societe' => 'Nom de la Société de Fournisseur',
+                'fournisseur_ice' => 'ICE de Fournisseur',
+            ]
+        )->validate();
         $fournisseur = Fournisseur::create([
             'nom_complet' => $request->fournisseur_name,
             'telephone' => $request->fournisseur_tele,

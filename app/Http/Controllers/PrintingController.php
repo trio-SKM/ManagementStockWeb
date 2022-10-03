@@ -12,10 +12,10 @@ class PrintingController extends Controller
     public function imprimer($id, $type)
     {
         if ($type == "devie") {
-            $devie = Devie::find($id);
+            $devie = Devie::where('num', $id)->first();
             return view('impression', compact('devie'));
         }elseif($type == "facture"){
-            $facture = Facture::find($id);
+            $facture = Facture::where('num', $id)->first();
             return view('impression', compact('facture'));
         }
     }

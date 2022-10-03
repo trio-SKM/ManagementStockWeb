@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\Fournisseur;
 use App\Models\Produit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -26,9 +27,9 @@ class DashboardController extends Controller
     function getNbClients($filter_value)
     {
         $nb_clients = 0;
-        if ($filter_value == 'Today') {
+        if ($filter_value == 'today') {
             $nb_clients = Client::where('created_at', 'like', '%' . date_format(today(), 'Y-m-d') . '%')->count();
-        } elseif ($filter_value == 'Global') {
+        } elseif ($filter_value == 'global') {
             $nb_clients = Client::count();
         }
         return $nb_clients;
@@ -36,9 +37,9 @@ class DashboardController extends Controller
     function getNbFournisseurs($filter_value)
     {
         $nb_fournisseurs = 0;
-        if ($filter_value == 'Today') {
+        if ($filter_value == 'today') {
             $nb_fournisseurs = Fournisseur::where('created_at', 'like', '%' . date_format(today(), 'Y-m-d') . '%')->count();
-        } elseif ($filter_value == 'Global') {
+        } elseif ($filter_value == 'global') {
             $nb_fournisseurs = Fournisseur::count();
         }
         return $nb_fournisseurs;
@@ -66,7 +67,7 @@ class DashboardController extends Controller
     function getGains($filter_value)
     {
         $gains = 0;
-        if ($filter_value == 'Today') {
+        if ($filter_value == 'today') {
             // calculate invoices without quotations:
             $gains = DB::table('facture_produit')
                 ->join('factures', 'facture_produit.facture_id', '=', 'factures.num')
@@ -84,7 +85,7 @@ class DashboardController extends Controller
                 ->where('devie_produit.created_at', 'like', '%' . date_format(today(), 'Y-m-d') . '%')
                 ->first()
                 ->total_price;
-        } elseif ($filter_value == 'Global') {
+        } elseif ($filter_value == 'global') {
             $gains = DB::table('facture_produit')
                 ->join('factures', 'facture_produit.facture_id', '=', 'factures.num')
                 ->join('produits', 'facture_produit.produit_id', '=', 'produits.id')
@@ -105,7 +106,7 @@ class DashboardController extends Controller
     function getExpenses($filter_value)
     {
         $expenses = 0;
-        if ($filter_value == 'Today') {
+        if ($filter_value == 'today') {
             // calculate invoices without quotations:
             $expenses = Produit::where('created_at', 'like', '%' . date_format(today(), 'Y-m-d') . '%')
                 ->selectRaw('SUM(price_buy*qte) as expenses')

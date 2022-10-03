@@ -59,7 +59,8 @@ class ProduitController extends Controller
             [
                 'produit_ref' => 'REF',
                 'produit_libelle' => 'Libellé',
-                'produit_price' => 'Prix',
+                'produit_price' => 'Prix de vente',
+                'produit_price_buy' => 'Prix d\'achat',
                 'produit_qte' => 'Quantité',
             ]
         )->validate();
@@ -151,7 +152,8 @@ class ProduitController extends Controller
             [
                 'produit_ref' => 'REF',
                 'produit_libelle' => 'Libellé',
-                'produit_price' => 'Prix',
+                'produit_price' => 'Prix de vente',
+                'produit_price_buy' => 'Prix d\'achat',
                 'produit_qte' => 'Quantité',
             ]
         )->validate();

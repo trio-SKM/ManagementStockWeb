@@ -36,11 +36,11 @@
                     </div>--}}
                     <div class="d-flex align-items-center justify-content-around">
                         <div class="text-center">
-                            <h1 class="mt-3  mb-1 fw-bold">{{ $produit->price }}</h1>
+                            <h1 class="mt-3  mb-1 fw-bold">{{ $produit->price_buy }}</h1>
                             <p>Prix d'achat</p>
                         </div>
                         <div class="text-center">
-                            <h1 class="mt-3  mb-1 fw-bold">{{ $produit->price_buy }}152</h1>
+                            <h1 class="mt-3  mb-1 fw-bold">{{ $produit->price }}</h1>
                             <p>Prix de vente</p>
                         </div>
                         <div class="text-center">
@@ -68,7 +68,7 @@
                 </div>
                 @if ($produit->bon_commande != null)
                     <div class="table-responsive mx-2">
-                        <table class="table text-nowrap">
+                        <table class="table text-nowrap" id="mytable">
                             <thead class="table-light">
                                 <tr>
                                     <th>Numéro</th>
@@ -81,10 +81,6 @@
                                 <tr>
                                     <td class="align-middle">
                                         <div class="d-flex align-items-center">
-                                            <div>
-                                                <img src="{{ asset('assets/images/avatar/avatar-2.jpg') }}" alt=""
-                                                    class="avatar-md avatar rounded-circle">
-                                            </div>
                                             <div class="ms-3 lh-1">
                                                 <h5 class=" mb-1">{{$produit->bon_commande->num}}</h5>
                                                 {{-- <p class="mb-0">anita@example.com</p> --}}
@@ -105,4 +101,7 @@
         </div>
     </div>
     </div>
+@endsection
+@section('custom_script')
+<script src="{{asset('js/datatable_js.js')}}"></script>
 @endsection
