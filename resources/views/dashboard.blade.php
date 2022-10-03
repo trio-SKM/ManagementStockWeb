@@ -499,12 +499,12 @@
                       <h1 class="mt-3  mb-1 fw-bold">{{ $dette }}</h1>
                       <p>Dette</p>
                     </div>
-                    <div class="text-center">
+                    <div id="btn_clients_with_credit" class="text-center">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-down icon-sm text-danger"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>
                       <h1 class="mt-3  mb-1 fw-bold">{{ $nb_clients_with_credit }}</h1>
                       <p>Nombre des clients ayant des credits</p>
                     </div>
-                    <div class="text-center">
+                    <div id="btn_fournisseurs_with_dette" class="text-center">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-down icon-sm text-danger"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>
                       <h1 class="mt-3  mb-1 fw-bold">{{ $nb_fournisseurs_with_dette }}</h1>
                       <p>Nombre des fournisseurs ayant dettes</p>
@@ -536,34 +536,6 @@
                       </tr>
                     </thead>
                     <tbody id="tbl_tbody_persons">
-                      <tr>
-                        <td class="align-middle">
-                          {{-- <div class="d-flex align-items-center"> --}}
-                            {{-- <div>
-                              <img src="assets/images/avatar/avatar-2.jpg" alt="" class="avatar-md avatar rounded-circle">
-                            </div> --}}
-                            {{-- <div class="ms-3 lh-1"> --}}
-                              <h5 class=" mb-1">Anita Parmar</h5>
-                              {{-- <p class="mb-0">anita@example.com</p> --}}
-                            {{-- </div> --}}
-                          {{-- </div> --}}
-                        </td>
-                        <td class="align-middle">Front End Developer</td>
-                        <td class="align-middle">3 May, 2021</td>
-                        {{-- <td class="align-middle">
-                          <div class="dropdown dropstart">
-                            <a class="text-muted text-primary-hover" href="#" role="button" id="dropdownTeamOne" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical icon-xxs"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownTeamOne">
-                              <a class="dropdown-item" href="#">Action</a>
-                              <a class="dropdown-item" href="#">Another action</a>
-                              <a class="dropdown-item" href="#">Something else
-                                here</a>
-                            </div>
-                          </div>
-                        </td> --}}
-                      </tr>
                       {{-- <tr>
                         <td class="align-middle">
                           <div class="d-flex align-items-center">
@@ -719,5 +691,7 @@
               </div>
             </div>
           </div>
-          <script src="{{ asset('js/dashboard.js') }}"></script>
+@endsection
+@section('custom_script')
+<script src="{{ asset('js/dashboard.js') }}"></script>
 @endsection
