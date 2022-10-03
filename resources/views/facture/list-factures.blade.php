@@ -55,7 +55,7 @@
             <!-- table  -->
             @if (count($factures) > 0)
                 <div class="table-responsive mx-2 mb-3">
-                    <table class="table text-nowrap mb-0">
+                    <table class="table text-nowrap mb-0" id="mytable">
                         <thead class="table-light">
                             <tr>
                                 <th>N°</th>
@@ -101,6 +101,8 @@
                                             <div class="dropdown-menu" aria-labelledby="dropdownTeamOne">
                                                 <a class="dropdown-item"
                                                     href="@php echo $facture->devie != Null ? route('devie.edit', ['devie' => $facture->devie->num]) : route('facture.edit', ['facture' => $facture->num]) @endphp">Modifier</a>
+                                                    <a class="dropdown-item"
+                                                    href="@php echo $facture->devie != Null ? route('impression', ['id' => $facture->devie->num ,'type'=>'devie']) : route('impression', ['id' => $facture->num,'type'=>'facture']) @endphp">Imprimer</a>
                                                 <form
                                                     action="{{ route('facture.destroy', ['facture' => $facture->num]) }}"
                                                     method="post">
@@ -135,4 +137,5 @@
         var produits_devies = {{ Illuminate\Support\Js::from($produits_devies) }};
     </script>
     <script src="{{ asset('js/facture/list-factures.js') }}"></script>
+    <script src="{{asset('js/datatable_js.js')}}"></script>
 @endsection

@@ -42,7 +42,7 @@
             <!-- table  -->
             @if (count($bons) > 0)
                 <div class="table-responsive mx-2 mb-3">
-                    <table class="table text-nowrap mb-0">
+                    <table class="table text-nowrap mb-0" id="mytable">
                         <thead class="table-light">
                             <tr>
                                 <th>N°</th>
@@ -108,4 +108,5 @@
 @endsection
 @section('custom_script')
 <script src="{{ asset('js/bon/list-bons.js') }}"></script>
+<script src="{{asset('js/datatable_js.js')}}"></script>
 @endsection

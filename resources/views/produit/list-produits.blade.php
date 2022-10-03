@@ -21,7 +21,7 @@
                 @if (count($produits) > 0)
 
                     <div class="table-responsive mx-2">
-                        <table class="table text-nowrap mb-0">
+                        <table class="table text-nowrap mb-0" id="mytable">
                             <thead class="table-light">
                                 <tr>
                                     <th>N°</th>
@@ -95,9 +95,5 @@
     </div>
 @endsection
 @section('custom_script')
-<script>
-    $(document).ready(function () {
-    $('#mytable').DataTable();
-});
-</script>
+<script src="{{asset('js/datatable_js.js')}}"></script>
 @endsection

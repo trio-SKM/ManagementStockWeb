@@ -1,13 +1,13 @@
 <nav class="navbar-vertical navbar">
     <div class="nav-scroller">
         <!-- Brand logo -->
-        <a class="navbar-brand" href="./index.html">
-            <img src="{{ asset('assets/images/brand/logo/logo.svg') }}" alt="" />
+        <a class="navbar-brand" href="">
+            <img src="{{ asset('assets/images/background/logo.png') }}" alt="" />
         </a>
         <!-- Navbar nav -->
         <ul class="navbar-nav flex-column" id="sideNavbar">
             <li class="nav-item">
-                <a class="nav-link has-arrow  active " href="{{ route('dashboard', ['filter_value'=>'Global']) }}">
+                <a class="nav-link has-arrow  active " href="{{ route('dashboard', ['filter_value'=>'global']) }}">
                     <i data-feather="home" class="nav-icon icon-xs me-2"></i>  Dashboard
                 </a>
 

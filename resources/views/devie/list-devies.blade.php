@@ -56,7 +56,7 @@ use Illuminate\Support\Str;
             <!-- table  -->
             @if (count($devies) > 0)
                 <div class="table-responsive">
-                    <table class="table text-nowrap mb-0">
+                    <table class="table text-nowrap mb-0" id="mytable">
                         <thead class="table-light">
                             <tr>
                                 <th>N°</th>
@@ -125,6 +125,8 @@ use Illuminate\Support\Str;
 
                                                 <a class="dropdown-item"
                                                     href="{{ route('devie.show', ['devie' => $devie->num]) }}">+ Détails</a>
+                                                    <a class="dropdown-item"
+                                                    href="{{ route('impression', ['id' => $devie->num,'type'=>'devie']) }}">Imprimer</a>
 
                                                 <form action="{{ route('devie.destroy', ['devie' => $devie->num]) }}"
                                                     method="post">
@@ -157,4 +159,5 @@ use Illuminate\Support\Str;
         var produits = {{ Illuminate\Support\Js::from($produits) }};
     </script>
     <script src="{{ asset('js/devie/list-devies.js') }}"></script>
+    <script src="{{asset('js/datatable_js.js')}}"></script>
 @endsection

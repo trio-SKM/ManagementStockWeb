@@ -92,9 +92,5 @@
     </div>
 @endsection
 @section('custom_script')
-<script>
-    $(document).ready(function () {
-    $('#mytable').DataTable();
-});
-</script>
+<script src="{{asset('js/datatable_js.js')}}"></script>
 @endsection

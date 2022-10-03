@@ -78,5 +78,5 @@
 @endsection
 
 @section('custom_script')
-<script src="{{asset('js/client.js')}}"></script>
+<script src="{{asset('js/datatable_js.js')}}"></script>
 @endsection
