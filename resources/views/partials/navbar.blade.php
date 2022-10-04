@@ -101,6 +101,8 @@
         </div>
       </li> --}}
       <!-- List -->
+      <a  class="btn btn-outline-info me-1" id="glob" href="{{ route('dashboard', ['filter_value'=>'global']) }}">Tous</a>
+        <a  class="btn btn-outline-info  me-1" href="{{ route('dashboard', ['filter_value'=>'today']) }}">Aujourd'hui</a>
       <li class="dropdown ms-2">
         <a class="rounded-circle" href="#" role="button" id="dropdownUser"
           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
